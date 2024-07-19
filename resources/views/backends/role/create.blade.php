@@ -70,6 +70,9 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-header bg-primary">
+                        <label for="" class="card-title text-white">@lang('Create')</label>
+                    </div>
                     <form class="form-material form-horizontal" action="{{ route('roles.store') }}" method="POST">
                         @csrf
                         <div class="card-body">

@@ -16,7 +16,7 @@
                         <tr>
                             <th>@lang('Name')</th>
                             <th>@lang('Created at')</th>
-                            <th>@lang('Action')</th>
+                            <th>@lang('Actions')</th>
                         </tr>
                     </thead>
                     <body>
@@ -28,16 +28,16 @@
                                     </td>
                                     <td>
                                         <a href="{{ route('roles.edit', ['role' => $role->id]) }}"
-                                            class="btn btn-primary btn-sm" data-toggle="tooltip"
+                                            class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
                                             title="@lang('Edit')"><i
-                                                class="fa fa-edit ambitious-padding-btn"></i></a>&nbsp;&nbsp;
+                                                class="fa fa-edit ambitious-padding-btn text-uppercase"> @lang('Edit')</i></a>&nbsp;&nbsp;
                                         <form id="deleteForm" action="{{ route('roles.destroy', ['role' => $role->id]) }}"
                                             method="POST" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-danger btn-sm delete-btn"
+                                            <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
                                                 title="@lang('Delete')">
-                                                <i class="fa fa-trash ambitious-padding-btn"></i>
+                                                <i class="fa fa-trash ambitious-padding-btn text-uppercase"> @lang('Delete')</i>
                                             </button>
                                         </form>
                                     </td>

@@ -13,11 +13,11 @@
                 <table id="basic-datatables" class="table table-bordered table-hover">
                     <thead class="table-secondary">
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Guard</th>
-                            <th>Created at</th>
-                            <th>Actions</th>
+                            <th>@lang('No.')</th>
+                            <th>@lang('Name')</th>
+                            <th>@lang('Guard')</th>
+                            <th>@lang('Created at')</th>
+                            <th>@lang('Actions')</th>
                         </tr>
                     </thead>
 
@@ -36,17 +36,17 @@
                                             'id' => $permission->id,
                                         ]) --}}
                                         <a href="{{ route('permission.edit', ['permission' => $permission->id]) }}"
-                                            class="btn btn-primary btn-sm" data-toggle="tooltip"
+                                            class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
                                             title="@lang('Edit')"><i
-                                                class="fa fa-edit ambitious-padding-btn"></i></a>&nbsp;&nbsp;
+                                                class="fa fa-edit ambitious-padding-btn text-uppercase"> @lang('Edit')</i></a>&nbsp;&nbsp;
                                         <form id="deleteForm"
                                             action="{{ route('permission.destroy', ['permission' => $permission->id]) }}"
                                             method="POST" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-danger btn-sm delete-btn"
+                                            <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
                                                 title="@lang('Delete')">
-                                                <i class="fa fa-trash ambitious-padding-btn"></i>
+                                                <i class="fa fa-trash ambitious-padding-btn text-uppercase"> @lang('Delete')</i>
                                             </button>
                                         </form>
                                     </td>

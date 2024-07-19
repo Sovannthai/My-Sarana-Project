@@ -151,8 +151,7 @@
                                 </a>
                                 <a href="#">
                                     <div class="notif-img">
-                                        <img src="{{ asset('backends/assets/img/profile2.jpg') }}"
-                                            alt="Img Profile" />
+                                        <img src="{{ asset('backends/assets/img/profile2.jpg') }}" alt="Img Profile" />
                                     </div>
                                     <div class="notif-content">
                                         <span class="block">
@@ -176,6 +175,29 @@
                     <li>
                         <a class="see-all" href="javascript:void(0);">See all notifications<i
                                 class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ asset('backends/assets/img/flags/' . (Session::get('locale', 'en') == 'en' ? 'gb.png' : Session::get('locale') . '.png')) }}"
+                        alt="" style="width: 20px;">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                    <li>
+                        <a href="{{ route('change_language', 'kh') }}"
+                            class="dropdown-item @if (Session::get('locale') == 'kh') active @endif">
+                            <img src="{{ asset('backends/assets/img/flags/kh.png') }}" alt=""
+                                style="width: 20px;" class="me-2"> Khmer
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('change_language', 'en') }}"
+                            class="dropdown-item @if (Session::get('locale', 'en') == 'en') active @endif">
+                            <img src="{{ asset('backends/assets/img/flags/gb.png') }}" alt=""
+                                style="width: 20px;" class="me-2"> English
                         </a>
                     </li>
                 </ul>
