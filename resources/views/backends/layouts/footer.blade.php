@@ -13,10 +13,10 @@
         </li>
     </ul>
 </nav> --}}
-<div class="copyright mx-auto">
-    {{-- 2024,  <i class="fa fa-heart heart text-danger"></i> by --}}
-    2024,Sarana Project By
-    <a href="https://github.com/Sovannthai">HE Sovannthai</a>
+<div class="copyright">
+    <div class="text-container">
+        <div class="sliding-text">2024, Sarana Project By <a href="https://github.com/Sovannthai">HE Sovannthai</a></div>
+    </div>
 </div>
 {{-- <div>
     Distributed by

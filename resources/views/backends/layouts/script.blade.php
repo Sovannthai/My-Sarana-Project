@@ -62,4 +62,40 @@
         fillColor: "rgba(255, 165, 52, .14)",
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const text = document.querySelector('.sliding-text');
+        const containerWidth = document.querySelector('.copyright').offsetWidth;
+        const textWidth = text.offsetWidth;
 
+        let startPos = containerWidth;
+        const endPos = -textWidth;
+        let animationFrameId;
+
+        function slideText() {
+            if (startPos <= endPos) {
+                startPos = containerWidth;
+            } else {
+                startPos -= 1;
+            }
+            text.style.transform = `translateX(${startPos}px)`;
+            animationFrameId = requestAnimationFrame(slideText);
+        }
+
+        function startSliding() {
+            if (!animationFrameId) {
+                slideText();
+            }
+        }
+        function stopSliding() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+        }
+        text.addEventListener('mouseenter', stopSliding);
+        text.addEventListener('mouseleave', startSliding);
+
+        startSliding();
+    });
+</script>

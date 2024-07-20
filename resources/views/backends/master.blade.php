@@ -38,15 +38,19 @@
             </div>
 
             <footer class="footer">
-                <div class="container-fluid d-flex justify-content-between">
-                    @include('backends.layouts.footer')
+                <div class="">
+                    <div class="copyright">
+                        <div class="text-container">
+                            <div class="sliding-text">2024, Sarana Project By <a href="https://github.com/Sovannthai">HE Sovannthai</a></div>
+                        </div>
+                    </div>
                 </div>
             </footer>
         </div>
 
         <!-- Custom template | don't include it in your project! -->
         <div class="custom-template">
-            @include('backends.layouts.custom')
+            {{-- @include('backends.layouts.custom') --}}
         </div>
         <!-- Include jQuery -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

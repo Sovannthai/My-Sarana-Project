@@ -37,5 +37,37 @@
     <!-- Include Font Awesome CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        .footer {
+            background-color: #f8f9fa;
+            /* Adjust as needed */
+            padding: 20px 0;
+        }
 
+        .copyright {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 20px;
+        }
+
+        .text-container {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .sliding-text {
+            display: inline-block;
+            /* animation: slide 15s linear infinite; */
+        }
+        @keyframes slide {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
 </head>

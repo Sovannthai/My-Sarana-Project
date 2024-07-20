@@ -26,7 +26,7 @@
                 <li class="nav-item @if (Route::is('home')) active @endif">
                     <a href="{{ route('home') }}">
                         <i class="fas fa-home"></i>
-                        <p>Home</p>
+                        <p>@lang('Home')</p>
                     </a>
                 </li>
                 <li class="nav-section">
@@ -38,24 +38,24 @@
                     <a data-toggle="collapse" href="#forms"
                         @if (Route::is('roles.*') || Route::is('permission.*')) aria-expanded="true" @else aria-expanded="false" @endif>
                         <i class="fas fa-users"></i>
-                        <p>User Management</p>
+                        <p>@lang('User Management')</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse @if (Route::is('roles.*') || Route::is('permission.*')) show @endif" id="forms">
                         <ul class="nav nav-collapse">
                             <li>
                                 <a href="#">
-                                    <span class="sub-item">Users</span>
+                                    <span class="sub-item">@lang('Users')</span>
                                 </a>
                             </li>
                             <li class="@if (Route::is('roles.*')) active @endif">
                                 <a href="{{ route('roles.index') }}">
-                                    <span class="sub-item">Role</span>
+                                    <span class="sub-item">@lang('Roles')</span>
                                 </a>
                             </li>
                             <li class="@if (Route::is('permission.*')) active @endif">
                                 <a href="{{ route('permission.index') }}">
-                                    <span class="sub-item">Permissions</span>
+                                    <span class="sub-item">@lang('Permissions')</span>
                                 </a>
                             </li>
                         </ul>
@@ -64,14 +64,14 @@
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#tables">
                         <i class="fa fas fa-cog"></i>
-                        <p>Setting</p>
+                        <p>@lang('Setting')</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="tables">
                         <ul class="nav nav-collapse">
                             <li>
                                 <a href="#">
-                                    <span class="sub-item">General Setting</span>
+                                    <span class="sub-item">@lang('General Setting')</span>
                                 </a>
                             </li>
                         </ul>

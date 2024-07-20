@@ -40,7 +40,7 @@
                     </div>
                     <div class="col col-stats ms-3 ms-sm-0">
                         <div class="numbers">
-                            <p class="card-category">Visitors</p>
+                            <p class="card-category">@lang('Total Renter')</p>
                             <h4 class="card-title">1,294</h4>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                     </div>
                     <div class="col col-stats ms-3 ms-sm-0">
                         <div class="numbers">
-                            <p class="card-category">Subscribers</p>
+                            <p class="card-category">@lang('Total Room')</p>
                             <h4 class="card-title">1303</h4>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
                     </div>
                     <div class="col col-stats ms-3 ms-sm-0">
                         <div class="numbers">
-                            <p class="card-category">Sales</p>
+                            <p class="card-category">@lang('Total Amount')</p>
                             <h4 class="card-title">$ 1,345</h4>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                     </div>
                     <div class="col col-stats ms-3 ms-sm-0">
                         <div class="numbers">
-                            <p class="card-category">Order</p>
+                            <p class="card-category">@lang('Total Request')</p>
                             <h4 class="card-title">576</h4>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
     <div class="col-sm-12">
         <div class="card card-chart">
             <div class="card-header" data-toggle="collapse" data-target="#barChartCard">
-                <div class="card-title">Bar Chart</div>
+                <div class="card-title text-uppercase">@lang('Total Amount Current Year')</div>
             </div>
             <div id="barChartCard" class="collapse show">
                 <div class="card-body">

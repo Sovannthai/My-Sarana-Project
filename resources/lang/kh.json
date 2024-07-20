@@ -8,6 +8,18 @@
     "Actions":"សកម្មភាព",
     "Roles":"តួនាទី",
     "Add":"បន្ថែម",
-    "Add New":"បន្ថែមថ្មី"
+    "Add New":"បន្ថែមថ្មី",
+    "Home": "ទំព័រដើម",
+    "User Management": "គ្រប់គ្រងអ្នកប្រើប្រាស់",
+    "Users":"អ្នកប្រើប្រាស់",
+    "Permissions":"ការអនុញ្ញាត",
+    "Setting":"ការគំណត់",
+    "General Setting":"ការគំណត់ទូរទៅ",
+    "Total Renter":"ចំនួន អ្នកជួល",
+    "Total Room":"ចំនួន បន្ទប់",
+    "Total Amount":"ទឹកប្រាក់សរុប",
+    "Total Request":"ការស្នើរសុំ សរុប",
+    "Total Amount Current Year": "ទិន្នន័យប្រចាំឆ្នាំ"
+
 
 }
