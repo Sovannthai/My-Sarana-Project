@@ -1,6 +1,6 @@
 @extends('backends.master')
 @section('contents')
-@section('content-header', 'Darshboard')
+@section('content-header','Welcome, '.auth()->user()->name)
 <style>
     .card-stats {
         position: relative;
@@ -11,7 +11,6 @@
         background-clip: padding-box, border-box;
         transition: 0.5s;
     }
-
     .card-stats:hover {
         transform: 5s;
         transform: translateY(-15px);
