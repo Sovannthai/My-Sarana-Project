@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title','Create Role')
+@section('title', 'Create Role')
 <style>
     .switch {
         position: relative;
@@ -66,12 +66,18 @@
     }
 </style>
 @section('contents')
+    <div class="back-btn">
+        <a href="{{ route('roles.index') }}" class="float-left" data-value="veiw">
+            <i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;
+            Back
+        </a><br>
+    </div><br>
     <div class="show-item">
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header bg-primary">
-                        <label for="" class="card-title text-white">@lang('Create')</label>
+                    <div class="card-header">
+                        <label for="" class="card-title text-uppercase">@lang('Create')</label>
                     </div>
                     <form class="form-material form-horizontal" action="{{ route('roles.store') }}" method="POST">
                         @csrf
@@ -118,7 +124,8 @@
                                                         <div class="form-group">
                                                             <div class="input-group">
                                                                 <label class="switch">
-                                                                    <input type="checkbox" name="permissions[]" value="{{ $perm->id }}" data-toggle="toggle">
+                                                                    <input type="checkbox" name="permissions[]"
+                                                                        value="{{ $perm->id }}" data-toggle="toggle">
                                                                     <span class="slider round"></span>
                                                                 </label>
                                                                 <span class="ml-2">{{ $perm->display }}</span>

@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title','Edit Role')
+@section('title', 'Edit Role')
 <style>
     .switch {
         position: relative;
@@ -66,10 +66,19 @@
     }
 </style>
 @section('contents')
+    <div class="back-btn">
+        <a href="{{ route('roles.index') }}" class="float-left" data-value="veiw">
+            <i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;
+            Back
+        </a><br>
+    </div><br>
     <div class="show-item">
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-header">
+                        <label for="" class="card-title text-uppercase">@lang('Edit')</label>
+                    </div>
                     <form class="form-material form-horizontal" action="{{ route('roles.update', $role->id) }}"
                         method="POST">
                         @csrf
@@ -101,10 +110,13 @@
                             </div>
                             <br>
                             <div>
-                                <div class="d-flex">
-                                    <label for="" class="mr-2"><b>@lang('Permissions')</b></label>
-                                </div>
-                                <br>
+                                <div class="">
+                                    <label for="view_user" class="mr-2"><b>@lang('All Permission')</b></label><br>
+                                    <label class="switch">
+                                        <input type="checkbox" id="select-all">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div><br>
                                 <div class="row">
                                     @foreach ($permissions as $permission => $permissionList)
                                         <div class="col-md-4">
@@ -118,9 +130,10 @@
                                                                 <div class="input-group">
                                                                     <label class="switch">
                                                                         <input type="checkbox" id="view_user"
-                                                                        name="permissions[]"
-                                                                        @if (in_array($perm->name, $rolePermissions)) checked @endif
-                                                                        value="{{ $perm->name }}" data-toggle="toggle">
+                                                                            name="permissions[]"
+                                                                            @if (in_array($perm->name, $rolePermissions)) checked @endif
+                                                                            value="{{ $perm->name }}"
+                                                                            data-toggle="toggle">
                                                                         <span class="slider round"></span>
                                                                     </label>
                                                                     <span class="ml-2">{{ $perm->display }}</span>

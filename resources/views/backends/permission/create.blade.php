@@ -9,16 +9,19 @@
 @endpush
 @section('title', 'Create Permission')
 @section('contents')
+    <div class="back-btn">
+        <a href="{{ route('permission.index') }}" class="float-left" data-value="veiw">
+            <i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;
+            Back
+        </a><br>
+    </div><br>
     <div class="show-item">
         <div class="row">
             <div class="col-12">
-                <div class="back-btn">
-                    <a href="{{ route('permission.index') }}" class="float-left" data-value="veiw">
-                        <i class="fa-solid fa-angles-left"></i>&nbsp;&nbsp;
-                        Back to all Permissions
-                    </a><br>
-                </div><br>
                 <div class="card">
+                    <div class="card-header">
+                        <label for="" class="card-title text-uppercase">@lang('Create')</label>
+                    </div>
                     <form class="form-material form-horizontal" action="{{ route('permission.store') }}" method="POST">
                         @csrf
                         <div class="card-body">

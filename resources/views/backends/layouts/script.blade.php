@@ -29,7 +29,9 @@
 
 <!-- Kaiadmin JS -->
 <script src="{{ asset('backends/assets/js/kaiadmin.min.js') }}"></script>
-
+<script src="{{ asset('backends/plugin/dropfy/dist/js/dropify.min.js') }}"></script>
+{{-- Select2 --}}
+<script src="{{ asset('backends/plugin/select2/select2/js/select2.full.min.js') }}"></script>
 <!-- Kaiadmin DEMO methods, don't include it in your project! -->
 <script src="{{ asset('backends/assets/js/setting-demo.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -87,6 +89,7 @@
                 slideText();
             }
         }
+
         function stopSliding() {
             if (animationFrameId) {
                 cancelAnimationFrame(animationFrameId);
@@ -99,3 +102,17 @@
         startSliding();
     });
 </script>
+<script>
+    $(document).ready(function() {
+        $('.dropify').dropify();
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true
+        });
+    });
+</script>
+

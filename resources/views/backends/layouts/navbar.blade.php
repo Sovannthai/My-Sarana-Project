@@ -272,7 +272,7 @@
                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                     aria-expanded="false">
                     <div class="avatar-sm">
-                        <img src="{{ asset('backends/assets/img/profile.jpg') }}" alt="..."
+                        <img src="{{ asset('uploads/all_photo/'.auth()->user()->image) }}" alt="..."
                             class="avatar-img rounded-circle" />
                     </div>
                     <span class="profile-username">
@@ -285,13 +285,13 @@
                         <li>
                             <div class="user-box">
                                 <div class="avatar-lg">
-                                    <img src="{{ asset('backends/assets/img/profile.jpg') }}" alt="image profile"
+                                    <img src="{{ asset('uploads/all_photo/'.auth()->user()->image) }}" alt="image profile"
                                         class="avatar-img rounded" />
                                 </div>
                                 <div class="u-text">
                                     <h4>{{ auth()->user()->name }}</h4>
                                     <p class="text-muted">{{ auth()->user()->email }}</p>
-                                    <a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                    <a href="{{ route('user.view_profile',['id'=>auth()->user()->id]) }}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                                 </div>
                             </div>
                         </li>
@@ -299,7 +299,7 @@
                             <div class="dropdown-divider"></div>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="dropdown-item">Logout</button>
+                                <button type="submit" class="dropdown-item logout">Logout</button>
                             </form>
                         </li>
                     </div>

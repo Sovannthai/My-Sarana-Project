@@ -13,9 +13,9 @@
 @section('contents')
 <div class="show-item">
     <div class="back-btn">
-        <a href="{{route('permission.index')}}" class="float-left" data-value="veiw">
-            <i class="fa-solid fa-angles-left"></i>&nbsp;&nbsp;
-            Back to all Permissions
+        <a href="{{ route('permission.index') }}" class="float-left" data-value="veiw">
+            <i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;
+            Back
         </a><br>
     </div><br>
     <div class="card">

@@ -4,7 +4,7 @@
         <div class="logo-header" data-background-color="dark2">
             <a href="{{ route('home') }}" class="logo">
                 <img src="{{ asset('backends/assets/img/kaiadmin/logo_light.svg') }}" alt="navbar brand"
-                    class="navbar-brand" height="20" />
+                    class="navbar-brand" height="200" />
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
@@ -34,6 +34,7 @@
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
                 </li>
+                @if (auth()->user()->can('view user'))
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#forms"
                         @if (Route::is('roles.*') || Route::is('permission.*')) aria-expanded="true" @else aria-expanded="false" @endif>
@@ -41,26 +42,31 @@
                         <p>@lang('User Management')</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse @if (Route::is('roles.*') || Route::is('permission.*')) show @endif" id="forms">
+                    <div class="collapse @if (Route::is('roles.*') || Route::is('permission.*') || Route::is('users.*')) show @endif" id="forms">
                         <ul class="nav nav-collapse">
-                            <li>
-                                <a href="#">
+                            <li class="@if (Route::is('users.*')) active @endif">
+                                <a href="{{ route('users.index') }}">
                                     <span class="sub-item">@lang('Users')</span>
                                 </a>
                             </li>
+                            @if (auth()->user()->can('view role'))
                             <li class="@if (Route::is('roles.*')) active @endif">
                                 <a href="{{ route('roles.index') }}">
                                     <span class="sub-item">@lang('Roles')</span>
                                 </a>
                             </li>
+                            @endif
+                            @if (auth()->user()->roles->first()->name == 'Admin')
                             <li class="@if (Route::is('permission.*')) active @endif">
                                 <a href="{{ route('permission.index') }}">
                                     <span class="sub-item">@lang('Permissions')</span>
                                 </a>
                             </li>
+                            @endif
                         </ul>
                     </div>
                 </li>
+                @endif
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#tables">
                         <i class="fa fas fa-cog"></i>

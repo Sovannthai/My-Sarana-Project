@@ -459,7 +459,7 @@ body {
 }
 
 .main-header {
-    background: #fff;
+    background: transparent;
     min-height: 60px;
     width: calc(100% - 250px);
     position: fixed;
@@ -467,7 +467,7 @@ body {
 }
 
 .main-header .navbar-header {
-    min-height: 70px
+    /* min-height: 70px */
 }
 
 .main-header .navbar-header .btn-toggle {
@@ -1375,7 +1375,7 @@ body {
 .logo-header {
     float: left;
     width: 265px;
-    height: 70px;
+    height: 57px;
     line-height: 60px;
     color: #333;
     z-index: 1001;

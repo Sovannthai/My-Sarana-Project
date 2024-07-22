@@ -32,7 +32,7 @@
                         </div> --}}
                     </div>
                     @yield('contents') <span>
-                        <h4>@yield('cotent-header')</h4>
+                        <h3>@yield('cotent-header')</h3>
                     </span>
                 </div>
             </div>
@@ -41,7 +41,8 @@
                 <div class="">
                     <div class="copyright">
                         <div class="text-container">
-                            <div class="sliding-text">2024, Sarana Project By <a href="https://github.com/Sovannthai">HE Sovannthai</a></div>
+                            <div class="sliding-text">2024, Sarana Project By <a href="https://github.com/Sovannthai">HE
+                                    Sovannthai</a></div>
                         </div>
                     </div>
                 </div>
@@ -58,6 +59,8 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <!-- Include Font Awesome -->
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        {{-- Image link preview --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
         <!-- End Custom template -->
     </div>
     <!--   Core JS Files   -->
@@ -69,7 +72,7 @@
                     "closeButton": true,
                     "progressBar": true,
                     "timeOut": "3000",
-                    "extendedTimeOut": "1000",
+                    "extendedTimeOut": "2000",
                     "positionClass": "toast-top-right"
                 };
                 toastr.success("{{ Session::get('success') }}");
@@ -79,7 +82,7 @@
                     "closeButton": true,
                     "progressBar": true,
                     "timeOut": "3000",
-                    "extendedTimeOut": "1000",
+                    "extendedTimeOut": "2000",
                     "positionClass": "toast-top-right"
                 };
                 toastr.error("{{ Session::get('error') }}");
@@ -99,6 +102,27 @@
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
                     confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.logout', function(e) {
+                e.preventDefault();
+                var form = $(this).closest('form');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You want to logout?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Logout"
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();
@@ -164,11 +188,34 @@
     </script>
     <script>
         $(document).ready(function() {
-          $('#select-all').change(function() {
-            $('.switch input[type="checkbox"]').prop('checked', this.checked).change();
-          });
+            $('#select-all').change(function() {
+                $('.switch input[type="checkbox"]').prop('checked', this.checked).change();
+            });
         });
-        </script>
+    </script>
+    <script>
+        $(function() {
+            $('.select2').select2({
+                // allowClear: true
+            });
+            $(".thumbnail").fancybox();
+            $(document).on("click", ".btn-modal", function(e) {
+                e.preventDefault();
+                var container = $(this).data("container");
+
+                $.ajax({
+                    url: $(this).data("href"),
+                    dataType: "html",
+                    success: function(result) {
+                        $(container).html(result).modal("show");
+                        $('.select2').select2();
+                    },
+                });
+            });
+            //Initialize Select2 Elements
+            $('.select2').select2();
+        });
+    </script>
 </body>
 
 </html>
