@@ -110,7 +110,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         lightbox.option({
-            'resizeDuration': 200,
+        'resizeDuration': 200,
             'wrapAround': true
         });
     });
