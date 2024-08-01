@@ -27,7 +27,7 @@
                                     <a class="example-image-link" href="{{ asset('uploads/all_photo/' . $user->image) }}"
                                         data-lightbox="lightbox-' . $user->id . '">
                                         <img class="example-image image-thumbnail"
-                                            src="{{ asset('uploads/all_photo/' . $user->image) }}" alt="profile"
+                                            src="{{ asset('uploads/all_photo/' g. $user->image) }}" alt="profile"
                                             width="50px" height="50px" style="cursor:pointer" />
                                     </a>
                                 </span>
