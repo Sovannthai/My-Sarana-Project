@@ -12,6 +12,6 @@ class AmenitySeeder extends Seeder
      */
     public function run(): void
     {
-      //  pheakdey
+      // pech
     }
 }
