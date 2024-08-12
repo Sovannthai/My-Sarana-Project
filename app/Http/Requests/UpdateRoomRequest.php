@@ -11,18 +11,21 @@ class UpdateRoomRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        // Allow all users to update a room for now. Modify if needed.
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'room_number' => 'required|string',
+            'description' => 'nullable|string',
+            'size' => 'nullable|string',
+            'floor' => 'nullable|integer',
+            'status' => 'nullable|string|in:available,occupied,maintenance',
         ];
     }
 }
