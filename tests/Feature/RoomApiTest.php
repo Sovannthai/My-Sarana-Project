@@ -10,7 +10,6 @@ class RoomApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
     public function it_can_list_all_rooms()
     {
         $response = $this->getJson('/api/v1/rooms');
@@ -33,7 +32,6 @@ class RoomApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
     public function it_can_create_a_room()
     {
         $response = $this->postJson('/api/v1/rooms', [
@@ -57,7 +55,6 @@ class RoomApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
     public function it_can_update_a_room()
     {
         $room = Room::factory()->create();
@@ -79,7 +76,6 @@ class RoomApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
     public function it_can_delete_a_room()
     {
         $room = Room::factory()->create();
@@ -88,8 +84,8 @@ class RoomApiTest extends TestCase
 
         $response->assertStatus(200)
                  ->assertJson([
-                     'status' => 'success',
-                     'message' => 'Room deleted successfully'
+                    'status' => 'success',
+                    'message' => 'Room deleted successfully'
                  ]);
 
         $this->assertDatabaseMissing('rooms', ['id' => $room->id]);
