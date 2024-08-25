@@ -2,66 +2,108 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Room;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
+use App\Http\Resources\RoomResource;
+use App\Repositories\RoomRepository;
 use Illuminate\Http\JsonResponse;
 
 class RoomController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index() : JsonResponse
-    {
-        $rooms = Room::query()->get();
+    protected $roomRepository;
 
-        return new JsonResponse([
-            'data' => $rooms
+    public function __construct(RoomRepository $roomRepository)
+    {
+        $this->roomRepository = $roomRepository;
+    }
+
+    /**
+     * Display a listing of the rooms.
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $rooms = $this->roomRepository->getAll();
+        return response()->json([
+            'status' => 'success',
+            'data' => RoomResource::collection($rooms)
         ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display the specified room.
+     *
+     * @param int $id
+     * @return JsonResponse
      */
-    public function store(StoreRoomRequest $request) : JsonResponse
+    public function show(int $id): JsonResponse
     {
-        $created = Room::query()->create($request->validated());
-
-        return new JsonResponse([
-            'data' => $created,
-            'message' => 'Room created successfully!',
-        ], 201);
-
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Room $room)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateRoomRequest $request, Room $room): JsonResponse
-    {
-        $room->update($request->validated());
-
-        return new JsonResponse([
-            'data' => $room,
-            'message' => 'Room updated successfully!',
+        $room = $this->roomRepository->findById($id);
+        return response()->json([
+            'status' => 'success',
+            'data' => new RoomResource($room)
         ]);
     }
 
+    /**
+     * Store a newly created room in storage.
+     *
+     * @param StoreRoomRequest $request
+     * @return JsonResponse
+     */
+    public function store(StoreRoomRequest $request): JsonResponse
+    {
+        $room = $this->roomRepository->create($request->validated());
+        return response()->json([
+            'status' => 'success',
+            'data' => new RoomResource($room)
+        ], 201); // 201 Created
+    }
 
     /**
-     * Remove the specified resource from storage.
+     * Update the specified room in storage.
+     *
+     * @param UpdateRoomRequest $request
+     * @param int $id
+     * @return JsonResponse
      */
-    public function destroy(Room $room)
+    public function update(UpdateRoomRequest $request, int $id): JsonResponse
     {
-        //
+        $room = $this->roomRepository->update($id, $request->validated());
+        return response()->json([
+            'status' => 'success',
+            'data' => new RoomResource($room)
+        ]);
+    }
+
+    /**
+     * Remove the specified room from storage.
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        $this->roomRepository->delete($id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Room deleted successfully'
+        ]);
+    }
+
+    /**
+     * Permanently remove the specified room from storage.
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function forceDestroy(int $id): JsonResponse
+    {
+        $this->roomRepository->forceDelete($id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Room permanently deleted'
+        ]);
     }
 }
