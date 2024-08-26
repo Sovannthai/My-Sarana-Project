@@ -27,7 +27,7 @@ class AmenityFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'description' => $this->faker->sentence(),
-            'additional_price' => $this->faker->randomFloat(2, 5, 50), // Generates a price between 5.00 and 50.00
+            'additional_price' => $this->faker->randomFloat(2, 5, 50),
         ];
     }
 }

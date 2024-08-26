@@ -10,7 +10,7 @@ class RoomApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function it_can_list_all_rooms()
+    public function test_can_list_all_rooms()
     {
         $response = $this->getJson('/api/v1/rooms');
 
@@ -32,7 +32,7 @@ class RoomApiTest extends TestCase
                  ]);
     }
 
-    public function it_can_create_a_room()
+    public function test_can_create_a_room()
     {
         $response = $this->postJson('/api/v1/rooms', [
             'room_number' => '101',
@@ -55,7 +55,7 @@ class RoomApiTest extends TestCase
                  ]);
     }
 
-    public function it_can_update_a_room()
+    public function test_can_update_a_room()
     {
         $room = Room::factory()->create();
 
@@ -76,7 +76,7 @@ class RoomApiTest extends TestCase
                  ]);
     }
 
-    public function it_can_delete_a_room()
+    public function test_can_delete_a_room()
     {
         $room = Room::factory()->create();
 

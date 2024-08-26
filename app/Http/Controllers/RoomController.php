@@ -7,11 +7,18 @@ use App\Http\Requests\UpdateRoomRequest;
 use App\Http\Resources\RoomResource;
 use App\Repositories\RoomRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class RoomController extends Controller
 {
     protected $roomRepository;
 
+    /**
+     * RoomController constructor.
+     *
+     * @param RoomRepository $roomRepository
+     */
     public function __construct(RoomRepository $roomRepository)
     {
         $this->roomRepository = $roomRepository;
@@ -39,11 +46,18 @@ class RoomController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $room = $this->roomRepository->findById($id);
-        return response()->json([
-            'status' => 'success',
-            'data' => new RoomResource($room)
-        ]);
+        try {
+            $room = $this->roomRepository->findById($id);
+            return response()->json([
+                'status' => 'success',
+                'data' => new RoomResource($room)
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Room not found'
+            ], 404); // 404 Not Found
+        }
     }
 
     /**
@@ -70,11 +84,18 @@ class RoomController extends Controller
      */
     public function update(UpdateRoomRequest $request, int $id): JsonResponse
     {
-        $room = $this->roomRepository->update($id, $request->validated());
-        return response()->json([
-            'status' => 'success',
-            'data' => new RoomResource($room)
-        ]);
+        try {
+            $room = $this->roomRepository->update($id, $request->validated());
+            return response()->json([
+                'status' => 'success',
+                'data' => new RoomResource($room)
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Room not found'
+            ], 404); // 404 Not Found
+        }
     }
 
     /**
@@ -85,11 +106,18 @@ class RoomController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $this->roomRepository->delete($id);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Room deleted successfully'
-        ]);
+        try {
+            $this->roomRepository->delete($id);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Room deleted successfully'
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Room not found'
+            ], 404); // 404 Not Found
+        }
     }
 
     /**
@@ -100,10 +128,17 @@ class RoomController extends Controller
      */
     public function forceDestroy(int $id): JsonResponse
     {
-        $this->roomRepository->forceDelete($id);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Room permanently deleted'
-        ]);
+        try {
+            $this->roomRepository->forceDelete($id);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Room permanently deleted'
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Room not found'
+            ], 404); // 404 Not Found
+        }
     }
 }

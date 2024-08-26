@@ -10,7 +10,7 @@ class RoomApiValidationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function it_requires_room_number()
+    public function test_requires_room_number()
     {
         $response = $this->postJson('/api/v1/rooms', [
             'description' => 'A nice room',
@@ -23,7 +23,7 @@ class RoomApiValidationTest extends TestCase
                  ->assertJsonValidationErrors('room_number');
     }
 
-    public function it_requires_valid_room_number()
+    public function test_requires_valid_room_number()
     {
         $response = $this->postJson('/api/v1/rooms', [
             'room_number' => '',
@@ -37,7 +37,7 @@ class RoomApiValidationTest extends TestCase
                  ->assertJsonValidationErrors('room_number');
     }
 
-    public function it_requires_valid_floor()
+    public function test_requires_valid_floor()
     {
         $response = $this->postJson('/api/v1/rooms', [
             'room_number' => '101',
@@ -51,7 +51,7 @@ class RoomApiValidationTest extends TestCase
                  ->assertJsonValidationErrors('floor');
     }
 
-    public function it_requires_valid_status()
+    public function test_requires_valid_status()
     {
         $response = $this->postJson('/api/v1/rooms', [
             'room_number' => '101',
