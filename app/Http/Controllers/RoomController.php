@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRoomRequest;
-use App\Http\Requests\UpdateRoomRequest;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\RoomResource;
 use App\Repositories\RoomRepository;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreRoomRequest;
+use App\Http\Requests\UpdateRoomRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class RoomController extends Controller
@@ -60,41 +61,65 @@ class RoomController extends Controller
         }
     }
 
-    /**
-     * Store a newly created room in storage.
-     *
-     * @param StoreRoomRequest $request
-     * @return JsonResponse
-     */
     public function store(StoreRoomRequest $request): JsonResponse
     {
-        $room = $this->roomRepository->create($request->validated());
-        return response()->json([
-            'status' => 'success',
-            'data' => new RoomResource($room)
-        ], 201); // 201 Created
+        DB::beginTransaction();
+
+        try {
+            $validated = $request->validated();
+            $room = $this->roomRepository->create($validated);
+
+            // Attach amenities if provided
+            if (isset($validated['amenities'])) {
+                $room->amenities()->attach($validated['amenities']);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => new RoomResource($room)
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to create room',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    /**
-     * Update the specified room in storage.
-     *
-     * @param UpdateRoomRequest $request
-     * @param int $id
-     * @return JsonResponse
-     */
     public function update(UpdateRoomRequest $request, int $id): JsonResponse
     {
+        DB::beginTransaction();
+
         try {
-            $room = $this->roomRepository->update($id, $request->validated());
+            $validated = $request->validated();
+            $room = $this->roomRepository->update($id, $validated);
+
+            // Update amenities if provided
+            if (isset($validated['amenities'])) {
+                $room->amenities()->sync($validated['amenities']);
+            }
+
+            DB::commit();
+
             return response()->json([
                 'status' => 'success',
                 'data' => new RoomResource($room)
             ]);
-        } catch (ModelNotFoundException $e) {
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
-            ], 404); // 404 Not Found
+                'message' => 'Failed to update room',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 

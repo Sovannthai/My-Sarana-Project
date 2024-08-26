@@ -27,6 +27,8 @@ class StoreRoomRequest extends FormRequest
             'size' => 'nullable|string|max:50',
             'floor' => 'nullable|integer|min:1',
             'status' => 'nullable|string|in:available,occupied,maintenance',
+            'amenities' => 'nullable|array',
+            'amenities.*' => 'exists:amenities,id',
         ];
     }
 
