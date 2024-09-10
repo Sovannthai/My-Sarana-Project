@@ -25,7 +25,7 @@ class AmenityFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word(),
+            'name' => $this->faker->word() . '-' . $this->faker->unique()->numberBetween(1, 10000),
             'description' => $this->faker->sentence(),
             'additional_price' => $this->faker->randomFloat(2, 5, 50),
         ];

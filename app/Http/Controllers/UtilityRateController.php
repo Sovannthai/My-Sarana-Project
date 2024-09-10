@@ -1,46 +1,45 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Resources\RoomResource;
-use App\Repositories\RoomRepository;
-use App\Http\Requests\StoreRoomRequest;
-use App\Http\Requests\UpdateRoomRequest;
+use App\Http\Resources\UtilityRateResource;
+use App\Repositories\UtilityRateRepository;
+use App\Http\Requests\StoreUtilityRateRequest;
+use App\Http\Requests\UpdateUtilityRateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class RoomController extends Controller
+class UtilityRateController extends Controller
 {
-    protected $roomRepository;
+    protected $utilityRateRepository;
 
     /**
-     * RoomController constructor.
+     * UtilityRateController constructor.
      *
-     * @param RoomRepository $roomRepository
+     * @param UtilityRateRepository $utilityRateRepository
      */
-    public function __construct(RoomRepository $roomRepository)
+    public function __construct(UtilityRateRepository $utilityRateRepository)
     {
-        $this->roomRepository = $roomRepository;
+        $this->utilityRateRepository = $utilityRateRepository;
     }
 
     /**
-     * Display a listing of the rooms.
+     * Display a listing of the utility rates.
      *
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        $rooms = $this->roomRepository->getAll();
+        $utilityRates = $this->utilityRateRepository->getAll();
         return response()->json([
             'status' => 'success',
-            'data' => RoomResource::collection($rooms)
+            'data' => UtilityRateResource::collection($utilityRates)
         ]);
     }
 
     /**
-     * Display the specified room.
+     * Display the specified utility rate.
      *
      * @param int $id
      * @return JsonResponse
@@ -48,37 +47,38 @@ class RoomController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            $room = $this->roomRepository->findById($id);
+            $utilityRate = $this->utilityRateRepository->findById($id);
             return response()->json([
                 'status' => 'success',
-                'data' => new RoomResource($room)
+                'data' => new UtilityRateResource($utilityRate)
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
-            ], 404); // 404 Not Found
+                'message' => 'Utility rate not found'
+            ], 404);
         }
     }
 
-    public function store(StoreRoomRequest $request): JsonResponse
+    /**
+     * Store a newly created utility rate in storage.
+     *
+     * @param StoreUtilityRateRequest $request
+     * @return JsonResponse
+     */
+    public function store(StoreUtilityRateRequest $request): JsonResponse
     {
         DB::beginTransaction();
 
         try {
             $validated = $request->validated();
-            $room = $this->roomRepository->create($validated);
-
-            // Attach amenities if provided
-            if (isset($validated['amenities'])) {
-                $room->amenities()->attach($validated['amenities']);
-            }
+            $utilityRate = $this->utilityRateRepository->create($validated);
 
             DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'data' => new RoomResource($room)
+                'data' => new UtilityRateResource($utilityRate)
             ], 201);
 
         } catch (\Exception $e) {
@@ -86,29 +86,32 @@ class RoomController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to create room',
+                'message' => 'Failed to create utility rate',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function update(UpdateRoomRequest $request, int $id): JsonResponse
+    /**
+     * Update the specified utility rate in storage.
+     *
+     * @param UpdateUtilityRateRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(UpdateUtilityRateRequest $request, int $id): JsonResponse
     {
         DB::beginTransaction();
 
         try {
             $validated = $request->validated();
-            $room = $this->roomRepository->update($id, $validated);
-
-            if (isset($validated['amenities'])) {
-                $room->amenities()->sync($validated['amenities']);
-            }
+            $utilityRate = $this->utilityRateRepository->update($id, $validated);
 
             DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'data' => new RoomResource($room)
+                'data' => new UtilityRateResource($utilityRate)
             ]);
 
         } catch (\Exception $e) {
@@ -116,14 +119,14 @@ class RoomController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to update room',
+                'message' => 'Failed to update utility rate',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
     /**
-     * Remove the specified room from storage.
+     * Remove the specified utility rate from storage.
      *
      * @param int $id
      * @return JsonResponse
@@ -131,21 +134,21 @@ class RoomController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            $this->roomRepository->delete($id);
+            $this->utilityRateRepository->delete($id);
             return response()->json([
                 'status' => 'success',
-                'message' => 'Room deleted successfully'
+                'message' => 'Utility rate deleted successfully'
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
+                'message' => 'Utility rate not found'
             ], 404);
         }
     }
 
     /**
-     * Permanently remove the specified room from storage.
+     * Permanently remove the specified utility rate from storage.
      *
      * @param int $id
      * @return JsonResponse
@@ -153,15 +156,15 @@ class RoomController extends Controller
     public function forceDestroy(int $id): JsonResponse
     {
         try {
-            $this->roomRepository->forceDelete($id);
+            $this->utilityRateRepository->forceDelete($id);
             return response()->json([
                 'status' => 'success',
-                'message' => 'Room permanently deleted'
+                'message' => 'Utility rate permanently deleted'
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
+                'message' => 'Utility rate not found'
             ], 404);
         }
     }
