@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AmenitySeeder::class);
         $this->call(RoomPricingSeeder::class);
         $this->call(UtilityRateSeeder::class);
+        $this->call(PriceAdjustmentSeeder::class);
     }
 }
