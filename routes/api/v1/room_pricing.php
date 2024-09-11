@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomPricingController;
 
 Route::middleware('auth')
-    ->name('room_pricing.')
+    ->name('room_pricings.')
     ->group(function () {
 
         Route::get('room_pricings', [RoomPricingController::class, 'index'])->name('index')->withoutMiddleware('auth');

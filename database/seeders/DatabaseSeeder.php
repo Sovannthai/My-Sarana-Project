@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\MonthlyUsage;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -17,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RoomPricingSeeder::class);
         $this->call(UtilityRateSeeder::class);
         $this->call(PriceAdjustmentSeeder::class);
+        $this->call(MonthlyUsageSeeder::class);
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AmenityController;
 
 Route::middleware('auth')
-    ->name('amenity.')
+    ->name('amenities.')
     ->group(function () {
 
         Route::get('amenities', [AmenityController::class, 'index'])->name('index')->withoutMiddleware('auth');
