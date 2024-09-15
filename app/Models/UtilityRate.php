@@ -9,5 +9,10 @@ class UtilityRate extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type', 'rateperunit'];
+    protected $fillable = ['utility_type_id', 'rate_per_unit'];
+
+    public function utilityType()
+    {
+        return $this->belongsTo(UtilityType::class, 'utility_type_id');
+    }
 }

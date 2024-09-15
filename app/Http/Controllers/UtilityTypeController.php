@@ -5,42 +5,42 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Resources\MonthlyUsageResource;
-use App\Repositories\MonthlyUsageRepository;
-use App\Http\Requests\StoreMonthlyUsageRequest;
-use App\Http\Requests\UpdateMonthlyUsageRequest;
+use App\Http\Resources\UtilityTypeResource;
+use App\Repositories\UtilityTypeRepository;
+use App\Http\Requests\StoreUtilityTypeRequest;
+use App\Http\Requests\UpdateUtilityTypeRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class MonthlyUsageController extends Controller
+class UtilityTypeController extends Controller
 {
-    protected $monthlyUsageRepository;
+    protected $UtilityTypeRepository;
 
     /**
-     * MonthlyUsageController constructor.
+     * UtilityTypeController constructor.
      *
-     * @param MonthlyUsageRepository $monthlyUsageRepository
+     * @param UtilityTypeRepository $UtilityTypeRepository
      */
-    public function __construct(MonthlyUsageRepository $monthlyUsageRepository)
+    public function __construct(UtilityTypeRepository $UtilityTypeRepository)
     {
-        $this->monthlyUsageRepository = $monthlyUsageRepository;
+        $this->UtilityTypeRepository = $UtilityTypeRepository;
     }
 
     /**
-     * Display a listing of the monthly usage.
+     * Display a listing of the UtilityTypes.
      *
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        $monthlyUsages = $this->monthlyUsageRepository->getAll();
+        $UtilityTypes = $this->UtilityTypeRepository->getAll();
         return response()->json([
             'status' => 'success',
-            'data' => MonthlyUsageResource::collection($monthlyUsages)
+            'data' => UtilityTypeResource::collection($UtilityTypes)
         ]);
     }
 
     /**
-     * Display the specified monthly usage.
+     * Display the specified UtilityType.
      *
      * @param int $id
      * @return JsonResponse
@@ -48,38 +48,37 @@ class MonthlyUsageController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            $monthlyUsage = $this->monthlyUsageRepository->findById($id);
+            $UtilityType = $this->UtilityTypeRepository->findById($id);
             return response()->json([
                 'status' => 'success',
-                'data' => new MonthlyUsageResource($monthlyUsage)
+                'data' => new UtilityTypeResource($UtilityType)
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Monthly usage not found'
+                'message' => 'UtilityType not found'
             ], 404); // 404 Not Found
         }
     }
 
-    /**
-     * Store a newly created monthly usage in storage.
-     *
-     * @param StoreMonthlyUsageRequest $request
-     * @return JsonResponse
-     */
-    public function store(StoreMonthlyUsageRequest $request): JsonResponse
+    public function store(StoreUtilityTypeRequest $request): JsonResponse
     {
         DB::beginTransaction();
 
         try {
             $validated = $request->validated();
-            $monthlyUsage = $this->monthlyUsageRepository->create($validated);
+            $UtilityType = $this->UtilityTypeRepository->create($validated);
+
+            // Attach amenities if provided
+            if (isset($validated['amenities'])) {
+                $UtilityType->amenities()->attach($validated['amenities']);
+            }
 
             DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'data' => new MonthlyUsageResource($monthlyUsage)
+                'data' => new UtilityTypeResource($UtilityType)
             ], 201);
 
         } catch (\Exception $e) {
@@ -87,32 +86,29 @@ class MonthlyUsageController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to create monthly usage',
+                'message' => 'Failed to create UtilityType',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    /**
-     * Update the specified monthly usage in storage.
-     *
-     * @param UpdateMonthlyUsageRequest $request
-     * @param int $id
-     * @return JsonResponse
-     */
-    public function update(UpdateMonthlyUsageRequest $request, int $id): JsonResponse
+    public function update(UpdateUtilityTypeRequest $request, int $id): JsonResponse
     {
         DB::beginTransaction();
 
         try {
             $validated = $request->validated();
-            $monthlyUsage = $this->monthlyUsageRepository->update($id, $validated);
+            $UtilityType = $this->UtilityTypeRepository->update($id, $validated);
+
+            if (isset($validated['amenities'])) {
+                $UtilityType->amenities()->sync($validated['amenities']);
+            }
 
             DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'data' => new MonthlyUsageResource($monthlyUsage)
+                'data' => new UtilityTypeResource($UtilityType)
             ]);
 
         } catch (\Exception $e) {
@@ -120,14 +116,14 @@ class MonthlyUsageController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to update monthly usage',
+                'message' => 'Failed to update UtilityType',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
     /**
-     * Remove the specified monthly usage from storage.
+     * Remove the specified UtilityType from storage.
      *
      * @param int $id
      * @return JsonResponse
@@ -135,21 +131,21 @@ class MonthlyUsageController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            $this->monthlyUsageRepository->delete($id);
+            $this->UtilityTypeRepository->delete($id);
             return response()->json([
                 'status' => 'success',
-                'message' => 'Monthly usage deleted successfully'
+                'message' => 'UtilityType deleted successfully'
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Monthly usage not found'
-            ], 404); // 404 Not Found
+                'message' => 'UtilityType not found'
+            ], 404);
         }
     }
 
     /**
-     * Permanently remove the specified monthly usage from storage.
+     * Permanently remove the specified UtilityType from storage.
      *
      * @param int $id
      * @return JsonResponse
@@ -157,16 +153,16 @@ class MonthlyUsageController extends Controller
     public function forceDestroy(int $id): JsonResponse
     {
         try {
-            $this->monthlyUsageRepository->forceDelete($id);
+            $this->UtilityTypeRepository->forceDelete($id);
             return response()->json([
                 'status' => 'success',
-                'message' => 'Monthly usage permanently deleted'
+                'message' => 'UtilityType permanently deleted'
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Monthly usage not found'
-            ], 404); // 404 Not Found
+                'message' => 'UtilityType not found'
+            ], 404);
         }
     }
 }

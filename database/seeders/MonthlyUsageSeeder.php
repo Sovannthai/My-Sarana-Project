@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Room;
 use App\Models\MonthlyUsage;
+use App\Models\UtilityType;
 use Illuminate\Database\Seeder;
 use Database\Seeders\Traits\TruncateTable;
 use Database\Seeders\Traits\DisableForeignKeys;
@@ -19,11 +20,15 @@ class MonthlyUsageSeeder extends Seeder
         $this->truncate('monthly_usages');
 
         $rooms = Room::all();
+        $utilityTypes = UtilityType::all();
 
         foreach ($rooms as $room) {
-            MonthlyUsage::factory()->create([
-                'room_id' => $room->id,
-            ]);
+            foreach ($utilityTypes as $utilityType) {
+                MonthlyUsage::factory()->create([
+                    'room_id' => $room->id,
+                    'utility_type_id' => $utilityType->id,
+                ]);
+            }
         }
 
         $this->enableForeignKeys();

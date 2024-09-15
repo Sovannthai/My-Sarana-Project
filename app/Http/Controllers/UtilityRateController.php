@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -12,16 +13,16 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UtilityRateController extends Controller
 {
-    protected $utilityRateRepository;
+    protected $UtilityRateRepository;
 
     /**
      * UtilityRateController constructor.
      *
-     * @param UtilityRateRepository $utilityRateRepository
+     * @param UtilityRateRepository $UtilityRateRepository
      */
-    public function __construct(UtilityRateRepository $utilityRateRepository)
+    public function __construct(UtilityRateRepository $UtilityRateRepository)
     {
-        $this->utilityRateRepository = $utilityRateRepository;
+        $this->UtilityRateRepository = $UtilityRateRepository;
     }
 
     /**
@@ -31,10 +32,10 @@ class UtilityRateController extends Controller
      */
     public function index(): JsonResponse
     {
-        $utilityRates = $this->utilityRateRepository->getAll();
+        $UtilityRates = $this->UtilityRateRepository->getAll();
         return response()->json([
             'status' => 'success',
-            'data' => UtilityRateResource::collection($utilityRates)
+            'data' => UtilityRateResource::collection($UtilityRates)
         ]);
     }
 
@@ -47,16 +48,16 @@ class UtilityRateController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            $utilityRate = $this->utilityRateRepository->findById($id);
+            $UtilityRate = $this->UtilityRateRepository->findById($id);
             return response()->json([
                 'status' => 'success',
-                'data' => new UtilityRateResource($utilityRate)
+                'data' => new UtilityRateResource($UtilityRate)
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Utility rate not found'
-            ], 404);
+                'message' => 'utility rate not found'
+            ], 404); // 404 Not Found
         }
     }
 
@@ -72,13 +73,13 @@ class UtilityRateController extends Controller
 
         try {
             $validated = $request->validated();
-            $utilityRate = $this->utilityRateRepository->create($validated);
+            $UtilityRate = $this->UtilityRateRepository->create($validated);
 
             DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'data' => new UtilityRateResource($utilityRate)
+                'data' => new UtilityRateResource($UtilityRate)
             ], 201);
 
         } catch (\Exception $e) {
@@ -105,13 +106,13 @@ class UtilityRateController extends Controller
 
         try {
             $validated = $request->validated();
-            $utilityRate = $this->utilityRateRepository->update($id, $validated);
+            $UtilityRate = $this->UtilityRateRepository->update($id, $validated);
 
             DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'data' => new UtilityRateResource($utilityRate)
+                'data' => new UtilityRateResource($UtilityRate)
             ]);
 
         } catch (\Exception $e) {
@@ -134,16 +135,16 @@ class UtilityRateController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            $this->utilityRateRepository->delete($id);
+            $this->UtilityRateRepository->delete($id);
             return response()->json([
                 'status' => 'success',
-                'message' => 'Utility rate deleted successfully'
+                'message' => 'utility rate deleted successfully'
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Utility rate not found'
-            ], 404);
+                'message' => 'utility rate not found'
+            ], 404); // 404 Not Found
         }
     }
 
@@ -156,16 +157,16 @@ class UtilityRateController extends Controller
     public function forceDestroy(int $id): JsonResponse
     {
         try {
-            $this->utilityRateRepository->forceDelete($id);
+            $this->UtilityRateRepository->forceDelete($id);
             return response()->json([
                 'status' => 'success',
-                'message' => 'Utility rate permanently deleted'
+                'message' => 'utility rate permanently deleted'
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Utility rate not found'
-            ], 404);
+                'message' => 'utility rate not found'
+            ], 404); // 404 Not Found
         }
     }
 }

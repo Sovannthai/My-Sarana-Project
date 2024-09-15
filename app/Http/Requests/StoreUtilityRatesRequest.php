@@ -14,8 +14,8 @@ class StoreUtilityRateRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|in:Electricity,Water',
-            'rateperunit' => 'required|numeric|min:0',
+            'utility_type_id' => 'required|exists:utility_types,id',
+            'rate_per_unit' => 'required|numeric|min:0',
         ];
     }
 }

@@ -2,13 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\UtilityRate;
-use App\Models\UtilityType;
 use Illuminate\Database\Seeder;
+use App\Models\UtilityType;
 use Database\Seeders\Traits\TruncateTable;
 use Database\Seeders\Traits\DisableForeignKeys;
 
-class UtilityRateSeeder extends Seeder
+class UtilityTypeSeeder extends Seeder
 {
     use TruncateTable, DisableForeignKeys;
 
@@ -18,15 +17,12 @@ class UtilityRateSeeder extends Seeder
     public function run(): void
     {
         $this->disableForeignKeys();
+        $this->truncate('utility_types');
 
-        $this->truncate('utility_rates');
+        $utilityTypes = ['Electricity', 'Water', 'Gas'];
 
-        $utilityTypes = UtilityType::all();
-
-        foreach ($utilityTypes as $utilityType) {
-            UtilityRate::factory(3)->create([
-                'utility_type_id' => $utilityType->id,
-            ]);
+        foreach ($utilityTypes as $type) {
+            UtilityType::firstOrCreate(['type' => $type]);
         }
 
         $this->enableForeignKeys();
