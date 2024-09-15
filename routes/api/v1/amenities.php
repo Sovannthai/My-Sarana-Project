@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AmenityController;
 
-Route::middleware('auth')
+Route::middleware('auth::')
     ->name('amenity.')
     ->group(function () {
 
