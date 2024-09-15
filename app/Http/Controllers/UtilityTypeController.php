@@ -5,42 +5,42 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Resources\RoomResource;
-use App\Repositories\RoomRepository;
-use App\Http\Requests\StoreRoomRequest;
-use App\Http\Requests\UpdateRoomRequest;
+use App\Http\Resources\UtilityTypeResource;
+use App\Repositories\UtilityTypeRepository;
+use App\Http\Requests\StoreUtilityTypeRequest;
+use App\Http\Requests\UpdateUtilityTypeRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class RoomController extends Controller
+class UtilityTypeController extends Controller
 {
-    protected $roomRepository;
+    protected $UtilityTypeRepository;
 
     /**
-     * RoomController constructor.
+     * UtilityTypeController constructor.
      *
-     * @param RoomRepository $roomRepository
+     * @param UtilityTypeRepository $UtilityTypeRepository
      */
-    public function __construct(RoomRepository $roomRepository)
+    public function __construct(UtilityTypeRepository $UtilityTypeRepository)
     {
-        $this->roomRepository = $roomRepository;
+        $this->UtilityTypeRepository = $UtilityTypeRepository;
     }
 
     /**
-     * Display a listing of the rooms.
+     * Display a listing of the UtilityTypes.
      *
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        $rooms = $this->roomRepository->getAll();
+        $UtilityTypes = $this->UtilityTypeRepository->getAll();
         return response()->json([
             'status' => 'success',
-            'data' => RoomResource::collection($rooms)
+            'data' => UtilityTypeResource::collection($UtilityTypes)
         ]);
     }
 
     /**
-     * Display the specified room.
+     * Display the specified UtilityType.
      *
      * @param int $id
      * @return JsonResponse
@@ -48,37 +48,37 @@ class RoomController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            $room = $this->roomRepository->findById($id);
+            $UtilityType = $this->UtilityTypeRepository->findById($id);
             return response()->json([
                 'status' => 'success',
-                'data' => new RoomResource($room)
+                'data' => new UtilityTypeResource($UtilityType)
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
+                'message' => 'UtilityType not found'
             ], 404); // 404 Not Found
         }
     }
 
-    public function store(StoreRoomRequest $request): JsonResponse
+    public function store(StoreUtilityTypeRequest $request): JsonResponse
     {
         DB::beginTransaction();
 
         try {
             $validated = $request->validated();
-            $room = $this->roomRepository->create($validated);
+            $UtilityType = $this->UtilityTypeRepository->create($validated);
 
             // Attach amenities if provided
             if (isset($validated['amenities'])) {
-                $room->amenities()->attach($validated['amenities']);
+                $UtilityType->amenities()->attach($validated['amenities']);
             }
 
             DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'data' => new RoomResource($room)
+                'data' => new UtilityTypeResource($UtilityType)
             ], 201);
 
         } catch (\Exception $e) {
@@ -86,29 +86,29 @@ class RoomController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to create room',
+                'message' => 'Failed to create UtilityType',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function update(UpdateRoomRequest $request, int $id): JsonResponse
+    public function update(UpdateUtilityTypeRequest $request, int $id): JsonResponse
     {
         DB::beginTransaction();
 
         try {
             $validated = $request->validated();
-            $room = $this->roomRepository->update($id, $validated);
+            $UtilityType = $this->UtilityTypeRepository->update($id, $validated);
 
             if (isset($validated['amenities'])) {
-                $room->amenities()->sync($validated['amenities']);
+                $UtilityType->amenities()->sync($validated['amenities']);
             }
 
             DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'data' => new RoomResource($room)
+                'data' => new UtilityTypeResource($UtilityType)
             ]);
 
         } catch (\Exception $e) {
@@ -116,14 +116,14 @@ class RoomController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to update room',
+                'message' => 'Failed to update UtilityType',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
     /**
-     * Remove the specified room from storage.
+     * Remove the specified UtilityType from storage.
      *
      * @param int $id
      * @return JsonResponse
@@ -131,21 +131,21 @@ class RoomController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            $this->roomRepository->delete($id);
+            $this->UtilityTypeRepository->delete($id);
             return response()->json([
                 'status' => 'success',
-                'message' => 'Room deleted successfully'
+                'message' => 'UtilityType deleted successfully'
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
+                'message' => 'UtilityType not found'
             ], 404);
         }
     }
 
     /**
-     * Permanently remove the specified room from storage.
+     * Permanently remove the specified UtilityType from storage.
      *
      * @param int $id
      * @return JsonResponse
@@ -153,15 +153,15 @@ class RoomController extends Controller
     public function forceDestroy(int $id): JsonResponse
     {
         try {
-            $this->roomRepository->forceDelete($id);
+            $this->UtilityTypeRepository->forceDelete($id);
             return response()->json([
                 'status' => 'success',
-                'message' => 'Room permanently deleted'
+                'message' => 'UtilityType permanently deleted'
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
+                'message' => 'UtilityType not found'
             ], 404);
         }
     }

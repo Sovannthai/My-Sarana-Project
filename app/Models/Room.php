@@ -25,4 +25,20 @@ class Room extends Model
     {
         return $this->belongsToMany(Amenity::class, 'room_amenity');
     }
+
+    /**
+     * Get the pricing records associated with the room.
+     */
+    public function roomPricings()
+    {
+        return $this->hasMany(RoomPricing::class);
+    }
+
+    /**
+     * Get the adjustment records associated with the room.
+     */
+    public function roomAdjustment()
+    {
+        return $this->hasMany(RoomPricing::class);
+    }
 }

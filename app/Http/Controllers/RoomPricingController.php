@@ -5,42 +5,42 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Resources\RoomResource;
-use App\Repositories\RoomRepository;
-use App\Http\Requests\StoreRoomRequest;
-use App\Http\Requests\UpdateRoomRequest;
+use App\Http\Resources\RoomPricingResource;
+use App\Repositories\RoomPricingRepository;
+use App\Http\Requests\StoreRoomPricingRequest;
+use App\Http\Requests\UpdateRoomPricingRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class RoomController extends Controller
+class RoomPricingController extends Controller
 {
-    protected $roomRepository;
+    protected $roomPricingRepository;
 
     /**
-     * RoomController constructor.
+     * RoomPricingController constructor.
      *
-     * @param RoomRepository $roomRepository
+     * @param RoomPricingRepository $roomPricingRepository
      */
-    public function __construct(RoomRepository $roomRepository)
+    public function __construct(RoomPricingRepository $roomPricingRepository)
     {
-        $this->roomRepository = $roomRepository;
+        $this->roomPricingRepository = $roomPricingRepository;
     }
 
     /**
-     * Display a listing of the rooms.
+     * Display a listing of the room pricings.
      *
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        $rooms = $this->roomRepository->getAll();
+        $roomPricings = $this->roomPricingRepository->getAll();
         return response()->json([
             'status' => 'success',
-            'data' => RoomResource::collection($rooms)
+            'data' => RoomPricingResource::collection($roomPricings)
         ]);
     }
 
     /**
-     * Display the specified room.
+     * Display the specified room pricing.
      *
      * @param int $id
      * @return JsonResponse
@@ -48,37 +48,38 @@ class RoomController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            $room = $this->roomRepository->findById($id);
+            $roomPricing = $this->roomPricingRepository->findById($id);
             return response()->json([
                 'status' => 'success',
-                'data' => new RoomResource($room)
+                'data' => new RoomPricingResource($roomPricing)
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
+                'message' => 'Room pricing not found'
             ], 404); // 404 Not Found
         }
     }
 
-    public function store(StoreRoomRequest $request): JsonResponse
+    /**
+     * Store a newly created room pricing in storage.
+     *
+     * @param StoreRoomPricingRequest $request
+     * @return JsonResponse
+     */
+    public function store(StoreRoomPricingRequest $request): JsonResponse
     {
         DB::beginTransaction();
 
         try {
             $validated = $request->validated();
-            $room = $this->roomRepository->create($validated);
-
-            // Attach amenities if provided
-            if (isset($validated['amenities'])) {
-                $room->amenities()->attach($validated['amenities']);
-            }
+            $roomPricing = $this->roomPricingRepository->create($validated);
 
             DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'data' => new RoomResource($room)
+                'data' => new RoomPricingResource($roomPricing)
             ], 201);
 
         } catch (\Exception $e) {
@@ -86,29 +87,32 @@ class RoomController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to create room',
+                'message' => 'Failed to create room pricing',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function update(UpdateRoomRequest $request, int $id): JsonResponse
+    /**
+     * Update the specified room pricing in storage.
+     *
+     * @param UpdateRoomPricingRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(UpdateRoomPricingRequest $request, int $id): JsonResponse
     {
         DB::beginTransaction();
 
         try {
             $validated = $request->validated();
-            $room = $this->roomRepository->update($id, $validated);
-
-            if (isset($validated['amenities'])) {
-                $room->amenities()->sync($validated['amenities']);
-            }
+            $roomPricing = $this->roomPricingRepository->update($id, $validated);
 
             DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'data' => new RoomResource($room)
+                'data' => new RoomPricingResource($roomPricing)
             ]);
 
         } catch (\Exception $e) {
@@ -116,14 +120,14 @@ class RoomController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to update room',
+                'message' => 'Failed to update room pricing',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
     /**
-     * Remove the specified room from storage.
+     * Remove the specified room pricing from storage.
      *
      * @param int $id
      * @return JsonResponse
@@ -131,21 +135,21 @@ class RoomController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            $this->roomRepository->delete($id);
+            $this->roomPricingRepository->delete($id);
             return response()->json([
                 'status' => 'success',
-                'message' => 'Room deleted successfully'
+                'message' => 'Room pricing deleted successfully'
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
-            ], 404);
+                'message' => 'Room pricing not found'
+            ], 404); // 404 Not Found
         }
     }
 
     /**
-     * Permanently remove the specified room from storage.
+     * Permanently remove the specified room pricing from storage.
      *
      * @param int $id
      * @return JsonResponse
@@ -153,16 +157,16 @@ class RoomController extends Controller
     public function forceDestroy(int $id): JsonResponse
     {
         try {
-            $this->roomRepository->forceDelete($id);
+            $this->roomPricingRepository->forceDelete($id);
             return response()->json([
                 'status' => 'success',
-                'message' => 'Room permanently deleted'
+                'message' => 'Room pricing permanently deleted'
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
-            ], 404);
+                'message' => 'Room pricing not found'
+            ], 404); // 404 Not Found
         }
     }
 }

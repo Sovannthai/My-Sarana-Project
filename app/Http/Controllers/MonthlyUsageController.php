@@ -5,42 +5,42 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Resources\RoomResource;
-use App\Repositories\RoomRepository;
-use App\Http\Requests\StoreRoomRequest;
-use App\Http\Requests\UpdateRoomRequest;
+use App\Http\Resources\MonthlyUsageResource;
+use App\Repositories\MonthlyUsageRepository;
+use App\Http\Requests\StoreMonthlyUsageRequest;
+use App\Http\Requests\UpdateMonthlyUsageRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class RoomController extends Controller
+class MonthlyUsageController extends Controller
 {
-    protected $roomRepository;
+    protected $monthlyUsageRepository;
 
     /**
-     * RoomController constructor.
+     * MonthlyUsageController constructor.
      *
-     * @param RoomRepository $roomRepository
+     * @param MonthlyUsageRepository $monthlyUsageRepository
      */
-    public function __construct(RoomRepository $roomRepository)
+    public function __construct(MonthlyUsageRepository $monthlyUsageRepository)
     {
-        $this->roomRepository = $roomRepository;
+        $this->monthlyUsageRepository = $monthlyUsageRepository;
     }
 
     /**
-     * Display a listing of the rooms.
+     * Display a listing of the monthly usage.
      *
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        $rooms = $this->roomRepository->getAll();
+        $monthlyUsages = $this->monthlyUsageRepository->getAll();
         return response()->json([
             'status' => 'success',
-            'data' => RoomResource::collection($rooms)
+            'data' => MonthlyUsageResource::collection($monthlyUsages)
         ]);
     }
 
     /**
-     * Display the specified room.
+     * Display the specified monthly usage.
      *
      * @param int $id
      * @return JsonResponse
@@ -48,37 +48,38 @@ class RoomController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            $room = $this->roomRepository->findById($id);
+            $monthlyUsage = $this->monthlyUsageRepository->findById($id);
             return response()->json([
                 'status' => 'success',
-                'data' => new RoomResource($room)
+                'data' => new MonthlyUsageResource($monthlyUsage)
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
+                'message' => 'Monthly usage not found'
             ], 404); // 404 Not Found
         }
     }
 
-    public function store(StoreRoomRequest $request): JsonResponse
+    /**
+     * Store a newly created monthly usage in storage.
+     *
+     * @param StoreMonthlyUsageRequest $request
+     * @return JsonResponse
+     */
+    public function store(StoreMonthlyUsageRequest $request): JsonResponse
     {
         DB::beginTransaction();
 
         try {
             $validated = $request->validated();
-            $room = $this->roomRepository->create($validated);
-
-            // Attach amenities if provided
-            if (isset($validated['amenities'])) {
-                $room->amenities()->attach($validated['amenities']);
-            }
+            $monthlyUsage = $this->monthlyUsageRepository->create($validated);
 
             DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'data' => new RoomResource($room)
+                'data' => new MonthlyUsageResource($monthlyUsage)
             ], 201);
 
         } catch (\Exception $e) {
@@ -86,29 +87,32 @@ class RoomController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to create room',
+                'message' => 'Failed to create monthly usage',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function update(UpdateRoomRequest $request, int $id): JsonResponse
+    /**
+     * Update the specified monthly usage in storage.
+     *
+     * @param UpdateMonthlyUsageRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(UpdateMonthlyUsageRequest $request, int $id): JsonResponse
     {
         DB::beginTransaction();
 
         try {
             $validated = $request->validated();
-            $room = $this->roomRepository->update($id, $validated);
-
-            if (isset($validated['amenities'])) {
-                $room->amenities()->sync($validated['amenities']);
-            }
+            $monthlyUsage = $this->monthlyUsageRepository->update($id, $validated);
 
             DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'data' => new RoomResource($room)
+                'data' => new MonthlyUsageResource($monthlyUsage)
             ]);
 
         } catch (\Exception $e) {
@@ -116,14 +120,14 @@ class RoomController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to update room',
+                'message' => 'Failed to update monthly usage',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
     /**
-     * Remove the specified room from storage.
+     * Remove the specified monthly usage from storage.
      *
      * @param int $id
      * @return JsonResponse
@@ -131,21 +135,21 @@ class RoomController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            $this->roomRepository->delete($id);
+            $this->monthlyUsageRepository->delete($id);
             return response()->json([
                 'status' => 'success',
-                'message' => 'Room deleted successfully'
+                'message' => 'Monthly usage deleted successfully'
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
-            ], 404);
+                'message' => 'Monthly usage not found'
+            ], 404); // 404 Not Found
         }
     }
 
     /**
-     * Permanently remove the specified room from storage.
+     * Permanently remove the specified monthly usage from storage.
      *
      * @param int $id
      * @return JsonResponse
@@ -153,16 +157,16 @@ class RoomController extends Controller
     public function forceDestroy(int $id): JsonResponse
     {
         try {
-            $this->roomRepository->forceDelete($id);
+            $this->monthlyUsageRepository->forceDelete($id);
             return response()->json([
                 'status' => 'success',
-                'message' => 'Room permanently deleted'
+                'message' => 'Monthly usage permanently deleted'
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Room not found'
-            ], 404);
+                'message' => 'Monthly usage not found'
+            ], 404); // 404 Not Found
         }
     }
 }
