@@ -186,6 +186,31 @@
                     <p>Don't have an account? <a href="{{ route('register') }}">Register</a></p>
                 </div>
             </form>
+            <script async src="https://telegram.org/js/telegram-widget.js?7" data-telegram-login="NotificatonServiceLogin887_bot"
+                data-size="large" data-auth-url="{{ route('telegram_callback') }}" data-request-access="write"></script>
+            <script type="text/javascript">
+                function onTelegramAuth(user) {
+                    fetch('{{ route('telegram_callback') }}', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify(user)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.href = '/home'; // Redirect to the home route on successful login
+                            } else {
+                                alert('Login failed.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
+            </script>
         </div>
     </div>
 

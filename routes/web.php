@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\TelegramLoginController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\Localization;
@@ -18,6 +19,8 @@ Route::get('language/{locale}', function ($locale) {
     session()->put('language_settings', $language);
     return redirect()->back();
 })->name('change_language');
+Route::post('/api/telegram-login', [TelegramLoginController::class, 'telegramLogin'])->name('store_user.telegram');
+Route::get('/telegram_callback', [TelegramLoginController::class, 'telegramAuthCallback'])->name('telegram_callback');
 Route::middleware(['auth',Localization::class,SetLocale::class,])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permission', PermissionController::class);
