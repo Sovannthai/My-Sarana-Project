@@ -2,12 +2,13 @@
 
 namespace App\Providers;
 
+use Laravel\Passport\Passport;
 use Illuminate\Pagination\Paginator;
 use App\Observers\PermissionObserver;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Permission\Models\Permission;
-use Laravel\Passport\Passport;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -30,5 +31,8 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
         Permission::observe(PermissionObserver::class);
         // Passport::enablePasswordGrant();
+        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
+            $event->extendSocialite('telegram', \SocialiteProviders\Telegram\Provider::class);
+        });
     }
 }

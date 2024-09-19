@@ -21,10 +21,10 @@
                 <div class="card-header" style="background-image: url('{{ asset('backends/assets/img/blogpost.jpg') }}')">
                     <div class="profile-picture">
                         <div class="avatar avatar-xl">
-                            <a class="example-image-link" href="{{ asset('uploads/all_photo/' . $user->image) }}"
+                            <a class="example-image-link" href="{{ auth()->user()->image ? asset('uploads/all_photo/' . auth()->user()->image) : auth()->user()->avatar }}"
                                 data-lightbox="lightbox-' . $user->id . '">
                                 <img class="example-image image-thumbnail"
-                                    src="{{ asset('uploads/all_photo/' . $user->image) }}" alt="profile" width="90px"
+                                    src="{{ auth()->user()->image ? asset('uploads/all_photo/' . auth()->user()->image) : auth()->user()->avatar }}" alt="profile" width="90px"
                                     height="90px" style="cursor:pointer" />
                             </a>
                         </div>

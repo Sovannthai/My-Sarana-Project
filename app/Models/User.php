@@ -18,12 +18,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'image'
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -47,6 +42,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    // User.php (Model)
+
+    protected $appends = ['image_url'];
+    protected function generateImageUrl($imageName)
+    {
+        if (!empty($imageName)) {
+            return asset('uploads/all_photo/' . rawurlencode($imageName));
+        } else {
+            return null;
+        }
+    }
+    public function getImageUrlAttribute()
+    {
+        return $this->generateImageUrl($this->image);
+    }
 
 }

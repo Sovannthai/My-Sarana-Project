@@ -24,11 +24,12 @@
                         <tr>
                             <td>
                                 <span>
-                                    <a class="example-image-link" href="{{ asset('uploads/all_photo/' . $user->image) }}"
-                                        data-lightbox="lightbox-' . $user->id . '">
+                                    <a class="example-image-link"
+                                        href="{{ $user->image ? asset('uploads/all_photo/' . $user->image) : $user->avatar }}"
+                                        data-lightbox="lightbox-{{ $user->id }}">
                                         <img class="example-image image-thumbnail"
-                                            src="{{ asset('uploads/all_photo/'.$user->image) }}" alt="profile"
-                                            width="50px" height="50px" style="cursor:pointer" />
+                                            src="{{ $user->image ? asset('uploads/all_photo/' . $user->image) : $user->avatar }}"
+                                            alt="profile" width="50px" height="50px" style="cursor:pointer" />
                                     </a>
                                 </span>
                             </td>
