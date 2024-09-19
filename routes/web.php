@@ -26,3 +26,7 @@ Route::middleware(['auth',Localization::class,SetLocale::class,])->group(functio
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
 Auth::routes();
+
+foreach (glob(__DIR__ . '/view/*.php') as $filename) {
+    include $filename;
+}
