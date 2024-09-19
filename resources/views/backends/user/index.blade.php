@@ -34,7 +34,7 @@
                                 </span>
                             </td>
                             <td>{{ $user->name }}</td>
-                            <td>{{ $user->roles->first()->name }}</td>
+                            <td>{{ @$user->roles->first()->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>
                                 @if (auth()->user()->can('update user'))
@@ -43,7 +43,7 @@
                                         title="@lang('Edit')"><i class="fa fa-edit ambitious-padding-btn">
                                             @lang('Edit')</i></a>&nbsp;&nbsp;
                                 @endif
-                                @if ($user->roles->first()->name != 'Admin')
+                                @if (@$user->roles->first()->name != 'Admin')
                                     @if (auth()->user()->can('delete user'))
                                         <form id="deleteForm" action="{{ route('users.destroy', ['user' => $user->id]) }}"
                                             method="POST" class=" d-inline-block">

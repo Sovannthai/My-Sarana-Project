@@ -25,6 +25,27 @@ class RoomController extends Controller
         $this->roomRepository = $roomRepository;
     }
 
+    public function ViewAll()
+    {
+        return view('frontends.room.index');
+    }
+
+    public function ViewCreate()
+    {
+        return view('frontends.room.create');
+    }
+
+    public function ViewEdit($id)
+    {
+        $response = $this->show($id);
+
+        if ($response->getStatusCode() === 200) {
+            $room = $response->getData()->data;
+            return view('frontends.room.edit', compact('room'));
+        } else {
+            return redirect()->route('rooms.index')->withErrors('Room not found');
+        }
+    }
     /**
      * Display a listing of the rooms.
      *
@@ -61,36 +82,45 @@ class RoomController extends Controller
         }
     }
 
-    public function store(StoreRoomRequest $request): JsonResponse
-    {
-        DB::beginTransaction();
+    public function store(StoreRoomRequest $request)
+{
+    DB::beginTransaction();
 
-        try {
-            $validated = $request->validated();
-            $room = $this->roomRepository->create($validated);
+    try {
+        $validated = $request->validated();
+        $room = $this->roomRepository->create($validated);
 
-            // Attach amenities if provided
-            if (isset($validated['amenities'])) {
-                $room->amenities()->attach($validated['amenities']);
-            }
+        // Attach amenities if provided
+        if (isset($validated['amenities'])) {
+            $room->amenities()->attach($validated['amenities']);
+        }
 
-            DB::commit();
+        DB::commit();
 
+        if ($request->expectsJson()) {
             return response()->json([
                 'status' => 'success',
                 'data' => new RoomResource($room)
             ], 201);
+        } else {
+            return redirect()->route('rooms.index')->with('success', 'Room created successfully.');
+        }
 
-        } catch (\Exception $e) {
-            DB::rollBack();
+    } catch (\Exception $e) {
+        DB::rollBack();
 
+        if ($request->expectsJson()) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to create room',
                 'error' => $e->getMessage()
             ], 500);
+        } else {
+            return redirect()->back()->withErrors('Failed to create room.')->withInput();
         }
     }
+}
+
 
     public function update(UpdateRoomRequest $request, int $id): JsonResponse
     {

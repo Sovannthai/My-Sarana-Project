@@ -67,6 +67,34 @@
                     </div>
                 </li>
                 @endif
+
+
+
+                @if (auth()->user()->can('view user'))
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#rooms"
+                        @if (Route::is('roles.*') || Route::is('rooms.*')) aria-expanded="true" @else aria-expanded="false" @endif>
+                        <i class="fa fa-bed"></i>
+                        <p>@lang('Rooms Management')</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse @if (Route::is('roles.*') || Route::is('rooms.*') || Route::is('users.*')) show @endif" id="rooms">
+                        <ul class="nav nav-collapse">
+                            @if (auth()->user()->roles->first()->name == 'Admin')
+                            <li class="@if (Route::is('rooms.*')) active @endif">
+                                <a href="{{ route('rooms.index') }}">
+                                    <span class="sub-item">@lang('Room Details')</span>
+                                </a>
+                            </li>
+                            @endif
+                        </ul>
+                    </div>
+                </li>
+                @endif
+
+
+
+
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#tables">
                         <i class="fa fas fa-cog"></i>
