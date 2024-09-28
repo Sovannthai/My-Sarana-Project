@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\RoomResource;
 use App\Repositories\RoomRepository;
+use Illuminate\Support\Facades\Lang;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -122,7 +123,7 @@ class RoomController extends Controller
 }
 
 
-    public function update(UpdateRoomRequest $request, int $id): JsonResponse
+    public function update(UpdateRoomRequest $request, int $id)
     {
         DB::beginTransaction();
 
@@ -136,20 +137,27 @@ class RoomController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'status' => 'success',
-                'data' => new RoomResource($room)
-            ]);
-
+            // return response()->json([
+            //     'status' => 'success',
+            //     'data' => new RoomResource($room)
+            // ]);
+            $output = [
+                'success' =>__('Profile Updated successfully')
+            ];
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Failed to update room',
-                'error' => $e->getMessage()
-            ], 500);
+            // return response()->json([
+            //     'status' => 'error',
+            //     'message' => 'Failed to update room',
+            //     'error' => $e->getMessage()
+            // ], 500);
+            $output = [
+                'error' => 0,
+                'msg' => trans('Something went wrong')
+            ];
         }
+        return redirect()->route('rooms.index')->with($output);
     }
 
     /**

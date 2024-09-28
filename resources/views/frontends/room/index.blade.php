@@ -27,23 +27,24 @@
             </table>
         </div>
     </div>
+    @push('js')
+    @endpush
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                fetchRooms();
+            });
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchRooms();
-        });
+            function fetchRooms() {
+                fetch("{{ url('api/v1/rooms') }}")
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            let rooms = data.data;
+                            let tableBody = document.getElementById('room-data');
+                            tableBody.innerHTML = '';
 
-        function fetchRooms() {
-            fetch("{{ url('api/v1/rooms') }}")
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        let rooms = data.data;
-                        let tableBody = document.getElementById('room-data');
-                        tableBody.innerHTML = '';
-
-                        rooms.forEach((room, index) => {
-                            let row = `
+                            rooms.forEach((room, index) => {
+                                let row = `
                                 <tr>
                                     <td>${index + 1}</td>
                                     <td>${room.room_number}</td>
@@ -64,11 +65,11 @@
                                         </form>
                                     </td>
                                 </tr>`;
-                            tableBody.innerHTML += row;
-                        });
-                    }
-                })
-                .catch(error => console.error('Error fetching rooms:', error));
-        }
-    </script>
+                                tableBody.innerHTML += row;
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error fetching rooms:', error));
+            }
+        </script>
 @endsection
