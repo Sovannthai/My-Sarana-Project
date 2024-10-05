@@ -22,15 +22,9 @@
 
             <div class="container">
                 <div class="page-inner">
-                    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-                        <div>
+                    {{-- <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
                             <h3 class="fw-bold mb-3">@yield('content-header')</h3>
-                        </div>
-                        {{-- <div class="ms-md-auto py-2 py-md-0">
-                            <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
-                            <a href="#" class="btn btn-primary btn-round">Add Customer</a>
-                        </div> --}}
-                    </div>
+                    </div> --}}
                     @yield('contents') <span>
                         <h3>@yield('cotent-header')</h3>
                     </span>

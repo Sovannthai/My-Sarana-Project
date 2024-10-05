@@ -6,13 +6,17 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "guzzlehttp/guzzle": "*",
+        "barryvdh/laravel-dompdf": "^3.0",
+        "barryvdh/laravel-snappy": "^1.0",
+        "guzzlehttp/guzzle": "^7.9",
         "laravel-notification-channels/telegram": "^5.0",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
+        "niklasravnsborg/laravel-pdf": "^4.1",
+        "pusher/pusher-php-server": "^7.2",
         "socialiteproviders/telegram": "^4.1",
         "spatie/laravel-permission": "^6.9"
     },

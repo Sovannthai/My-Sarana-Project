@@ -9,7 +9,7 @@
             </a>
         </div>
         <div class="card-body">
-            <table id="rooms-table" class="table table-bordered text-nowrap table-hover table-responsive-lg">
+            <table id="rooms-table" id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
                 <thead class="table-secondary">
                     <tr>
                         <th>@lang('No.')</th>

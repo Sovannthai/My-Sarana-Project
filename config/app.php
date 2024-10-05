@@ -2,6 +2,9 @@
 
 return [
 
+    'path' => public_path('pdf'),
+    'temp_path' => storage_path('pdf'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -12,7 +15,6 @@ return [
     | other UI elements where an application name needs to be displayed.
     |
     */
-
     'name' => env('APP_NAME', 'Laravel'),
 
     /*
@@ -122,6 +124,4 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
-
-
 ];

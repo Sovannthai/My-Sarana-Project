@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Message;
 use Illuminate\Http\Request;
+use App\Events\MessageReceived;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Chat;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Notifications\TelegramNotification;
@@ -27,20 +30,18 @@ class TelegramLoginController extends Controller
                 'avatar' => $request->avatar,
                 'access_token' => $request->hash,
                 'password' => bcrypt($request->email),
-                'phone' => $request->phone,
+                'phone' => $request->email,
                 'user_type' => 'login_with_telegram',
-                'email' => $request->email ?? $request->phone . '@placeholder.com',
+                'email' => $request->email,
             ]
         );
         if ($user->wasRecentlyCreated) {
             $role = Role::findOrFail(8);
             $user->assignRole($role->name);
         }
-        if (Auth::attempt(['email' => $request->email ?? $request->phone . '@placeholder.com', 'password' => $request->phone])) {
-            Log::info('User authenticated successfully.');
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->email])) {
             return redirect()->route('home');
         } else {
-            Log::error('Login failed for email: ' . ($request->email ?? $request->phone . '@placeholder.com'));
             return response()->json(['message' => 'Login failed.'], 401);
         }
 
@@ -52,7 +53,7 @@ class TelegramLoginController extends Controller
         if ($user) {
             Auth::attempt(['email' => $user->email, 'password' => $user->email]);
             $data = [
-                'success'=>__('Login with Telegram Successfully')
+                'success' => __('Login with Telegram Successfully')
             ];
             return redirect()->route('home')->with($data);
         } else {
@@ -61,4 +62,28 @@ class TelegramLoginController extends Controller
             return view('auth.telegram_confirm_login', compact('telegram_user'));
         }
     }
+    public function webhook(Request $request)
+    {
+        Log::info($request->all());
+
+        $update = $request->input();
+        $messageData = $update['message'] ?? null;
+        if ($messageData) {
+            $userData = $messageData['from'];
+            $chat = Chat::create([
+                'telegram_user_id' => $userData['id'],
+                'first_name' => $userData['first_name'],
+                'username' => $userData['username'] ?? null,
+                'message' => $messageData['text'],
+            ]);
+
+            broadcast(new MessageReceived($chat));
+
+            return response()->json(['status' => 'Message stored successfully'], 200);
+        }
+
+        return response()->json(['status' => 'No message found'], 400);
+    }
+
 }
+

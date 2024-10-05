@@ -29,72 +29,80 @@
                         <p>@lang('Home')</p>
                     </a>
                 </li>
-                <li class="nav-section">
+                {{-- <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
-                </li>
+                </li> --}}
                 @if (auth()->user()->can('view user'))
-                <li class="nav-item">
-                    <a data-toggle="collapse" href="#forms"
-                        @if (Route::is('roles.*') || Route::is('permission.*')) aria-expanded="true" @else aria-expanded="false" @endif>
-                        <i class="fas fa-users"></i>
-                        <p>@lang('User Management')</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse @if (Route::is('roles.*') || Route::is('permission.*') || Route::is('users.*')) show @endif" id="forms">
-                        <ul class="nav nav-collapse">
-                            <li class="@if (Route::is('users.*')) active @endif">
-                                <a href="{{ route('users.index') }}">
-                                    <span class="sub-item">@lang('Users')</span>
-                                </a>
-                            </li>
-                            @if (auth()->user()->can('view role'))
-                            <li class="@if (Route::is('roles.*')) active @endif">
-                                <a href="{{ route('roles.index') }}">
-                                    <span class="sub-item">@lang('Roles')</span>
-                                </a>
-                            </li>
-                            @endif
-                            @if (auth()->user()->roles->first()->name == 'Admin')
-                            <li class="@if (Route::is('permission.*')) active @endif">
-                                <a href="{{ route('permission.index') }}">
-                                    <span class="sub-item">@lang('Permissions')</span>
-                                </a>
-                            </li>
-                            @endif
-                        </ul>
-                    </div>
-                </li>
+                    <li class="nav-item">
+                        <a data-toggle="collapse" href="#forms"
+                            @if (Route::is('roles.*') || Route::is('permission.*')) aria-expanded="true" @else aria-expanded="false" @endif>
+                            <i class="fas fa-users"></i>
+                            <p>@lang('User Management')</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse @if (Route::is('roles.*') || Route::is('permission.*') || Route::is('users.*')) show @endif" id="forms">
+                            <ul class="nav nav-collapse">
+                                <li class="@if (Route::is('users.*')) active @endif">
+                                    <a href="{{ route('users.index') }}">
+                                        <span class="sub-item">@lang('Users')</span>
+                                    </a>
+                                </li>
+                                @if (auth()->user()->can('view role'))
+                                    <li class="@if (Route::is('roles.*')) active @endif">
+                                        <a href="{{ route('roles.index') }}">
+                                            <span class="sub-item">@lang('Roles')</span>
+                                        </a>
+                                    </li>
+                                @endif
+                                @if (auth()->user()->roles->first()->name == 'Admin')
+                                    <li class="@if (Route::is('permission.*')) active @endif">
+                                        <a href="{{ route('permission.index') }}">
+                                            <span class="sub-item">@lang('Permissions')</span>
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
                 @endif
 
 
 
                 @if (auth()->user()->can('view user'))
-                <li class="nav-item">
-                    <a data-toggle="collapse" href="#rooms"
-                        @if (Route::is('roles.*') || Route::is('rooms.*')) aria-expanded="true" @else aria-expanded="false" @endif>
-                        <i class="fa fa-bed"></i>
-                        <p>@lang('Rooms Management')</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse @if (Route::is('roles.*') || Route::is('rooms.*') || Route::is('users.*')) show @endif" id="rooms">
-                        <ul class="nav nav-collapse">
-                            @if (auth()->user()->roles->first()->name == 'Admin')
-                            <li class="@if (Route::is('rooms.*')) active @endif">
-                                <a href="{{ route('rooms.index') }}">
-                                    <span class="sub-item">@lang('Room Details')</span>
-                                </a>
-                            </li>
-                            @endif
-                        </ul>
-                    </div>
-                </li>
+                    <li class="nav-item">
+                        <a data-toggle="collapse" href="#rooms"
+                            @if (Route::is('roles.*') || Route::is('rooms.*')) aria-expanded="true" @else aria-expanded="false" @endif>
+                            <i class="fa fa-bed"></i>
+                            <p>@lang('Rooms Management')</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse @if (Route::is('roles.*') || Route::is('rooms.*') || Route::is('users.*')) show @endif" id="rooms">
+                            <ul class="nav nav-collapse">
+                                @if (auth()->user()->roles->first()->name == 'Admin')
+                                    <li class="@if (Route::is('rooms.*')) active @endif">
+                                        <a href="{{ route('rooms.index') }}">
+                                            <span class="sub-item">@lang('Room Details')</span>
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
                 @endif
-
-
-
-
+                <li class="nav-item @if (Route::is('chat-indext')) active @endif">
+                    <a href="{{ route('chat-indext') }}">
+                        <i class="fas fa-comments"></i>
+                        <p>@lang('Chat')</p>
+                    </a>
+                </li>
+                <li class="nav-item @if (Route::is('user-request.index')) active @endif">
+                    <a href="{{ route('user-request.index') }}">
+                        <i class="fas fa-comments"></i>
+                        <p>@lang('Request')</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#tables">
                         <i class="fa fas fa-cog"></i>

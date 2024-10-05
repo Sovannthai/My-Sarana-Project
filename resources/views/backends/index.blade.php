@@ -1,6 +1,6 @@
 @extends('backends.master')
 @section('contents')
-@section('content-header','Welcome, '.auth()->user()->name)
+@section('content-header', 'Welcome, ' . auth()->user()->name)
 <style>
     .card-stats {
         position: relative;
@@ -11,6 +11,7 @@
         background-clip: padding-box, border-box;
         transition: 0.5s;
     }
+
     .card-stats:hover {
         transform: 5s;
         transform: translateY(-15px);
@@ -29,6 +30,9 @@
     }
 </style>
 @if (auth()->user()->can('view dashborad'))
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+        <h3 class="fw-bold mb-3">@yield('content-header')</h3>
+    </div>
     <div class="row">
         <div class="col-sm-6 col-md-3">
             <div class="card card-stats card-round">
