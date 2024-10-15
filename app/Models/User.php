@@ -11,7 +11,7 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable,HasRoles;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -55,6 +55,10 @@ class User extends Authenticatable
     public function getImageUrlAttribute()
     {
         return $this->generateImageUrl($this->image);
+    }
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'user_id', 'telegram_id');
     }
 
 }

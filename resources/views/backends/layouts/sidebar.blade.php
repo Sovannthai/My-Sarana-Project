@@ -91,12 +91,12 @@
                         </div>
                     </li>
                 @endif
-                <li class="nav-item @if (Route::is('chat-indext')) active @endif">
+                {{-- <li class="nav-item @if (Route::is('chat-indext')) active @endif">
                     <a href="{{ route('chat-indext') }}">
                         <i class="fas fa-comments"></i>
                         <p>@lang('Chat')</p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item @if (Route::is('user-request.index')) active @endif">
                     <a href="{{ route('user-request.index') }}">
                         <i class="fas fa-comments"></i>

@@ -37,11 +37,17 @@ Route::middleware(['auth', Localization::class, SetLocale::class,])->group(funct
     // Route::post('/send-invoice', [InvoiceController::class, 'sendInvoiceToTelegram'])->name('send-invoice');
     //chat
     Route::get('/fetch-messages', [ChatController::class, 'fetchMessages'])->name('get-chat-from-user');
-    Route::get('/chat-index',[ChatController::class,'chatIndex'])->name('chat-indext');
-    // Route::get('/chat-detail/{id}',[ChatController::class,'chatDetail'])->name('chat-detail-by-user');
+    Route::get('/chat-index', [ChatController::class, 'chatIndex'])->name('chat-indext');
 
     //User Request
-    Route::get('/user-request',[UserRequestController::class,'index'])->name('user-request.index');
+    Route::get('/user-request', [UserRequestController::class, 'index'])->name('user-request.index');
+    // web.php
+    Route::get('/messages/{userId}', [UserRequestController::class, 'getMessage'])->name('fetch.messages');
+    Route::post('/send-message', [UserRequestController::class, 'sendMessage'])->name('send-message.send');
+
+
+
+
 });
 Auth::routes();
 
