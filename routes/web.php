@@ -8,20 +8,14 @@ use App\Http\Controllers\Backends\MonthlyUsageController;
 use App\Http\Controllers\Backends\RoleController;
 use App\Http\Controllers\Backends\RoomController;
 use App\Http\Controllers\Backends\UserController;
-<<<<<<< HEAD
 use App\Http\Controllers\Backends\InvoiceController;
-use App\Http\Controllers\Auth\TelegramLoginController;
 use App\Http\Controllers\Backends\ChatController;
-use App\Http\Controllers\Backends\PermissionController;
 use App\Http\Controllers\Backends\UserRequestController;
-=======
 use App\Http\Controllers\Backends\AmenityController;
 use App\Http\Controllers\Auth\TelegramLoginController;
 use App\Http\Controllers\Backends\UtilitiesController;
 use App\Http\Controllers\Backends\PermissionController;
-use App\Http\Controllers\Backends\UtilityTypeController;
 use App\Http\Controllers\Backends\PriceAdjustmentController;
->>>>>>> pheakdey_branch
 
 Route::get('/', function () {
     return view('auth.login');
@@ -33,20 +27,21 @@ Route::get('language/{locale}', function ($locale) {
     session()->put('language_settings', $language);
     return redirect()->back();
 })->name('change_language');
+
+//Login with telegram
 Route::post('/api/telegram-login', [TelegramLoginController::class, 'telegramLogin'])->name('store_user.telegram');
 Route::get('/telegram_callback', [TelegramLoginController::class, 'telegramAuthCallback'])->name('telegram_callback');
+
 Route::middleware(['auth', Localization::class, SetLocale::class,])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permission', PermissionController::class);
     Route::resource('users', UserController::class);
     Route::get('/user-profile/{id}', [UserController::class, 'view_profile'])->name('user.view_profile');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-<<<<<<< HEAD
     //send invoice
 
     Route::get('/send-invoice/{userId}', [InvoiceController::class, 'sendInvoiceToTelegram']);
     Route::post('/send-invoice/{userId}', [InvoiceController::class, 'sendInvoiceToTelegram'])->name('send-invoice');
-    // Route::post('/send-invoice', [InvoiceController::class, 'sendInvoiceToTelegram'])->name('send-invoice');
     //chat
     Route::get('/fetch-messages', [ChatController::class, 'fetchMessages'])->name('get-chat-from-user');
     Route::get('/chat-index', [ChatController::class, 'chatIndex'])->name('chat-indext');
@@ -60,7 +55,6 @@ Route::middleware(['auth', Localization::class, SetLocale::class,])->group(funct
 
 
 
-=======
     Route::resource('amenities', AmenityController::class);
     Route::resource('rooms', RoomController::class);
     Route::resource('price_adjustments', PriceAdjustmentController::class);
@@ -82,7 +76,6 @@ Route::middleware(['auth', Localization::class, SetLocale::class,])->group(funct
     });
 
     Route::resource('monthly_usages', MonthlyUsageController::class);
->>>>>>> pheakdey_branch
 });
 Auth::routes();
 
