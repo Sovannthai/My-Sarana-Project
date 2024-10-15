@@ -41,4 +41,9 @@ class Room extends Model
     {
         return $this->hasMany(RoomPricing::class);
     }
+
+    public function monthlyUsages()
+    {
+        return $this->hasMany(MonthlyUsage::class);
+    }
 }

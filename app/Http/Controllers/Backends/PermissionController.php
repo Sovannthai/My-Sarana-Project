@@ -97,7 +97,7 @@ class PermissionController extends Controller
             'name'       => $name,
             'guard_name' => $guardName
         ]);
-        Alert::toast('Update permission sucessfully', 'success');
+        //Alert::toast('Update permission sucessfully', 'success');
         return redirect('permission');
     }
 
