@@ -9,7 +9,7 @@ class UtilityType extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type'];
+    protected $guarded = [];
 
     public function utilityrates()
     {

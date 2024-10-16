@@ -127,7 +127,21 @@
     </script>
     <script>
         $(document).ready(function() {
-            $("#basic-datatables").DataTable({});
+            $("#basic-datatables").DataTable({
+                responsive: true,
+                pageLength: 5,
+                lengthMenu: [5, 10, 20, 50, 100],
+                language: {
+                    search: "@lang('Search'):",
+                    lengthMenu: "@lang('Show _MENU_ entries')",
+                    info: "@lang('Showing _START_ to _END_ of _TOTAL_ entries')",
+                    infoEmpty: "@lang('No entries available')",
+                    paginate: {
+                        next: "@lang('Next')",
+                        previous: "@lang('Previous')"
+                    }
+                }
+            });
 
             $("#multi-filter-select").DataTable({
                 pageLength: 5,

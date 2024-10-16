@@ -66,14 +66,17 @@ Route::middleware(['auth', Localization::class, SetLocale::class,])->group(funct
         Route::get('/', [UtilitiesController::class, 'index'])->name('utilities.index');
 
         Route::post('store-rate/{utilityType}', [UtilitiesController::class, 'storeRate'])->name('utilities.storeRate');
-        Route::get('edit-rate/{utilityRate}', [UtilitiesController::class, 'editRate'])->name('utilities.editRate');
+        // Route::match(['get', 'post'], '/utilities/store-rate/{utilityType}', [UtilitiesController::class, 'storeRate'])
+        //     ->name('utilities.storeRate');
+
         Route::put('update-rate/{utilityRate}', [UtilitiesController::class, 'updateRate'])->name('utilities.updateRate');
         Route::delete('destroy-rate/{utilityRate}', [UtilitiesController::class, 'destroyRate'])->name('utilities.destroyRate');
+        Route::post('update-status-utilities-rate', [UtilitiesController::class, 'updateStatus'])->name('update-status-utilities');
 
         Route::get('/utilities_type', [UtilityTypeController::class, 'index'])->name('utilities_type.index');
         Route::post('store-type', [UtilityTypeController::class, 'store'])->name('utilities.storeType');
         Route::put('update-type/{id}', [UtilityTypeController::class, 'update'])->name('utilities.updateType');
-        Route::delete('destroy/{id}',[UtilityTypeController::class,'destroy'])->name('utilities.destroyType');
+        Route::delete('destroy/{id}', [UtilityTypeController::class, 'destroy'])->name('utilities.destroyType');
         Route::get('get-rate-by-utility/{id}', [UtilitiesController::class, 'getRate'])->name('get-rate-by-utilities_type');
 
     });

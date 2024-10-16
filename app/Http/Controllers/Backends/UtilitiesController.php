@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Backends;
 
-use App\Http\Controllers\Controller;
-use App\Models\UtilityType;
+use Exception;
 use App\Models\UtilityRate;
+use App\Models\UtilityType;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class UtilitiesController extends Controller
 {
@@ -20,17 +21,45 @@ class UtilitiesController extends Controller
         $rates = UtilityRate::with('utilityType')->where('utility_type_id', $id)->get();
         return response()->json($rates);
     }
-    public function storeRate(Request $request, $utilityTypeId)
+    //Update Status
+    public function updateStatus(Request $request)
     {
-        $utilityRate = UtilityRate::create([
-            'utility_type_id' => $utilityTypeId,
+        try {
+            $status = $request->input('status') === 'true' ? '1' : '0';
+            $utilityRate = UtilityRate::findOrFail($request->input('id'));
+            if ($status === '1') {
+                UtilityRate::where('utility_type_id', $utilityRate->utility_type_id)
+                    ->where('id', '!=', $utilityRate->id)
+                    ->update(['status' => '0']);
+            }
+            $utilityRate->update(['status' => $status]);
+
+            $output = [
+                'success' => true,
+                'msg' => 'Status updated successfully'
+            ];
+        } catch (Exception $e) {
+            $output = [
+                'error' => true,
+                'msg' => 'Something went wrong'
+            ];
+        }
+        return response()->json($output);
+    }
+
+    public function storeRate(Request $request, $utilityType)
+    {
+        UtilityRate::create([
+            'utility_type_id' => $utilityType,
             'rate_per_unit' => $request->rate_per_unit,
+            'status' => '0', // Default status
         ]);
         return response()->json([
             'success' => true,
-            'message' => 'Utility Rate created successfully.',
+            'message' => 'Utility rate created successfully.'
         ]);
     }
+
 
     public function editRate($id)
     {

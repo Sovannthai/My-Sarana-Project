@@ -9,7 +9,7 @@ class UtilityRate extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['utility_type_id', 'rate_per_unit'];
+    protected $guarded = [];
 
     public function utilityType()
     {

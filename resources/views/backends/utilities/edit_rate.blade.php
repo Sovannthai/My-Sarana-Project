@@ -1,36 +1,26 @@
-@extends('backends.master')
-@section('title', 'Edit Utility Rate')
-@section('contents')
-    <div class="show-item">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <label class="card-title text-uppercase">@lang('Edit Utility Rate')</label>
-                    </div>
-                    <form action="{{ route('utilities.updateRate', ['utilityRate' => $utilityRate->id]) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="rate_per_unit">@lang('Rate Per Unit')</label>
-                                <input type="number" name="rate_per_unit" id="rate_per_unit" class="form-control @error('rate_per_unit') is-invalid @enderror" value="{{ $utilityRate->rate_per_unit }}">
-                                @error('rate_per_unit')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-outline-primary btn-sm text-uppercase float-right mb-2 ml-2">
-                                <i class="fas fa-save"></i> @lang('Submit')
-                            </button>
-                            <a href="{{ route('utilities.index') }}" class="float-right btn btn-dark btn-sm">
-                                @lang('Cancel')
-                            </a>
-                        </div>
-                    </form>
-                </div>
+<!-- Edit Utility Rate Modal -->
+<div class="modal fade" id="editUtilityModal" tabindex="-1" aria-labelledby="editUtilityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUtilityModalLabel">@lang('Edit Utility Rate')</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <form id="editUtilityForm" method="POST" action="{{ route('utilities.updateRate', ':id') }}">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <input type="hidden" id="editRateId" name="id">
+                    <div class="mb-3">
+                        <label for="editRatePerUnit" class="form-label">@lang('Rate per Unit')</label>
+                        <input type="number" class="form-control" id="editRatePerUnit" name="rate_per_unit" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark btn-sm text-uppercase" data-bs-dismiss="modal">@lang('Close')</button>
+                    <button type="submit" class="float-right btn btn-primary btn-sm"><i class="fas fa-save"></i> @lang('Submit')</button>
+                </div>
+            </form>
         </div>
     </div>
-@endsection
+</div>

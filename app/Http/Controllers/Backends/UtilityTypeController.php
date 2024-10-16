@@ -14,7 +14,7 @@ class UtilityTypeController extends Controller
      */
     public function index()
     {
-        $utilityTypes = UtilityType::all();
+        $utilityTypes = UtilityType::orderBy('id','asc')->get();
         return view('backends.utilitie_type.index', compact('utilityTypes'));
     }
     /**

@@ -25,8 +25,8 @@
                                 <a href="" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
                                     data-bs-target="#edit_utilities-{{ $utility_type->id }}">Edit</a>
                                 &nbsp;&nbsp;
-                                <form action="{{ route('utilities.destroyType', ['id' => $utility_type->id]) }}" method="POST"
-                                    class="d-inline-block">
+                                <form action="{{ route('utilities.destroyType', ['id' => $utility_type->id]) }}"
+                                    method="POST" class="d-inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
