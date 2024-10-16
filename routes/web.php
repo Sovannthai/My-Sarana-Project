@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UtilityRateController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\Localization;
@@ -16,6 +17,7 @@ use App\Http\Controllers\Auth\TelegramLoginController;
 use App\Http\Controllers\Backends\UtilitiesController;
 use App\Http\Controllers\Backends\PermissionController;
 use App\Http\Controllers\Backends\PriceAdjustmentController;
+use App\Http\Controllers\Backends\UtilityTypeController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -62,17 +64,18 @@ Route::middleware(['auth', Localization::class, SetLocale::class,])->group(funct
 
     Route::prefix('utilities')->group(function () {
         Route::get('/', [UtilitiesController::class, 'index'])->name('utilities.index');
-        Route::get('create-type', [UtilitiesController::class, 'createType'])->name('utilities.createType');
-        Route::post('store-type', [UtilitiesController::class, 'storeType'])->name('utilities.storeType');
-        Route::get('edit-type/{utilityType}', [UtilitiesController::class, 'editType'])->name('utilities.editType');
-        Route::put('update-type/{utilityType}', [UtilitiesController::class, 'updateType'])->name('utilities.updateType');
-        Route::delete('destroy-type/{utilityType}', [UtilitiesController::class, 'destroyType'])->name('utilities.destroyType');
 
-        Route::get('create-rate/{utilityType}', [UtilitiesController::class, 'createRate'])->name('utilities.createRate');
         Route::post('store-rate/{utilityType}', [UtilitiesController::class, 'storeRate'])->name('utilities.storeRate');
         Route::get('edit-rate/{utilityRate}', [UtilitiesController::class, 'editRate'])->name('utilities.editRate');
         Route::put('update-rate/{utilityRate}', [UtilitiesController::class, 'updateRate'])->name('utilities.updateRate');
         Route::delete('destroy-rate/{utilityRate}', [UtilitiesController::class, 'destroyRate'])->name('utilities.destroyRate');
+
+        Route::get('/utilities_type', [UtilityTypeController::class, 'index'])->name('utilities_type.index');
+        Route::post('store-type', [UtilityTypeController::class, 'store'])->name('utilities.storeType');
+        Route::put('update-type/{id}', [UtilityTypeController::class, 'update'])->name('utilities.updateType');
+        Route::delete('destroy/{id}',[UtilityTypeController::class,'destroy'])->name('utilities.destroyType');
+        Route::get('get-rate-by-utility/{id}', [UtilitiesController::class, 'getRate'])->name('get-rate-by-utilities_type');
+
     });
 
     Route::resource('monthly_usages', MonthlyUsageController::class);

@@ -4,8 +4,10 @@
     <div class="card">
         <div class="card-header">
             <label class="card-title font-weight-bold mb-1 text-uppercase">Price Adjustments</label>
-            <a href="{{ route('price_adjustments.create') }}" class="btn btn-primary float-right text-uppercase btn-sm">
+            <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop">
                 <i class="fas fa-plus"> @lang('Add')</i></a>
+            @include('backends.price_adjustment.create')
         </div>
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
@@ -28,10 +30,13 @@
                             <td>{{ $adjustment->startdate }}</td>
                             <td>{{ $adjustment->enddate ?? '-' }}</td>
                             <td>
-                                <a href="{{ route('price_adjustments.edit', ['price_adjustment' => $adjustment->id]) }}" class="btn btn-outline-primary btn-sm">
+                                <a href="" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#edit_price-{{ $adjustment->id }}">
                                     <i class="fa fa-edit">@lang('Edit')</i>
                                 </a>
-                                <form action="{{ route('price_adjustments.destroy', ['price_adjustment' => $adjustment->id]) }}" method="POST" class="d-inline-block">
+                                <form
+                                    action="{{ route('price_adjustments.destroy', ['price_adjustment' => $adjustment->id]) }}"
+                                    method="POST" class="d-inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" class="btn btn-outline-danger btn-sm delete-btn">
@@ -40,6 +45,7 @@
                                 </form>
                             </td>
                         </tr>
+                        @include('backends.price_adjustment.edit')
                     @endforeach
                 </tbody>
             </table>

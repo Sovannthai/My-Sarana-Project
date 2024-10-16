@@ -43,8 +43,6 @@ class ChatController extends Controller
             }
         }
     }
-
-
     private function storeIncomingMessage($update)
     {
         $message = $update['message'];
@@ -55,8 +53,10 @@ class ChatController extends Controller
         $firstName = $message['from']['first_name'] ?? null;
         $username = $message['from']['username'] ?? null;
         $created_at = $message['date'];
+        $token = '6892001713:AAEFqGqO4bqaQmNx465sQxV-Z6Cq-HHQCsw';
 
         if (isset($message['text'])) {
+            // Handle text message
             $userMessage = $message['text'];
             if (!Message::where('update_id', $updateId)->exists()) {
                 Message::create([
@@ -70,31 +70,56 @@ class ChatController extends Controller
                     'direction'   => 'incoming',
                     'sender_id'   => $userId,
                     'receiver_id' => '1',
-                    'sender_type' =>'received',
+                    'sender_type' => 'received',
                     'created_at'  => now(),
                 ]);
             }
         } elseif (isset($message['photo'])) {
+            // Handle photo
             $photo = $message['photo'];
             $fileId = end($photo)['file_id'];
-            $token = '6892001713:AAEFqGqO4bqaQmNx465sQxV-Z6Cq-HHQCsw';
             $filePath = $this->downloadFile($fileId, $token);
             if (!Message::where('update_id', $updateId)->exists()) {
                 Message::create([
-                    'update_id'    => $updateId,
-                    'message_id'   => $messageId,
-                    'chat_id'      => $chatId,
-                    'user_id'      => $userId,
-                    'first_name'   => $firstName,
-                    'username'     => $username,
-                    'message'      => 'Photo received',
-                    'media_path'   => $filePath,
-                    'direction'    => 'incoming',
-                    'sender_id'    => $userId,
-                    'receiver_id'  => '1',
-                    'sender_type'  =>'received',
-                    'type'         => 'photo',
-                    'created_at'   => now(),
+                    'update_id'   => $updateId,
+                    'message_id'  => $messageId,
+                    'chat_id'     => $chatId,
+                    'user_id'     => $userId,
+                    'first_name'  => $firstName,
+                    'username'    => $username,
+                    'message'     => 'Photo received',
+                    'media_path'  => $filePath,
+                    'direction'   => 'incoming',
+                    'sender_id'   => $userId,
+                    'receiver_id' => '1',
+                    'sender_type' => 'received',
+                    'type'        => 'photo',
+                    'created_at'  => now(),
+                ]);
+            }
+        } elseif (isset($message['document'])) {
+            // Handle other documents (pdf, doc, docx, xls, xlsx, etc.)
+            $document = $message['document'];
+            $fileId = $document['file_id'];
+            $fileName = $document['file_name'];
+            $filePath = $this->downloadFile($fileId, $token);
+
+            if (!Message::where('update_id', $updateId)->exists()) {
+                Message::create([
+                    'update_id'   => $updateId,
+                    'message_id'  => $messageId,
+                    'chat_id'     => $chatId,
+                    'user_id'     => $userId,
+                    'first_name'  => $firstName,
+                    'username'    => $username,
+                    'message'     => $fileName, // Save the file name as message
+                    'media_path'  => $filePath,
+                    'direction'   => 'incoming',
+                    'sender_id'   => $userId,
+                    'receiver_id' => '1',
+                    'sender_type' => 'received',
+                    'type'        => 'document',
+                    'created_at'  => now(),
                 ]);
             }
         }

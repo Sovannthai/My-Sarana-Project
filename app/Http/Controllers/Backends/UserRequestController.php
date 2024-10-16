@@ -31,7 +31,7 @@ class UserRequestController extends Controller
             ->orderBy('created_at', 'asc')
             ->get(['id', 'sender_id', 'receiver_id', 'message', 'media_path', 'created_at']);
         foreach ($messages as $message) {
-            $message->media_path  = $message->media_path ? asset($message->media_path) : null;
+            $message->media_path = $message->media_path ? asset($message->media_path) : null;
             $message->sender_type = $message->sender_id == $currentUserId ? 'sent' : 'received';
         }
 
@@ -43,32 +43,31 @@ class UserRequestController extends Controller
     public function sendMessage(Request $request)
     {
         $request->validate([
-            'message'    => 'required|string|max:255',
-            'media_part' => 'nullable|file|mimes:jpg,jpeg,png,doc,docx,pdf',
+            // 'message' => 'required|string|max:255',
+            // 'media_part' => 'nullable|file|mimes:jpg,jpeg,png,doc,docx,pdf,xls,xlsx',
         ]);
 
-        $userId       = $request->input('user_id');
-        $messageText  = $request->input('message');
-        $filePath     = null;
-        if ($request->hasFile('media_part')) {
-            $file     = $request->file('media_part');
-            $filePath = $file->store('uploads', 'public');
+        $userId = $request->input('user_id');
+        $messageText = $request->input('message');
+        $filePath = null;
 
-            // Send the file to Telegram
+        if ($request->hasFile('media_part')) {
+            $file = $request->file('media_part');
+            $fileName = $file->getClientOriginalName();
+            $filePath = 'uploads/telegram-chat/' . $fileName;
+            $file->move(public_path('uploads/telegram-chat'), $fileName);
             $this->sendFileToTelegram($userId, $filePath, $messageText);
         } else {
-            // If no file, just send the message
             $this->sendMessageToTelegram($userId, $messageText);
         }
 
-        // Store
         Message::create([
-            'user_id'      => $userId,
-            'sender_id'    => '1',
-            'receiver_id'  => $userId,
-            'message'      => $messageText,
-            'sender_type'  => 'sent',
-            'media_path'   => $filePath ? 'uploads/' . $filePath : null,
+            'user_id' => $userId,
+            'sender_id' => '1',
+            'receiver_id' => $userId,
+            'message' => $messageText,
+            'sender_type' => 'sent',
+            'media_path' => $filePath,
         ]);
 
         return response()->json(['message' => $messageText, 'user_id' => $userId], 200);
@@ -76,52 +75,36 @@ class UserRequestController extends Controller
 
     private function sendMessageToTelegram($userId, $messageText)
     {
-        $chatId  = $userId;
-        $token   = '6892001713:AAEFqGqO4bqaQmNx465sQxV-Z6Cq-HHQCsw';
-        $url     = 'https://api.telegram.org/bot' . $token . '/sendMessage';
+        $chatId = $userId;
+        $token = '6892001713:AAEFqGqO4bqaQmNx465sQxV-Z6Cq-HHQCsw';
+        $url = 'https://api.telegram.org/bot' . $token . '/sendMessage';
 
         $payload = [
-            'chat_id'    => $chatId,
-            'text'       => $messageText,
-            'parse_mode' => 'HTML', // Optional
+            'chat_id' => $chatId,
+            'text' => $messageText,
+            'parse_mode' => 'HTML',
         ];
         Http::post($url, $payload);
     }
+
     private function sendFileToTelegram($userId, $filePath, $messageText)
     {
         $chatId = $userId;
         $token = '6892001713:AAEFqGqO4bqaQmNx465sQxV-Z6Cq-HHQCsw';
+        $localFilePath = public_path($filePath);
 
-        $localDirectory = public_path('uploads/telegram-chat/');
-        if (!file_exists($localDirectory)) {
-            mkdir($localDirectory, 0755, true);
-        }
-
-        $fileName        = basename($filePath);
-        $storageFilePath = 'uploads/telegram-chat/' . $fileName;
-
-        // Move the file to the public storage directory
-        Storage::disk('public')->move($filePath, $storageFilePath);
-
-        $fileInStorage = storage_path('app/public/' . $storageFilePath);
-        $localFilePath = $localDirectory . $fileName;
-
-        if (file_exists($fileInStorage)) {
-            rename($fileInStorage, $localFilePath);
-        }
-
-        if (file_exists($localFilePath)) {
-            Log::info('File exists: ' . $localFilePath);
-        } else {
+        if (!file_exists($localFilePath)) {
             Log::error('File does not exist: ' . $localFilePath);
             return null;
         }
 
-        $response = Http::attach('document', file_get_contents($localFilePath), $fileName)
+        // Send the file to Telegram
+        $response = Http::attach('document', file_get_contents($localFilePath), basename($filePath))
             ->post('https://api.telegram.org/bot' . $token . '/sendDocument', [
                 'chat_id' => $chatId,
                 'caption' => $messageText,
             ]);
+
         $responseData = $response->json();
         Log::info('Telegram Response: ', $responseData);
 
@@ -134,5 +117,4 @@ class UserRequestController extends Controller
 
         return null;
     }
-
 }

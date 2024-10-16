@@ -39,8 +39,8 @@
     }
 
     .message.sent .message-content {
-        background-color: #0084ff;
-        color: white;
+        background-color: #eaf0f5;
+        /* color: white; */
     }
 
     .message-content:before {
@@ -62,10 +62,9 @@
         right: -10px;
         border-width: 10px;
         border-style: solid;
-        border-color: transparent transparent transparent #0084ff;
+        border-color: transparent transparent transparent #eaf0f5;
     }
 
-    /* Profile Picture */
     .profile-pic {
         width: 40px;
         height: 40px;
@@ -78,7 +77,6 @@
         margin-right: 0;
     }
 
-    /* Username */
     .username {
         font-weight: bold;
         font-size: 12px;
@@ -86,7 +84,6 @@
         margin-bottom: 5px;
     }
 
-    /* Scrollable modal body */
     .modal-body {
         max-height: 400px;
         overflow-y: auto;
@@ -94,7 +91,6 @@
         background-color: #f9f9f9;
     }
 
-    /* Footer form styles */
     .modal-footer form {
         display: flex;
         justify-content: space-between;
@@ -127,14 +123,12 @@
         font-size: 18px;
     }
 
-    /* Adjust textarea for better appearance */
     .input-group textarea {
         resize: none;
         border-radius: 20px;
         padding-left: 15px;
     }
 
-    /* Input group icon adjustments */
     .input-group-text {
         border: none;
         background-color: transparent;
@@ -143,7 +137,6 @@
         align-items: center;
     }
 
-    /* Send button with icon */
     .btn-primary {
         border-radius: 50%;
         padding: 10px;
@@ -154,6 +147,16 @@
 
     .btn-primary i {
         font-size: 18px;
+    }
+
+    .date-header {
+        text-align: center;
+        margin: 10px 0;
+        font-weight: bold;
+        color: #888;
+        font-size: 0.9rem;
+        padding: 5px 10px;
+        border-radius: 12px;
     }
 </style>
 @section('contents')
@@ -207,7 +210,8 @@
                                     </div>
 
                                     <!-- Chat Messages -->
-                                    <div class="modal-body chat-body" style="max-height: 550px; overflow-y: auto;">
+                                    <div class="modal-body chat-body"
+                                        style="max-height: 550px; overflow-y: auto;background-color: #e0e0e0;border-radius: 0px;">
                                         <div class="messages-container" id="messages-{{ $row->user_id }}">
                                             <!-- Messages will be loaded here via AJAX -->
                                         </div>
@@ -250,66 +254,61 @@
             messagesContainer.empty();
 
             let messagesUrl = `{{ route('fetch.messages', ':telegramId') }}`.replace(':telegramId', telegramId);
+
             $.ajax({
                 url: messagesUrl,
                 method: 'GET',
                 success: function(messages) {
                     if (messages.length > 0) {
-                        messages.forEach(message => {
-                            let messageHtml = '';
-                            const createdAt = new Date(message.created_at).toLocaleString();
-                            if (message.message && message.media_path) {
-                                if (message.message.trim().toLowerCase() === "photo received") {
-                                    // Show only the media
+                        let groupedMessages = groupMessagesByDate(messages);
+
+                        for (const [date, msgs] of Object.entries(groupedMessages)) {
+                            messagesContainer.append(`<div class="date-header">${date}</div>`);
+
+                            msgs.forEach(message => {
+                                let messageHtml = '';
+                                const messageTime = new Date(message.created_at)
+                                    .toLocaleTimeString('en-US', {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        hour12: true,
+                                    });
+
+                                // Check if media is a downloadable file
+                                let isDownloadable = /\.(pdf|doc|docx|xls|xlsx)$/i.test(message
+                                    .media_path);
+
+                                // If the message is "Photo received", show only media_path
+                                if (message.message && message.message.trim().toLowerCase() ===
+                                    "photo received") {
+                                    messageHtml = generateMediaHTML(message, isDownloadable,
+                                        messageTime);
+                                } else if (message.message && message.media_path) {
+                                    // Show both message and media path if the message isn't "Photo received"
                                     messageHtml = `
                                 <div class="message ${message.sender_type}">
                                     <div class="message-content">
-                                        <a href="${message.media_path}" data-lightbox="lightbox-${message.id}">
-                                            <img src="${message.media_path}" alt="Photo" class="img-fluid"
-                                                 style="width: auto; height: 15rem;" />
-                                        </a>
-                                    </div>
-                                    <small>${createdAt}</small> <!-- Show created_at below media -->
-                                </div>`;
-                                } else {
-                                    // Show both media and message
-                                    messageHtml = `
-                                <div class="message ${message.sender_type}">
-                                    <div class="message-content">
-                                        <a href="${message.media_path}" data-lightbox="lightbox-${message.id}">
-                                            <img src="${message.media_path}" alt="Photo" class="img-fluid"
-                                                 style="width: auto; height: 15rem;" />
-                                        </a>
+                                        ${generateMediaHTML(message, isDownloadable, messageTime)}
                                         <p>${message.message}</p>
                                     </div>
-                                    <small>${createdAt}</small> <!-- Show created_at below message -->
+                                    <small>${messageTime}</small>
+                                </div>`;
+                                } else if (message.media_path) {
+                                    // Only media path
+                                    messageHtml = generateMediaHTML(message, isDownloadable,
+                                        messageTime);
+                                } else if (message.message) {
+                                    // Only message
+                                    messageHtml = `
+                                <div class="message ${message.sender_type}">
+                                    <div class="message-content">${message.message}</div>
+                                    <small>${messageTime}</small>
                                 </div>`;
                                 }
-                            } else if (message.message) {
-                                // Case: Only the message is present
-                                messageHtml = `
-                            <div class="message ${message.sender_type}">
-                                <div class="message-content">
-                                    ${message.message}
-                                </div>
-                                <small>${createdAt}</small> <!-- Show created_at below message -->
-                            </div>`;
-                            } else if (message.media_path) {
-                                // Case: Only the media is present
-                                messageHtml = `
-                            <div class="message ${message.sender_type}">
-                                <div class="message-content">
-                                    <a href="${message.media_path}" data-lightbox="lightbox-${message.id}">
-                                        <img src="${message.media_path}" alt="Photo" class="img-fluid"
-                                             style="width: auto; height: 15rem;" />
-                                    </a>
-                                </div>
-                                <small>${createdAt}</small> <!-- Show created_at below media -->
-                            </div>`;
-                            }
 
-                            messagesContainer.append(messageHtml);
-                        });
+                                messagesContainer.append(messageHtml);
+                            });
+                        }
                     } else {
                         messagesContainer.html('<p>No messages found.</p>');
                     }
@@ -320,41 +319,98 @@
                 }
             });
         });
+
+        // Helper function to group messages by date
+        function groupMessagesByDate(messages) {
+            return messages.reduce((groups, message) => {
+                const date = new Date(message.created_at).toLocaleDateString('en-US', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    year: 'numeric',
+                });
+
+                if (!groups[date]) {
+                    groups[date] = [];
+                }
+                groups[date].push(message);
+                return groups;
+            }, {});
+        }
+
+        // Helper function to generate HTML for media content
+        function generateMediaHTML(message, isDownloadable, messageTime) {
+            if (isDownloadable) {
+                return `
+            <div class="message ${message.sender_type}">
+                <div class="message-content">
+                    <a href="${message.media_path}" download class="btn btn-primary">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+                <small>${messageTime}</small>
+            </div>`;
+            } else {
+                return `
+            <div class="message ${message.sender_type}">
+                <div class="message-content">
+                    <a href="${message.media_path}" data-lightbox="lightbox-${message.id}">
+                        <img src="${message.media_path}" alt="Media" class="img-fluid"
+                             style="width: auto; height: 15rem;" />
+                    </a>
+                </div>
+                <small>${messageTime}</small>
+            </div>`;
+            }
+        }
+
+        // Helper function to get the filename from the media path
+        function getFileName(path) {
+            return path.split('/').pop();
+        }
+
         //Reply Meessage
         $(document).ready(function() {
             $('#fileInput-{{ $row->user_id }}').on('change', function() {
                 const file = this.files[0];
+                const previewContainer = $('#imagePreview-{{ $row->user_id }}');
                 const textarea = $('textarea[name="message"]');
-                const previewContainer = $(
-                    '#imagePreview-{{ $row->user_id }}');
-                textarea.val('');
+
                 previewContainer.empty();
+                textarea.val(''); // Clear the message input
 
                 if (file) {
                     if (file.type.startsWith('image/')) {
                         const reader = new FileReader();
-
-                        // Display image preview
                         reader.onload = function(e) {
-                            const imgElement =
-                                `<img src="${e.target.result}" alt="Image Preview" style="max-width: 10%; border-radius: 12px;" />`;
+                            const imgElement = `
+                        <img src="${e.target.result}" alt="Image Preview"
+                             style="max-width: 10%; border-radius: 12px;" />
+                    `;
                             previewContainer.append(imgElement);
                         };
-
                         reader.readAsDataURL(file);
                     } else {
-                        textarea.val(file.name);
+                        previewContainer.html(`<p>${file.name}</p>`); // Show filename for non-image files
                     }
                 }
             });
+
             $('#messageForm-{{ $row->user_id }}').on('submit', function(e) {
                 e.preventDefault();
 
                 const formData = new FormData(this);
                 const userId = "{{ $row->user_id }}";
+                const file = $('#fileInput-{{ $row->user_id }}')[0].files[0];
+                const message = $('textarea[name="message"]').val().trim();
 
                 // Append the userId to formData
                 formData.append('user_id', userId);
+
+                // Ensure either message or file exists before sending
+                if (!file && message === "") {
+                    toastr.warning('Please enter a message or select a file.', 'Warning');
+                    return;
+                }
 
                 $.ajax({
                     url: '{{ route('send-message.send') }}',
@@ -363,18 +419,17 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        $('textarea[name="message"]').val('');
-                        $('#imagePreview-{{ $row->user_id }}')
-                            .empty();
+                        $('textarea[name="message"]').val(''); // Clear textarea
+                        $('#imagePreview-{{ $row->user_id }}').empty(); // Clear image preview
 
-                        let messageContent;
+                        let messageContent = '';
 
-                        // Check if the response contains an image URL
                         if (response.media_url) {
                             messageContent = `
                         <div class="message sent">
                             <div class="message-content">
-                                <img src="${response.media_url}" alt="Image" style="max-width: 10%; border-radius: 12px;" />
+                                <img src="${response.media_url}" alt="Image"
+                                     style="max-width: 10%; border-radius: 12px;" />
                             </div>
                         </div>
                     `;
@@ -387,16 +442,20 @@
                         </div>
                     `;
                         }
+
                         $('#messages-' + userId).append(messageContent);
                         $('#messages-' + userId).scrollTop($('#messages-' + userId)[0]
                             .scrollHeight);
+                        toastr.success('Message sent successfully!', 'Success');
                     },
                     error: function(xhr, status, error) {
                         console.error('Error sending message:', error);
+                        toastr.error('Failed to send message. Please try again.', 'Error');
                     }
                 });
             });
         });
+
         //Store meesage form bot
         $(document).ready(function() {
             function fetchMessages() {

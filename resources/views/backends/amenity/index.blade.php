@@ -4,9 +4,10 @@
     <div class="card">
         <div class="card-header">
             <label class="card-title font-weight-bold mb-1 text-uppercase">Amenities</label>
-            <a href="{{ route('amenities.create') }}" class="btn btn-primary float-right text-uppercase btn-sm"
-                data-value="view">
+            <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-value="view" data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop">
                 <i class="fas fa-plus"> @lang('Add')</i></a>
+            @include('backends.amenity.create')
         </div>
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
@@ -29,9 +30,9 @@
                                 <td>{{ $amenity->description ?? '-' }}</td>
                                 <td>{{ number_format($amenity->additional_price, 2) }}</td>
                                 <td>
-                                    <a href="{{ route('amenities.edit', ['amenity' => $amenity->id]) }}"
-                                        class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
-                                        title="@lang('Edit')"><i
+                                    <a href="" class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
+                                        title="@lang('Edit')" data-bs-toggle="modal"
+                                        data-bs-target="#edit_amenity-{{ $amenity->id }}"><i
                                             class="fa fa-edit ambitious-padding-btn text-uppercase">
                                             @lang('Edit')</i></a>&nbsp;&nbsp;
                                     <form id="deleteForm"
@@ -47,6 +48,7 @@
                                     </form>
                                 </td>
                             </tr>
+                            @include('backends.amenity.edit')
                         @endforeach
                     @endif
                 </tbody>

@@ -42,9 +42,10 @@
     {{-- Image link Preview --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
 
-     {{-- Select2 --}}
-     <link rel="stylesheet" href="{{ asset('backends/plugin/select2/select2/css/select2.min.css') }}">
-     <link rel="stylesheet" href="{{ asset('backends/plugin/select2/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    {{-- Select2 --}}
+    <link rel="stylesheet" href="{{ asset('backends/plugin/select2/select2/css/select2.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('backends/plugin/select2/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <style>
         .footer {
             background-color: #f8f9fa;
@@ -96,7 +97,8 @@
             background-origin: border-box;
             background-clip: padding-box, border-box;
         }
-        .select2{
+
+        .select2 {
             border-radius: 4px;
             position: relative;
             border: 1px solid transparent;

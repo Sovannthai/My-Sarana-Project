@@ -210,6 +210,15 @@
             $('.select2').select2();
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $(document).on('shown.bs.modal', '.modal', function() {
+                $(this).find('.select2').select2({
+                    dropdownParent: $(this)
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -14,13 +14,8 @@ class PriceAdjustmentController extends Controller
     public function index()
     {
         $priceAdjustments = PriceAdjustment::all();
-        return view('backends.price_adjustment.index', compact('priceAdjustments'));
-    }
-
-    public function create()
-    {
         $rooms = Room::all();
-        return view('backends.price_adjustment.create', compact('rooms'));
+        return view('backends.price_adjustment.index', compact('priceAdjustments','rooms'));
     }
 
     public function store(StorePriceAdjustmentRequest $request)
@@ -34,13 +29,6 @@ class PriceAdjustmentController extends Controller
     {
         $priceAdjustment = PriceAdjustment::findOrFail($id);
         return view('backends.price_adjustment.show', compact('priceAdjustment'));
-    }
-
-    public function edit($id)
-    {
-        $priceAdjustment = PriceAdjustment::findOrFail($id);
-        $rooms = Room::all();
-        return view('backends.price_adjustment.edit', compact('priceAdjustment', 'rooms'));
     }
 
     public function update(UpdatePriceAdjustmentRequest $request, $id)

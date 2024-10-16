@@ -15,17 +15,8 @@ class UtilityTypeController extends Controller
     public function index()
     {
         $utilityTypes = UtilityType::all();
-        return view('backends.utility_type.index', compact('utilityTypes'));
+        return view('backends.utilitie_type.index', compact('utilityTypes'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('backends.utility_type.create');
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -38,25 +29,7 @@ class UtilityTypeController extends Controller
         UtilityType::create($request->all());
 
         Session::flash('success', __('Utility Type added successfully.'));
-        return redirect()->route('utility_types.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        $utilityType = UtilityType::find($id);
-        return view('backends.utility_type.show', compact('utilityType'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        $utilityType = UtilityType::find($id);
-        return view('backends.utility_type.edit', compact('utilityType'));
+        return redirect()->route('utilities_type.index');
     }
 
     /**
@@ -64,15 +37,11 @@ class UtilityTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'type' => 'required|max:50|unique:utility_types,type,' . $id,
-        ]);
-
-        $utilityType = UtilityType::find($id);
+        $utilityType = UtilityType::findOrFail($id);
         $utilityType->update($request->all());
 
         Session::flash('success', __('Utility Type updated successfully.'));
-        return redirect()->route('utility_types.index');
+        return redirect()->route('utilities_type.index');
     }
 
     /**
@@ -89,6 +58,6 @@ class UtilityTypeController extends Controller
             Session::flash('error', __('Failed to delete Utility Type.'));
         }
 
-        return redirect()->route('utility_types.index');
+        return redirect()->route('utilities_type.index');
     }
 }
