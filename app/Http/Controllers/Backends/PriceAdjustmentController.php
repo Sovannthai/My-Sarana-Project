@@ -15,7 +15,9 @@ class PriceAdjustmentController extends Controller
     {
         $priceAdjustments = PriceAdjustment::all();
         $rooms = Room::all();
-        return view('backends.price_adjustment.index', compact('priceAdjustments','rooms'));
+        $usedRoomIds = PriceAdjustment::pluck('room_id')->toArray();
+        $availableRooms = Room::whereNotIn('id', $usedRoomIds)->get();
+        return view('backends.price_adjustment.index', compact('priceAdjustments', 'rooms','availableRooms'));
     }
 
     public function store(StorePriceAdjustmentRequest $request)

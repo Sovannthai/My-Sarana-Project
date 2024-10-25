@@ -12,29 +12,43 @@ use Illuminate\Support\Facades\Storage;
 
 class UserRequestController extends Controller
 {
+
     public function index()
     {
-        $user_requests = User::with('messages')
+        $user_requests = User::withCount([
+            'messages as unread_messages_count' => function ($query) {
+                $query->where('is_read', '0');
+            }
+        ])
             ->whereHas('messages')
-            ->get(['telegram_id as user_id', 'name', 'username', 'avatar']);
+            ->get();
 
         return view('backends.request.index', compact('user_requests'));
     }
+
     public function getMessage($userId)
     {
         $currentUserId = '1';
-
-        $messages = Message::where(function ($query) use ($userId) {
+        Message::where('is_read', '0')
+            ->where('receiver_id', $currentUserId)
+            ->where('sender_id', $userId)
+            ->update(['is_read' => '1']);
+        $messages = Message::where(function ($query) use ($userId, $currentUserId) {
             $query->where('sender_id', $userId)
-                ->orWhere('receiver_id', $userId);
+                ->where('receiver_id', $currentUserId)
+                ->orWhere(function ($q) use ($userId, $currentUserId) {
+                    $q->where('sender_id', $currentUserId)
+                        ->where('receiver_id', $userId);
+                });
         })
             ->orderBy('created_at', 'asc')
             ->get(['id', 'sender_id', 'receiver_id', 'message', 'media_path', 'created_at']);
+
+        // Add additional data to each message.
         foreach ($messages as $message) {
             $message->media_path = $message->media_path ? asset($message->media_path) : null;
             $message->sender_type = $message->sender_id == $currentUserId ? 'sent' : 'received';
         }
-
         return response()->json($messages);
     }
 
@@ -65,6 +79,7 @@ class UserRequestController extends Controller
             'user_id' => $userId,
             'sender_id' => '1',
             'receiver_id' => $userId,
+            'is_read' => '1',
             'message' => $messageText,
             'sender_type' => 'sent',
             'media_path' => $filePath,

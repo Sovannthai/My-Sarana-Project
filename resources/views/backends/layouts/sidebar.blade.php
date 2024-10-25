@@ -67,11 +67,27 @@
                         </div>
                     </li>
                 @endif
-                <li class="nav-item @if (Route::is('rooms.index')) active @endif">
-                    <a href="{{ route('rooms.index') }}">
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#room-management"
+                        @if (Route::is('rooms.*') || Route::is('price_adjustments.*')) aria-expanded="true" @else aria-expanded="false" @endif>
                         <i class="fas fa-door-closed"></i>
                         <p>@lang('Rooms Management')</p>
+                        <span class="caret"></span>
                     </a>
+                    <div class="collapse @if (Route::is('rooms.*') || Route::is('price_adjustments.*')) show @endif" id="room-management">
+                        <ul class="nav nav-collapse">
+                            <li class="@if (Route::is('rooms.*')) active @endif">
+                                <a href="{{ route('rooms.index') }}">
+                                    <span class="sub-item">@lang('Room List')</span>
+                                </a>
+                            </li>
+                            <li class="@if (Route::is('price_adjustments.index')) active @endif">
+                                <a href="{{ route('price_adjustments.index') }}">
+                                    <span class="sub-item">@lang('Room Price')</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item @if (Route::is('amenities.index')) active @endif">
                     <a href="{{ route('amenities.index') }}">
@@ -79,26 +95,14 @@
                         <p>@lang('Amenities Management')</p>
                     </a>
                 </li>
-                <li class="nav-item @if (Route::is('price_adjustments.index')) active @endif">
-                    <a href="{{ route('price_adjustments.index') }}">
-                        <i class="fas fa-tag"></i>
-                        <p>@lang('Price Management')</p>
-                    </a>
-                </li>
-                {{-- <li class="nav-item @if (Route::is('utilities.index')) active @endif">
-                    <a href="{{ route('utilities.index') }}">
-                        <i class="fas fa-plug"></i>
-                        <p>@lang('Utilities Management')</p>
-                    </a>
-                </li> --}}
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#Utilities"
-                        @if (Route::is('utilities.*')||Route::is('utilities_type.*')) aria-expanded="true" @else aria-expanded="false" @endif>
+                        @if (Route::is('utilities.*') || Route::is('utilities_type.*')) aria-expanded="true" @else aria-expanded="false" @endif>
                         <i class="fas fa-users"></i>
                         <p>@lang('Utilities Management')</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse @if (Route::is('utilities.*')||Route::is('utilities_type.*')) show @endif" id="Utilities">
+                    <div class="collapse @if (Route::is('utilities.*') || Route::is('utilities_type.*')) show @endif" id="Utilities">
                         <ul class="nav nav-collapse">
                             <li class="@if (Route::is('utilities.*')) active @endif">
                                 <a href="{{ route('utilities.index') }}">
@@ -128,7 +132,7 @@
                 <li class="nav-item @if (Route::is('user-request.index')) active @endif">
                     <a href="{{ route('user-request.index') }}">
                         <i class="fas fa-comments"></i>
-                        <p>@lang('Chat')</p>
+                        <p>@lang('Chat')</p><span class="badge badge-danger">{{ $unreadMessagesCount }}</span>
                     </a>
                 </li>
                 <li class="nav-item">

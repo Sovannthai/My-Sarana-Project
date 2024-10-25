@@ -46,7 +46,30 @@ class InvoiceController extends Controller
 
         return redirect()->route('users.index')->with($data);
     }
+    public function downloadInvoice($userId)
+    {
+        try {
+            $user = User::findOrFail($userId);
 
+            $invoiceData = [
+                'user' => $user,
+                'invoice' => [
+                    'id' => 123,
+                    'amount' => 100,
+                ],
+            ];
+
+            $pdfPath = PdfGenerator::generatePdf('backends.invoice._invoice', $invoiceData, "invoice_{$user->id}");
+
+            if (file_exists($pdfPath)) {
+                return response()->download($pdfPath, "invoice_{$user->id}.pdf")->deleteFileAfterSend(true);
+            } else {
+                return response()->json(['message' => 'PDF file not found.'], 404);
+            }
+        } catch (Exception $e) {
+            return redirect()->route('users.index')->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
+    }
     protected function sendTelegramInvoice($telegramUserId, $filePath)
     {
         $botToken = env('TELEGRAM_BOT_TOKEN');

@@ -13,7 +13,7 @@
                     <input type="hidden" id="editRateId" name="id">
                     <div class="mb-3">
                         <label for="editRatePerUnit" class="form-label">@lang('Rate per Unit')</label>
-                        <input type="number" class="form-control" id="editRatePerUnit" name="rate_per_unit" required>
+                        <input type="number" class="form-control" id="editRatePerUnit" name="rate_per_unit" step="0.01" min="0" required>
                     </div>
                 </div>
                 <div class="modal-footer">

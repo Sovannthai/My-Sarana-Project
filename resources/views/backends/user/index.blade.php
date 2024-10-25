@@ -53,6 +53,12 @@
                                     </form>
                                 @endif
                                 @if (@$user->roles->first()->name != 'Admin')
+                                    <a href="{{ route('invoice.download', $user->id) }}"
+                                        class="btn btn-outline-info btn-sm">
+                                        Download Invoice
+                                    </a>
+                                @endif
+                                @if (@$user->roles->first()->name != 'Admin')
                                     @if (auth()->user()->can('delete user'))
                                         <form id="deleteForm" action="{{ route('users.destroy', ['user' => $user->id]) }}"
                                             method="POST" class=" d-inline-block">

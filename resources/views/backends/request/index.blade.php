@@ -178,60 +178,59 @@
                         <tr>
                             <td>
                                 <a class="example-image-link" href="{{ $row->avatar }}"
-                                    data-lightbox="lightbox-{{ $row->user_id }}">
+                                    data-lightbox="lightbox-{{ $row->telegram_id }}">
                                     <img src="{{ $row->avatar }}" alt="profile" width="50px" height="50px"
                                         class="image-thumbnail" />
                                 </a>
                             </td>
                             <td>{{ $row->name }}</td>
                             <td>
-                                <button class="btn btn-outline-primary btn-sm open-chat" data-user-id="{{ $row->user_id }}"
-                                    data-bs-toggle="modal" data-bs-target="#view_message-{{ $row->user_id }}">
-                                    Chat <span class="badge badge-danger">4</span>
+                                <button class="btn btn-outline-primary btn-sm open-chat"
+                                    data-user-id="{{ $row->telegram_id }}" data-bs-toggle="modal"
+                                    data-bs-target="#view_message-{{ $row->telegram_id }}">
+                                    Chat
+                                    <span class="badge badge-danger">{{ $row->unread_messages_count }}</span>
                                 </button>
                             </td>
                         </tr>
 
                         <!-- Modal for Chat -->
-                        <div class="modal fade" id="view_message-{{ $row->user_id }}" tabindex="-1"
+                        <div class="modal fade" id="view_message-{{ $row->telegram_id }}" tabindex="-1"
                             aria-labelledby="chatModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
-                                    <!-- Modal Header with User Profile -->
                                     <div class="modal-header d-flex align-items-center">
                                         <a class="example-image-link" href="{{ $row->avatar }}"
-                                            data-lightbox="lightbox-{{ $row->user_id }}">
+                                            data-lightbox="lightbox-{{ $row->telegram_id }}">
                                             <img src="{{ $row->avatar }}" alt="profile" width="50px" height="50px"
                                                 class="rounded-circle me-3" />
                                         </a>
                                         <h5 class="modal-title">Chat with {{ $row->name }}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                        {{-- <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button> --}}
+                                        <a href="{{ route('user-request.index') }}" class="btn-close"></a>
                                     </div>
-
-                                    <!-- Chat Messages -->
                                     <div class="modal-body chat-body"
-                                        style="max-height: 550px; overflow-y: auto;background-color: #e0e0e0;border-radius: 0px;">
-                                        <div class="messages-container" id="messages-{{ $row->user_id }}">
+                                        style="max-height: 550px; overflow-y: auto; background-color: #e0e0e0; border-radius: 0px;">
+                                        <div class="messages-container" id="messages-{{ $row->telegram_id }}">
                                             <!-- Messages will be loaded here via AJAX -->
                                         </div>
                                     </div>
-                                    <!-- Message Input -->
                                     <div class="modal-footer">
-                                        <form id="messageForm-{{ $row->user_id }}" class="w-100"
+                                        <form id="messageForm-{{ $row->telegram_id }}" class="w-100"
                                             enctype="multipart/form-data">
                                             @csrf
                                             <div class="input-group">
-                                                <div id="imagePreview-{{ $row->user_id }}" class="image-preview"
-                                                    style="margin-bottom: 10px;"></div> <!-- Image Preview Container -->
-                                                <textarea name="message" class="form-control" placeholder="Type a message..." rows="1"></textarea>
-                                                <label class="input-group-text" for="fileInput-{{ $row->user_id }}">
+                                                <div id="imagePreview-{{ $row->telegram_id }}" class="image-preview"
+                                                    style="margin-bottom: 10px;"></div>
+                                                <textarea name="message" class="form-control message-text" placeholder="Type a message..." rows="1"></textarea>
+                                                <label class="input-group-text" for="fileInput-{{ $row->telegram_id }}">
                                                     <i class="fas fa-paperclip"></i>
                                                 </label>
-                                                <input type="file" class="d-none" id="fileInput-{{ $row->user_id }}"
-                                                    name="media_part"
+                                                <input type="file" class="d-none fileInput"
+                                                    id="fileInput-{{ $row->telegram_id }}" name="media_part"
                                                     accept=".pdf, .doc, .docx, .xls, .xlsx, .jpg, .jpeg, .png">
-                                                <button type="submit" class="btn btn-primary">
+                                                <button type="button" class="btn btn-primary submit-form">
                                                     <i class="fas fa-paper-plane"></i>
                                                 </button>
                                             </div>
@@ -250,11 +249,13 @@
         //Show chat conversations
         $(document).on('click', '.open-chat', function() {
             let telegramId = $(this).data('user-id');
+            console.log(telegramId);
             let messagesContainer = $('#messages-' + telegramId);
             messagesContainer.empty();
 
             let messagesUrl = `{{ route('fetch.messages', ':telegramId') }}`.replace(':telegramId', telegramId);
 
+            // Fetch messages via AJAX
             $.ajax({
                 url: messagesUrl,
                 method: 'GET',
@@ -262,6 +263,7 @@
                     if (messages.length > 0) {
                         let groupedMessages = groupMessagesByDate(messages);
 
+                        // Append grouped messages to the container
                         for (const [date, msgs] of Object.entries(groupedMessages)) {
                             messagesContainer.append(`<div class="date-header">${date}</div>`);
 
@@ -271,44 +273,51 @@
                                     .toLocaleTimeString('en-US', {
                                         hour: '2-digit',
                                         minute: '2-digit',
-                                        hour12: true,
+                                        hour12: true
                                     });
 
-                                // Check if media is a downloadable file
                                 let isDownloadable = /\.(pdf|doc|docx|xls|xlsx)$/i.test(message
                                     .media_path);
+                                let isVideo = /\.(mp4|webm|MOV)$/i.test(message.media_path);
 
-                                // If the message is "Photo received", show only media_path
-                                if (message.message && message.message.trim().toLowerCase() ===
-                                    "photo received") {
+                                if (isVideo) {
+                                    messageHtml = generateVideoHTML(message);
+                                } else if ((message.message && message.message.trim()
+                                        .toLowerCase() === "photo received") ||
+                                    (message.message && message.message.trim().toLowerCase() ===
+                                        "sticker received")) {
                                     messageHtml = generateMediaHTML(message, isDownloadable,
                                         messageTime);
                                 } else if (message.message && message.media_path) {
-                                    // Show both message and media path if the message isn't "Photo received"
                                     messageHtml = `
-                                <div class="message ${message.sender_type}">
-                                    <div class="message-content">
-                                        ${generateMediaHTML(message, isDownloadable, messageTime)}
-                                        <p>${message.message}</p>
-                                    </div>
-                                    <small>${messageTime}</small>
-                                </div>`;
+                            <div class="message ${message.sender_type}">
+                                <div class="message-content">
+                                    ${generateMediaHTML(message, isDownloadable, messageTime)}
+                                    <p>${message.message}</p>
+                                </div>
+                                <small>${messageTime}</small>
+                            </div>`;
                                 } else if (message.media_path) {
-                                    // Only media path
                                     messageHtml = generateMediaHTML(message, isDownloadable,
                                         messageTime);
                                 } else if (message.message) {
-                                    // Only message
                                     messageHtml = `
-                                <div class="message ${message.sender_type}">
-                                    <div class="message-content">${message.message}</div>
-                                    <small>${messageTime}</small>
-                                </div>`;
+                            <div class="message ${message.sender_type}">
+                                <div class="message-content">${message.message}</div>
+                                <small>${messageTime}</small>
+                            </div>`;
                                 }
 
                                 messagesContainer.append(messageHtml);
                             });
                         }
+
+                        setTimeout(function() {
+                            $('.chat-body').animate({
+                                scrollTop: messagesContainer[0].scrollHeight
+                            });
+                        }, 100);
+
                     } else {
                         messagesContainer.html('<p>No messages found.</p>');
                     }
@@ -318,8 +327,9 @@
                     messagesContainer.html('<p>Error loading messages.</p>');
                 }
             });
-        });
 
+            $('#view_message-' + telegramId).modal('show');
+        });
         // Helper function to group messages by date
         function groupMessagesByDate(messages) {
             return messages.reduce((groups, message) => {
@@ -337,29 +347,58 @@
             }, {});
         }
 
+        function generateVideoHTML(message) {
+            const fileExtension = message.media_path.split('.').pop().toLowerCase();
+            const shouldAutoplay = fileExtension === 'webm' || fileExtension === 'webp';
+            const mimeType = getMimeType(fileExtension); // New helper function to get MIME type
+
+            return `
+    <div class="message ${message.sender_type}">
+        <video ${shouldAutoplay ? 'autoplay loop' : ''} controls style="width: auto; height: 15rem;">
+            <source src="${message.media_path}" type="${mimeType}">
+            Your browser does not support the video tag.
+        </video>
+    </div>`;
+        }
+
+        // Helper function to get the MIME type based on file extension
+        function getMimeType(extension) {
+            switch (extension) {
+                case 'mp4':
+                    return 'video/mp4';
+                case 'MOV':
+                    return 'video/quicktime';
+                case 'webm':
+                    return 'video/webm';
+                case 'webp':
+                    return 'image/webp';
+                default:
+                    return 'video/mp4';
+            }
+        }
         // Helper function to generate HTML for media content
         function generateMediaHTML(message, isDownloadable, messageTime) {
             if (isDownloadable) {
                 return `
-            <div class="message ${message.sender_type}">
-                <div class="message-content">
-                    <a href="${message.media_path}" download class="btn btn-primary">
-                        <i class="fas fa-download"></i> Download
-                    </a>
-                </div>
-                <small>${messageTime}</small>
-            </div>`;
+        <div class="message ${message.sender_type}">
+            <div class="message-content">
+                <a href="${message.media_path}" download class="btn btn-primary">
+                    <i class="fas fa-download"></i> Download
+                </a>
+            </div>
+            <small>${messageTime}</small>
+        </div>`;
             } else {
                 return `
-            <div class="message ${message.sender_type}">
-                <div class="message-content">
-                    <a href="${message.media_path}" data-lightbox="lightbox-${message.id}">
-                        <img src="${message.media_path}" alt="Media" class="img-fluid"
-                             style="width: auto; height: 15rem;" />
-                    </a>
-                </div>
-                <small>${messageTime}</small>
-            </div>`;
+        <div class="message ${message.sender_type}">
+            <div class="message-content">
+                <a href="${message.media_path}" data-lightbox="lightbox-${message.id}">
+                    <img src="${message.media_path}" alt="Media" class="img-fluid"
+                         style="width: auto; height: 15rem;" />
+                </a>
+            </div>
+            <small>${messageTime}</small>
+        </div>`;
             }
         }
 
@@ -370,16 +409,18 @@
 
         //Reply Meessage
         $(document).ready(function() {
-            $('#fileInput-{{ $row->user_id }}').on('change', function() {
+            $('.fileInput').on('change', function() {
                 const file = this.files[0];
-                const previewContainer = $('#imagePreview-{{ $row->user_id }}');
-                const textarea = $('textarea[name="message"]');
+                const previewContainer = $(this).closest('.input-group').find('.imagePreview');
+                const textarea = $(this).closest('.input-group').find('textarea');
 
                 previewContainer.empty();
-                textarea.val(''); // Clear the message input
+                textarea.val('');
 
                 if (file) {
-                    if (file.type.startsWith('image/')) {
+                    const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+                    if (validImageTypes.includes(file.type)) {
                         const reader = new FileReader();
                         reader.onload = function(e) {
                             const imgElement = `
@@ -390,23 +431,29 @@
                         };
                         reader.readAsDataURL(file);
                     } else {
-                        previewContainer.html(`<p>${file.name}</p>`); // Show filename for non-image files
+                        textarea.val(file.name);
                     }
                 }
             });
 
-            $('#messageForm-{{ $row->user_id }}').on('submit', function(e) {
+            $('.submit-form').on('click', function(e) {
                 e.preventDefault();
 
-                const formData = new FormData(this);
-                const userId = "{{ $row->user_id }}";
-                const file = $('#fileInput-{{ $row->user_id }}')[0].files[0];
-                const message = $('textarea[name="message"]').val().trim();
+                const userId = $(this).closest('.modal').attr('id').split('-').pop();
+                const fileInput = $(this).closest('.input-group').find('.fileInput')[0];
+                const file = fileInput ? fileInput.files[0] : null;
+                const message = $(this).closest('.input-group').find('textarea').val();
+                const previewContainer = $(this).closest('.input-group').find('.imagePreview');
 
-                // Append the userId to formData
-                formData.append('user_id', userId);
+                const formData = new FormData();
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('_method', 'POST');
+                formData.append('telegram_id', userId);
+                formData.append('message', message);
+                if (file) {
+                    formData.append('media_part', file);
+                }
 
-                // Ensure either message or file exists before sending
                 if (!file && message === "") {
                     toastr.warning('Please enter a message or select a file.', 'Warning');
                     return;
@@ -414,13 +461,14 @@
 
                 $.ajax({
                     url: '{{ route('send-message.send') }}',
-                    type: 'POST',
+                    method: 'POST',
                     data: formData,
-                    contentType: false,
                     processData: false,
+                    contentType: false,
                     success: function(response) {
-                        $('textarea[name="message"]').val(''); // Clear textarea
-                        $('#imagePreview-{{ $row->user_id }}').empty(); // Clear image preview
+                        $('textarea[name="message"]').val('');
+                        fileInput.value = '';
+                        previewContainer.empty();
 
                         let messageContent = '';
 
@@ -454,23 +502,6 @@
                     }
                 });
             });
-        });
-
-        //Store meesage form bot
-        $(document).ready(function() {
-            function fetchMessages() {
-                $.ajax({
-                    url: '{{ route('get-chat-from-user') }}',
-                    method: 'GET',
-                    success: function(data) {
-                        console.log(data);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            }
-            setInterval(fetchMessages, 2000);
         });
     </script>
 @endsection

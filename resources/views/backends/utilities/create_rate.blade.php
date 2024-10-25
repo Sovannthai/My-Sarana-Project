@@ -15,7 +15,7 @@
                         <div class="col-sm-12">
                             <label for="rate_per_unit">@lang('Rate Per Unit')</label>
                             <input type="number" name="rate_per_unit" id="rate_per_unit" class="form-control"
-                                placeholder="@lang('Enter rate per unit')" required>
+                                placeholder="@lang('Enter rate per unit')" step="0.01" min="0" required>
                         </div>
                     </div>
 

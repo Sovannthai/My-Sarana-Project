@@ -14,7 +14,7 @@
                           <div class="col-sm-6">
                               <label for="room_id">Room</label>
                               <select name="room_id" id="room_id" class="form-control select2">
-                                  @foreach ($rooms as $room)
+                                  @foreach ($availableRooms as $room)
                                       <option value="{{ $room->id }}">{{ $room->room_number }}</option>
                                   @endforeach
                               </select>

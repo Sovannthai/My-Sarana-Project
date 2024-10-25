@@ -129,21 +129,4 @@
 
     </html>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            function fetchMessages() {
-                $.ajax({
-                    url: '{{ route('get-chat-from-user') }}',
-                    method: 'GET',
-                    success: function(data) {
-                        console.log(data);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            }
-            setInterval(fetchMessages, 2000);
-        });
-    </script>
 @endsection
