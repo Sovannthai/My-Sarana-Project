@@ -98,7 +98,7 @@
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#Utilities"
                         @if (Route::is('utilities.*') || Route::is('utilities_type.*')) aria-expanded="true" @else aria-expanded="false" @endif>
-                        <i class="fas fa-users"></i>
+                        <i class="fas fa-cubes"></i>
                         <p>@lang('Utilities Management')</p>
                         <span class="caret"></span>
                     </a>

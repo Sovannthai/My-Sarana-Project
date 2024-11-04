@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Room;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +25,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('backends.index');
+        $total_renters = User::whereHas('roles', function ($q) {
+            $q->where('id', 8);
+        })->count();
+        $total_rooms = Room::count();
+        return view('backends.index', compact('total_rooms', 'total_renters'));
     }
 }
