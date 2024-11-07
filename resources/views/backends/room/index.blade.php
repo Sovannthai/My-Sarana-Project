@@ -18,6 +18,7 @@
                         <th>@lang('Description')</th>
                         <th>@lang('Size')</th>
                         <th>@lang('Floor')</th>
+                        <th>@lang('Price')
                         <th>@lang('Status')</th>
                         <th>@lang('Actions')</th>
                     </tr>
@@ -32,6 +33,17 @@
                                 <td>{{ $room->description ?? '-' }}</td>
                                 <td>{{ $room->size }}</td>
                                 <td>{{ $room->floor }}</td>
+                                <td>
+                                    @php
+                                        $latestPricing = $room->roomPricings->sortByDesc('effective_date')->first();
+                                    @endphp
+25314444444nb
+                                    @if ($latestPricing)
+                                        ${{ number_format($latestPricing->base_price, 2) }}
+                                    @else
+                                        @lang('Not Set')
+                                    @endif
+                                </td>
                                 <td>{{ $room->status }}</td>
                                 <td>
                                     <a href="" class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
