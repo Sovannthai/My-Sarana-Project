@@ -56,11 +56,6 @@ class UserRequestController extends Controller
     //Send Message
     public function sendMessage(Request $request)
     {
-        $request->validate([
-            // 'message' => 'required|string|max:255',
-            // 'media_part' => 'nullable|file|mimes:jpg,jpeg,png,doc,docx,pdf,xls,xlsx',
-        ]);
-
         $userId = $request->input('user_id');
         $messageText = $request->input('message');
         $filePath = null;

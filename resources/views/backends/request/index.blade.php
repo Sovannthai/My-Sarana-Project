@@ -448,7 +448,7 @@
                 const formData = new FormData();
                 formData.append('_token', '{{ csrf_token() }}');
                 formData.append('_method', 'POST');
-                formData.append('telegram_id', userId);
+                formData.append('user_id', userId);
                 formData.append('message', message);
                 if (file) {
                     formData.append('media_part', file);
