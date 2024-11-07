@@ -79,12 +79,6 @@
                         <p>@lang('Amenities Management')</p>
                     </a>
                 </li>
-                <li class="nav-item @if (Route::is('price_adjustments.index')) active @endif">
-                    <a href="{{ route('price_adjustments.index') }}">
-                        <i class="fas fa-tag"></i>
-                        <p>@lang('Price Management')</p>
-                    </a>
-                </li>
                 {{-- <li class="nav-item @if (Route::is('utilities.index')) active @endif">
                     <a href="{{ route('utilities.index') }}">
                         <i class="fas fa-plug"></i>
@@ -125,6 +119,12 @@
                         <p>@lang('Chat')</p>
                     </a>
                 </li> --}}
+                <li class="nav-item @if (Route::is('price_adjustments.index')) active @endif">
+                    <a href="{{ route('price_adjustments.index') }}">
+                        <i class="fas fa-tag"></i>
+                        <p>@lang('Discounts')</p>
+                    </a>
+                </li>
                 <li class="nav-item @if (Route::is('user-request.index')) active @endif">
                     <a href="{{ route('user-request.index') }}">
                         <i class="fas fa-comments"></i>

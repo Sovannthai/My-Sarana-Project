@@ -15,7 +15,7 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $rooms = Room::all();
+        $rooms = Room::with('roomPricings')->get(); // Eager load the pricing data
         return view('backends.room.index', compact('rooms'));
     }
 
