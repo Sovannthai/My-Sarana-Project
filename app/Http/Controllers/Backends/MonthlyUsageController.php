@@ -15,10 +15,22 @@ class MonthlyUsageController extends Controller
 {
     // Display a listing of the monthly usages
     public function index()
-    {
-        $monthlyUsages = MonthlyUsage::with(['room', 'utilityType'])->get();
-        return view('backends.monthly_usages.index', compact('monthlyUsages'));
-    }
+{
+    $rooms = Room::all(); // Retrieve all rooms
+    $monthlyUsages = MonthlyUsage::with(['room', 'utilityType'])->get();
+    return view('backends.monthly_usages.index', compact('rooms', 'monthlyUsages'));
+}
+
+public function show($roomId)
+{
+    $room = Room::findOrFail($roomId); // Fetch the specific room
+    $monthlyUsages = MonthlyUsage::where('room_id', $roomId)->get(); // Fetch monthly usages for this room
+    $utilityTypes = UtilityType::all(); // Fetch all utility types
+    $rooms = Room::all(); // Fetch all rooms if you need a list of rooms
+
+    return view('backends.monthly_usages.show', compact('room', 'monthlyUsages', 'utilityTypes', 'rooms'));
+}
+
 
     // Show the form for creating monthly usage
     public function create()
@@ -28,9 +40,9 @@ class MonthlyUsageController extends Controller
         return view('backends.monthly_usages.create', compact('rooms', 'utilityTypes'));
     }
 
-    // Store the monthly usage
     public function store(Request $request)
     {
+        // Validate the incoming request data
         $request->validate([
             'room_id' => 'required|exists:rooms,id',
             'month' => 'required|integer|min:1|max:12',
@@ -39,7 +51,7 @@ class MonthlyUsageController extends Controller
             'utility_types.*.usage' => 'required|numeric|min:0',
         ]);
 
-        // Create Monthly Usage for each utility type
+        // Add new usage records for the utilities
         foreach ($request->utility_types as $utility) {
             MonthlyUsage::create([
                 'room_id' => $request->room_id,
@@ -50,9 +62,12 @@ class MonthlyUsageController extends Controller
             ]);
         }
 
+        // Flash success message and redirect
         Session::flash('success', __('Monthly usage created successfully.'));
-        return redirect()->route('monthly_usages.index');
+        return redirect()->route('monthly_usages.show', $request->room_id);
     }
+
+
     // Show the form for editing the specified monthly usage
     public function edit(MonthlyUsage $monthlyUsage)
     {
