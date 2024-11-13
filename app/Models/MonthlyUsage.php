@@ -24,7 +24,7 @@ class MonthlyUsage extends Model
 
 public function utilityType()
 {
-    return $this->belongsTo(UtilityType::class);
+    return $this->belongsTo(UtilityType::class, 'utility_type_id');
 }
 
 }

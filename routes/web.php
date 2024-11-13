@@ -85,6 +85,7 @@ Route::middleware(['auth', Localization::class, SetLocale::class,UnreadMessagesM
     });
 
     Route::resource('monthly_usages', MonthlyUsageController::class);
+    Route::get('/monthly_usages/{room}', [MonthlyUsageController::class, 'show'])->name('monthly_usages.show');
 });
 Auth::routes();
 
