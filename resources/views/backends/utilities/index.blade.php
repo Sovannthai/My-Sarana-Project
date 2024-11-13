@@ -31,7 +31,7 @@
 
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
-                <thead class="table-secondary">
+                <thead class="table-dark">
                     <tr>
                         <th>@lang('Utility Rate')</th>
                         <th>@lang('Status')</th>
@@ -59,6 +59,47 @@
         //     });
         // });
 
+        const form = document.querySelector('#editUtilityForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(form);
+            const actionUrl = form.action.replace(':id', document.getElementById('editRateId').value);
+
+            fetch(actionUrl, {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json()) // Parse JSON response
+                .then(data => {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        timeOut: 3000,
+                        extendedTimeOut: 2000,
+                        positionClass: "toast-top-right"
+                    };
+
+                    if (data.success) {
+                        toastr.success('Utility rate updated successfully.');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+
+                        form.reset();
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('editUtilityModal'));
+                        modal.hide();
+
+                        const activeTab = document.querySelector('#utilityTabs .nav-link.active');
+                        if (activeTab) {
+                            loadUtilityRates(activeTab.dataset.url);
+                        }
+                    } else {
+                        toastr.error('An error occurred while updating the utility rate.');
+                    }
+                })
+        });
+
         document.getElementById('editUtilityForm').addEventListener('submit', function(e) {
             const id = document.getElementById('editRateId').value;
             this.action = `{{ route('utilities.updateRate', ':id') }}`.replace(':id', id);
@@ -71,9 +112,13 @@
             form.querySelector('input[name="utilityTypeId"]').value = utilityTypeId;
         }
         document.addEventListener('DOMContentLoaded', () => {
+
             const tabs = document.querySelectorAll('#utilityTabs .nav-link');
             const tableBody = document.getElementById('utilityRatesTableBody');
             const storedUtilityTypeId = sessionStorage.getItem('activeUtilityTypeId');
+            const exchangeRate = @json($baseExchangeRate);
+            const currencySymbol = @json($currencySymbol);
+
             if (storedUtilityTypeId) {
                 const activeTab = Array.from(tabs).find(tab => tab.dataset.utilityId === storedUtilityTypeId);
                 if (activeTab) {
@@ -85,7 +130,6 @@
                 loadUtilityRates(tabs[0].dataset.url);
             }
 
-            // Handle tab clicks
             tabs.forEach(tab => {
                 tab.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -95,13 +139,11 @@
                 });
             });
 
-            // Function to activate the clicked tab
             function activateTab(tab) {
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
             }
 
-            // Function to load utility rates via AJAX
             function loadUtilityRates(data_url) {
                 fetch(data_url)
                     .then(response => response.json())
@@ -117,11 +159,12 @@
                             data.forEach(rate => {
                                 const deleteRoute = `{{ route('utilities.destroyRate', ':id') }}`
                                     .replace(':id', rate.id);
-                                const isChecked = rate.status == '1' ? 'checked' : ''; // Set status
+                                const convertedRate = rate.rate_per_unit * exchangeRate;
+                                const isChecked = rate.status == '1' ? 'checked' : '';
 
                                 const row = `
                         <tr>
-                            <td>${rate.rate_per_unit}</td>
+                            <td>${currencySymbol} ${convertedRate.toFixed(2)}</td>
                             <td>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input status-toggle" type="checkbox"
@@ -133,7 +176,7 @@
                             <td>
                                 <button class="btn btn-sm btn-outline-primary edit-btn"
                                     data-id="${rate.id}"
-                                    data-rate="${rate.rate_per_unit}"
+                                    data-rate="${convertedRate.toFixed(2)}"
                                     data-bs-toggle="modal"
                                     data-bs-target="#editUtilityModal">
                                     Edit
@@ -152,21 +195,17 @@
                                 tableBody.insertAdjacentHTML('beforeend', row);
                             });
 
-                            // Add click event to edit buttons
                             document.querySelectorAll('.edit-btn').forEach(button => {
                                 button.addEventListener('click', function() {
                                     const rateId = this.dataset.id;
                                     const ratePerUnit = this.dataset.rate;
 
-                                    // Populate modal inputs
                                     document.getElementById('editRateId').value = rateId;
                                     document.getElementById('editRatePerUnit').value =
                                         ratePerUnit;
                                 });
                             });
                         }
-
-                        // Reinitialize DataTable with new data
                         $('#basic-datatables').DataTable({
                             responsive: true,
                             pageLength: 5,
@@ -182,18 +221,6 @@
                                 }
                             }
                         });
-
-                        function setupEditButtons() {
-                            document.querySelectorAll('.edit-btn').forEach(button => {
-                                button.addEventListener('click', function() {
-                                    const rateId = this.dataset.id;
-                                    const ratePerUnit = this.dataset.rate;
-                                    document.getElementById('editRateId').value = rateId;
-                                    document.getElementById('editRatePerUnit').value =
-                                        ratePerUnit;
-                                });
-                            });
-                        }
 
                         function setupStatusToggles() {
                             document.querySelectorAll('.status-toggle').forEach(toggle => {
@@ -247,31 +274,20 @@
                             toastr.error(data.msg || 'An error occurred while updating the status.');
                         }
                     })
-                    .catch(error => {
-                        console.error('Error updating status:', error);
-                        toastr.options = {
-                            closeButton: true,
-                            progressBar: true,
-                            timeOut: 3000,
-                            extendedTimeOut: 2000,
-                            positionClass: "toast-top-right"
-                        };
-                        toastr.error('An unexpected error occurred.');
-                    });
             }
-            // Handle form submission
+            // Handle Modal Create
             const form = document.querySelector('#staticBackdrop form');
             form.addEventListener('submit', function(e) {
-                e.preventDefault(); // Prevent default form submission
+                e.preventDefault();
 
-                const formData = new FormData(form); // Create FormData object
+                const formData = new FormData(form);
                 const actionUrl = form.action;
 
                 fetch(actionUrl, {
                         method: 'POST',
                         body: formData,
                     })
-                    .then(response => response.json()) // Parse JSON response
+                    .then(response => response.json())
                     .then(data => {
                         toastr.options = {
                             closeButton: true,
@@ -299,10 +315,6 @@
                                 'An error occurred while creating the utility rate.');
                         }
                     })
-                    .catch(error => {
-                        console.error('Error submitting form:', error);
-                        toastr.error('An unexpected error occurred while submitting the form.');
-                    });
             });
         });
     </script>

@@ -9,13 +9,13 @@
             </div>
             <div class="modal-body">
                 <form id="utilityRateForm" action="#" method="POST">
-                    @csrf <!-- Ensure CSRF token is included -->
-                    <input type="hidden" name="utilityTypeId" value="" /> <!-- This will be dynamically set -->
+                    @csrf
+                    <input type="hidden" name="utilityTypeId" value="" />
                     <div class="row">
                         <div class="col-sm-12">
                             <label for="rate_per_unit">@lang('Rate Per Unit')</label>
                             <input type="number" name="rate_per_unit" id="rate_per_unit" class="form-control"
-                                placeholder="@lang('Enter rate per unit')" step="0.01" min="0" required>
+                                placeholder="@lang('Enter rate per unit')" step="0.0001" required>
                         </div>
                     </div>
 

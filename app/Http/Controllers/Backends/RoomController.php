@@ -7,16 +7,21 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Room;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
+use App\Services\CurrencyService;
+use App\Services;
 
 class RoomController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(CurrencyService $currencyService)
     {
-        $rooms = Room::with('roomPricings')->get(); // Eager load the pricing data
-        return view('backends.room.index', compact('rooms'));
+        $rooms = Room::with('roomPricings')->get();
+        $baseCurrency = $currencyService->getBaseCurrency();
+        $currencySymbol = $baseCurrency === 'USD' ? '$' : '៛';
+        $baseExchangeRate = $currencyService->getExchangeRate();
+        return view('backends.room.index', compact('rooms','currencySymbol','baseExchangeRate'));
     }
 
     /**

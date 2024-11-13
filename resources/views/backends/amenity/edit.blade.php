@@ -21,7 +21,7 @@
                           <div class="col-sm-6">
                               <label for="additional_price">@lang('Additional Price')</label>
                               <input type="number" step="0.01" name="additional_price" id="additional_price"
-                                  value="{{ $amenity->additional_price }}"
+                                  value="{{ $amenity->converted_price }}"
                                   class="form-control @error('additional_price') is-invalid @enderror"
                                   placeholder="@lang('Enter additional price')" required>
                           </div>

@@ -11,7 +11,7 @@
         </div>
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
-                <thead class="table-secondary">
+                <thead class="table-dark">
                     <tr>
                         <th>@lang('No.')</th>
                         <th>@lang('Room Number')</th>
@@ -37,9 +37,9 @@
                                     @php
                                         $latestPricing = $room->roomPricings->sortByDesc('effective_date')->first();
                                     @endphp
-25314444444nb
                                     @if ($latestPricing)
-                                        ${{ number_format($latestPricing->base_price, 2) }}
+                                        {{ $currencySymbol }}
+                                        {{ number_format($latestPricing->base_price * $baseExchangeRate, 2) }}
                                     @else
                                         @lang('Not Set')
                                     @endif
@@ -47,7 +47,8 @@
                                 <td>{{ $room->status }}</td>
                                 <td>
                                     <a href="" class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
-                                        title="@lang('Edit')" data-bs-toggle="modal" data-bs-target="#edit_room-{{ $room->id }}"><i
+                                        title="@lang('Edit')" data-bs-toggle="modal"
+                                        data-bs-target="#edit_room-{{ $room->id }}"><i
                                             class="fa fa-edit ambitious-padding-btn text-uppercase">
                                             @lang('Edit')</i></a>&nbsp;&nbsp;
                                     <form id="deleteForm" action="{{ route('rooms.destroy', ['room' => $room->id]) }}"

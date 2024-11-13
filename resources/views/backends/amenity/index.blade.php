@@ -11,12 +11,12 @@
         </div>
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
-                <thead class="table-secondary">
+                <thead class="table-dark">
                     <tr>
                         <th>@lang('No.')</th>
                         <th>@lang('Name')</th>
                         <th>@lang('Description')</th>
-                        <th>@lang('Additional Price')</th>
+                        <th>@lang('Additional Price')<span style="font-size:15px;">({{ $currencySymbol }})</span></th>
                         <th>@lang('Actions')</th>
                     </tr>
                 </thead>
@@ -28,7 +28,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $amenity->name }}</td>
                                 <td>{{ $amenity->description ?? '-' }}</td>
-                                <td>{{ number_format($amenity->additional_price, 2) }}</td>
+                                <td>{{ $currencySymbol }} {{ number_format($amenity->converted_price, 2) }}</td>
                                 <td>
                                     <a href="" class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
                                         title="@lang('Edit')" data-bs-toggle="modal"

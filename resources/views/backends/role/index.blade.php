@@ -12,7 +12,7 @@
         </div>
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered table-hover text-nowrap table-responsive-lg">
-                <thead class="table-secondary">
+                <thead class="table-dark">
                     <tr>
                         <th>@lang('Name')</th>
                         <th>@lang('Created at')</th>

@@ -4,7 +4,7 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\Localization;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UtilityRateController;
+use App\Http\Middleware\SetSessionData;
 use App\Http\Controllers\Backends\ChatController;
 use App\Http\Controllers\Backends\RoleController;
 use App\Http\Controllers\Backends\RoomController;
@@ -15,9 +15,11 @@ use App\Http\Controllers\Backends\InvoiceController;
 use App\Http\Controllers\Auth\TelegramLoginController;
 use App\Http\Controllers\Backends\UtilitiesController;
 use App\Http\Controllers\Backends\PermissionController;
+use App\Http\Controllers\Backends\RoomPricingController;
 use App\Http\Controllers\Backends\UserRequestController;
 use App\Http\Controllers\Backends\UtilityTypeController;
 use App\Http\Controllers\Backends\MonthlyUsageController;
+use App\Http\Controllers\Backends\BusinessSettingController;
 use App\Http\Controllers\Backends\PriceAdjustmentController;
 
 Route::get('/', function () {
@@ -35,7 +37,7 @@ Route::get('language/{locale}', function ($locale) {
 Route::post('/api/telegram-login', [TelegramLoginController::class, 'telegramLogin'])->name('store_user.telegram');
 Route::get('/telegram_callback', [TelegramLoginController::class, 'telegramAuthCallback'])->name('telegram_callback');
 
-Route::middleware(['auth', Localization::class, SetLocale::class,UnreadMessagesMiddleware::class])->group(function () {
+Route::middleware(['auth',SetSessionData::class, Localization::class, SetLocale::class,UnreadMessagesMiddleware::class])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permission', PermissionController::class);
     Route::resource('users', UserController::class);
@@ -56,6 +58,12 @@ Route::middleware(['auth', Localization::class, SetLocale::class,UnreadMessagesM
     // Get and Sent Message
     Route::get('/messages/{userId}', [UserRequestController::class, 'getMessage'])->name('fetch.messages');
     Route::post('/send-message', [UserRequestController::class, 'sendMessage'])->name('send-message.send');
+
+    //Room Pricing
+    Route::resource('room-prices',RoomPricingController::class);
+    //Business Settings
+    Route::get('business-setting', [BusinessSettingController::class, 'index'])->name('business_setting.index');
+    Route::put('update-business-setting', [BusinessSettingController::class, 'update'])->name('business_setting.update');
 
 
 

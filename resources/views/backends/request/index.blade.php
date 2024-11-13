@@ -166,7 +166,7 @@
         </div>
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
-                <thead>
+                <thead class="table-dark">
                     <tr>
                         <th>Profile</th>
                         <th>Name</th>

@@ -37,5 +37,8 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
             $event->extendSocialite('telegram', \SocialiteProviders\Telegram\Provider::class);
         });
+        $this->app->singleton(\App\Services\CurrencyService::class, function ($app) {
+            return new \App\Services\CurrencyService();
+        });
     }
 }

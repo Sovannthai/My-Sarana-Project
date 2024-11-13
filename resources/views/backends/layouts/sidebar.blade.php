@@ -3,8 +3,10 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark2">
             <a href="{{ route('home') }}" class="logo">
-                <img src="{{ asset('backends/assets/img/kaiadmin/logo_light.svg') }}" alt="navbar brand"
-                    class="navbar-brand" height="200" />
+                <img src="{{ asset('uploads/all_photo/' . session('business_logo')) }}"
+                {{-- {{ asset('backends/assets/img/kaiadmin/logo_light.svg') }} --}}
+                    class="navbar-brand" alt="AdminLTE Logo" class="brand-image"
+                    style="width: 80%;object-fit: cover;margin-left: 12px;height: 190px;max-height: 105px;" />
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
@@ -69,20 +71,20 @@
                 @endif
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#room-management"
-                        @if (Route::is('rooms.*') || Route::is('price_adjustments.*')) aria-expanded="true" @else aria-expanded="false" @endif>
+                        @if (Route::is('rooms.*') || Route::is('room-prices.*')) aria-expanded="true" @else aria-expanded="false" @endif>
                         <i class="fas fa-door-closed"></i>
                         <p>@lang('Rooms Management')</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse @if (Route::is('rooms.*') || Route::is('price_adjustments.*')) show @endif" id="room-management">
+                    <div class="collapse @if (Route::is('rooms.*') || Route::is('room-prices.*')) show @endif" id="room-management">
                         <ul class="nav nav-collapse">
                             <li class="@if (Route::is('rooms.*')) active @endif">
                                 <a href="{{ route('rooms.index') }}">
                                     <span class="sub-item">@lang('Room List')</span>
                                 </a>
                             </li>
-                            <li class="@if (Route::is('price_adjustments.index')) active @endif">
-                                <a href="{{ route('price_adjustments.index') }}">
+                            <li class="@if (Route::is('room-prices.index')) active @endif">
+                                <a href="{{ route('room-prices.index') }}">
                                     <span class="sub-item">@lang('Room Price')</span>
                                 </a>
                             </li>
@@ -129,12 +131,12 @@
                         <p>@lang('Usages Management')</p>
                     </a>
                 </li>
-                <li class="nav-item @if (Route::is('chat-indext')) active @endif">
+                {{-- <li class="nav-item @if (Route::is('chat-indext')) active @endif">
                     <a href="{{ route('chat-indext') }}">
                         <i class="fas fa-comments"></i>
                         <p>@lang('Chat')</p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item @if (Route::is('price_adjustments.index')) active @endif">
                     <a href="{{ route('price_adjustments.index') }}">
                         <i class="fas fa-tag"></i>
@@ -148,15 +150,16 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#tables">
+                    <a data-bs-toggle="collapse" href="#tables"
+                        @if (Route::is('business_setting.*')) aria-expanded="true" @else aria-expanded="false" @endif>
                         <i class="fa fas fa-cog"></i>
                         <p>@lang('Setting')</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="tables">
+                    <div class="collapse @if (Route::is('business_setting.*')) show @endif" id="tables">
                         <ul class="nav nav-collapse">
-                            <li>
-                                <a href="#">
+                            <li class="@if (Route::is('business_setting.*')) active @endif">
+                                <a href="{{ route('business_setting.index') }}">
                                     <span class="sub-item">@lang('General Setting')</span>
                                 </a>
                             </li>

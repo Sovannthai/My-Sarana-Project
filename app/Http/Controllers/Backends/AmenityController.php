@@ -4,31 +4,29 @@ namespace App\Http\Controllers\Backends;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
-use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Amenity;
 use App\Http\Requests\StoreAmenityRequest;
 use App\Http\Requests\UpdateAmenityRequest;
+use App\Services\CurrencyService;
 
 class AmenityController extends Controller
 {
-    // Uncomment this if you want to use permission-based access control.
-    // function __construct()
-    // {
-    //     $this->middleware('permission:show amenity', ['only' => ['show', 'index']]);
-    //     $this->middleware('permission:create amenity', ['only' => ['create', 'store']]);
-    //     $this->middleware('permission:update amenity', ['only' => ['edit', 'update']]);
-    //     $this->middleware('permission:delete amenity', ['only' => ['destroy']]);
-    // }
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(CurrencyService $currencyService)
     {
         $amenities = Amenity::all();
-        return view('backends.amenity.index', compact('amenities'));
+        $baseCurrency = $currencyService->getBaseCurrency();
+        $currencySymbol = $baseCurrency === 'USD' ? '$' : '៛';
+        $baseExchangeRate = $currencyService->getExchangeRate();
+        $amenities->each(function ($amenity) use ($baseExchangeRate) {
+            $amenity->converted_price = $baseExchangeRate * $amenity->additional_price;
+        });
+        return view('backends.amenity.index', compact('amenities', 'currencySymbol'));
     }
 
     /**
@@ -47,12 +45,12 @@ class AmenityController extends Controller
      * @param  \App\Http\Requests\StoreAmenityRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreAmenityRequest $request)
+    public function store(StoreAmenityRequest $request, CurrencyService $currencyService)
     {
         $amenity = new Amenity();
         $amenity->name = $request->input('name');
         $amenity->description = $request->input('description');
-        $amenity->additional_price = $request->input('additional_price');
+        $amenity->additional_price = $currencyService->convertCurrency($request->input('additional_price'));
         $amenity->save();
 
         Session::flash('success', __('Amenity added successfully.'));
@@ -77,9 +75,13 @@ class AmenityController extends Controller
      * @param  \App\Models\Amenity  $amenity
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(CurrencyService $currencyService, $id)
     {
         $amenity = Amenity::find($id);
+        $baseCurrency = $currencyService->getBaseCurrency();
+        $currencySymbol = $baseCurrency === 'USD' ? '$' : '៛';
+        $baseExchangeRate = $currencyService->getExchangeRate();
+        $amenity->converted_price = $baseExchangeRate * $amenity->additional_price;
         return view('backends.amenity.edit', compact('amenity'));
     }
 
@@ -90,12 +92,12 @@ class AmenityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAmenityRequest $request, $id)
+    public function update(UpdateAmenityRequest $request, CurrencyService $currencyService, $id)
     {
         $amenity = Amenity::find($id);
         $amenity->name = $request->input('name');
         $amenity->description = $request->input('description');
-        $amenity->additional_price = $request->input('additional_price');
+        $amenity->additional_price = $currencyService->convertCurrency($request->input('additional_price'));
         $amenity->save();
 
         Session::flash('success', __('Amenity updated successfully.'));

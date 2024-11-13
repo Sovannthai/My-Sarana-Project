@@ -2,7 +2,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>@yield('title')</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-    <link rel="icon" href="{{ asset('backends/assets/img/kaiadmin/favicon.ico') }}" type="image/x-icon" />
+    <link rel="icon" href="{{ asset('uploads/all_photo/' . session('web_logo')) }}" type="image/x-icon" />
     <!-- Fonts and icons -->
     <script src="{{ asset('backends/assets/js/plugin/webfont/webfont.min.js') }}"></script>
     <script>

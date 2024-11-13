@@ -1,4 +1,5 @@
 @extends('backends.master')
+@section('title', 'Utilities Type')
 @section('contents')
     <div class="card">
         <div class="card-header">
@@ -11,7 +12,7 @@
         </div>
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
-                <thead>
+                <thead class="table-dark">
                     <tr>
                         <th>@lang('Name')</th>
                         <th>@lang('Actions')</th>
