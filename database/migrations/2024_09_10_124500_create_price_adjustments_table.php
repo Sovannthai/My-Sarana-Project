@@ -11,10 +11,10 @@ class CreatePriceAdjustmentsTable extends Migration
         Schema::create('price_adjustments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
-            $table->decimal('amount', 10, 2);
-            $table->text('reason')->nullable();
-            $table->date('startdate');
-            $table->date('enddate')->nullable();
+            $table->decimal('percentage', 5, 2); // Store percentage value, for example 10.00 for 10%
+            $table->text('description')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active'); // Status column to mark if adjustment is active or not
+
             $table->timestamps();
         });
     }

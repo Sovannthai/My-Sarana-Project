@@ -37,7 +37,6 @@
                                     @php
                                         $latestPricing = $room->roomPricings->sortByDesc('effective_date')->first();
                                     @endphp
-25314444444nb
                                     @if ($latestPricing)
                                         ${{ number_format($latestPricing->base_price, 2) }}
                                     @else

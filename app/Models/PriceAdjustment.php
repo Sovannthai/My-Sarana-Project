@@ -9,10 +9,18 @@ class PriceAdjustment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['room_id', 'amount', 'reason', 'startdate', 'enddate'];
+    protected $fillable = [
+        'room_id',
+        'percentage',
+        'description',
+        'status',
+    ];
 
+    /**
+     * Get the room that owns the price adjustment.
+     */
     public function room()
     {
-        return $this->belongsTo(Room::class, 'room_id');
+        return $this->belongsTo(Room::class);
     }
 }
