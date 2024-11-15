@@ -81,11 +81,6 @@
                                     <span class="sub-item">@lang('Room List')</span>
                                 </a>
                             </li>
-                            <li class="@if (Route::is('price_adjustments.index')) active @endif">
-                                <a href="{{ route('price_adjustments.index') }}">
-                                    <span class="sub-item">@lang('Room Price')</span>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </li>
