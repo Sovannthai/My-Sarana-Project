@@ -17,12 +17,31 @@ class PriceAdjustmentController extends Controller
         $rooms = Room::all();
         $usedRoomIds = PriceAdjustment::pluck('room_id')->toArray();
         $availableRooms = Room::whereNotIn('id', $usedRoomIds)->get();
-        return view('backends.price_adjustment.index', compact('priceAdjustments', 'rooms','availableRooms'));
+        return view('backends.price_adjustment.index', compact('priceAdjustments', 'rooms', 'availableRooms'));
     }
 
     public function store(StorePriceAdjustmentRequest $request)
     {
-        $priceAdjustment = PriceAdjustment::create($request->validated());
+        $validated = $request->validated();
+
+        // Handle conditional validation
+        if ($validated['type'] === 'long_term' && !isset($validated['min_months'])) {
+            return back()->withErrors(['min_months' => 'Minimum months is required for Long-Term type.']);
+        }
+
+        if ($validated['type'] === 'seasonal') {
+            if (!isset($validated['start_date']) || !isset($validated['end_date'])) {
+                return back()->withErrors(['start_date' => 'Start Date and End Date are required for Seasonal type.']);
+            }
+        }
+
+        if ($validated['type'] === 'prepayment' && !isset($validated['min_prepayment_months'])) {
+            return back()->withErrors(['min_prepayment_months' => 'Minimum Prepayment Months is required for Prepayment type.']);
+        }
+
+        // Create the PriceAdjustment
+        $priceAdjustment = PriceAdjustment::create($validated);
+
         Session::flash('success', __('Price adjustment added successfully.'));
         return redirect()->route('price_adjustments.index');
     }
@@ -36,7 +55,26 @@ class PriceAdjustmentController extends Controller
     public function update(UpdatePriceAdjustmentRequest $request, $id)
     {
         $priceAdjustment = PriceAdjustment::findOrFail($id);
-        $priceAdjustment->update($request->validated());
+        $validated = $request->validated();
+
+        // Handle conditional validation
+        if ($validated['type'] === 'long_term' && !isset($validated['min_months'])) {
+            return back()->withErrors(['min_months' => 'Minimum months is required for Long-Term type.']);
+        }
+
+        if ($validated['type'] === 'seasonal') {
+            if (!isset($validated['start_date']) || !isset($validated['end_date'])) {
+                return back()->withErrors(['start_date' => 'Start Date and End Date are required for Seasonal type.']);
+            }
+        }
+
+        if ($validated['type'] === 'prepayment' && !isset($validated['min_prepayment_months'])) {
+            return back()->withErrors(['min_prepayment_months' => 'Minimum Prepayment Months is required for Prepayment type.']);
+        }
+
+        // Update the PriceAdjustment
+        $priceAdjustment->update($validated);
+
         Session::flash('success', __('Price adjustment updated successfully.'));
         return redirect()->route('price_adjustments.index');
     }
