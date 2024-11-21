@@ -15,9 +15,9 @@
                     <tr>
                         <th>No.</th>
                         <th>Room</th>
-                        <th>Amount</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
+                        <th>Percentage</th>
+                        <th>Description</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -26,9 +26,15 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $adjustment->room->room_number }}</td>
-                            <td>{{ number_format($adjustment->amount, 2) }}</td>
-                            <td>{{ $adjustment->startdate }}</td>
-                            <td>{{ $adjustment->enddate ?? '-' }}</td>
+                            <td>{{ $adjustment->percentage }}%</td>
+                            <td>{{ $adjustment->description ?? '-' }}</td>
+                            <td>
+                                @if($adjustment->status == 'active')
+                                    <span class="badge bg-success">@lang('Active')</span>
+                                @else
+                                    <span class="badge bg-danger">@lang('Inactive')</span>
+                                @endif
+                            </td>
                             <td>
                                 <a href="" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#edit_price-{{ $adjustment->id }}">

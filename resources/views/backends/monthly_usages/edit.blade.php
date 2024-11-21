@@ -1,76 +1,62 @@
-@extends('backends.master')
-@section('title', 'Edit Monthly Usage')
-@section('contents')
-<div class="card">
-    <div class="card-header">
-        <label class="card-title text-uppercase">@lang('Edit Monthly Usage')</label>
+<!-- resources/views/backends/monthly_usages/edit.blade.php -->
+
+<div class="modal fade" id="editMonthlyUsageModal-{{ $usage->id }}" tabindex="-1" aria-labelledby="editMonthlyUsageModalLabel-{{ $usage->id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('monthly_usages.update', $usage->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editMonthlyUsageModalLabel-{{ $usage->id }}">@lang('Edit Monthly Usage')</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="room_id" value="{{ $usage->room_id }}">
+
+                    <div class="mb-3">
+                        <label for="utility_type_id" class="form-label">@lang('Utility Type')</label>
+                        <select name="utility_type_id" class="form-select">
+                            @foreach ($utilityTypes as $utilityType)
+                                <option value="{{ $utilityType->id }}" {{ $utilityType->id == $usage->utility_type_id ? 'selected' : '' }}>
+                                    {{ $utilityType->type }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="usage" class="form-label">@lang('Usage')</label>
+                        <input type="text" class="form-control" id="usage" name="usage" value="{{ $usage->usage }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="month" class="form-label">@lang('Month')</label>
+                        <select name="month" class="form-select select2">
+                            <option value="1" {{ $usage->month == 1 ? 'selected' : '' }}>@lang('January')</option>
+                            <option value="2" {{ $usage->month == 2 ? 'selected' : '' }}>@lang('February')</option>
+                            <option value="3" {{ $usage->month == 3 ? 'selected' : '' }}>@lang('March')</option>
+                            <option value="4" {{ $usage->month == 4 ? 'selected' : '' }}>@lang('April')</option>
+                            <option value="5" {{ $usage->month == 5 ? 'selected' : '' }}>@lang('May')</option>
+                            <option value="6" {{ $usage->month == 6 ? 'selected' : '' }}>@lang('June')</option>
+                            <option value="7" {{ $usage->month == 7 ? 'selected' : '' }}>@lang('July')</option>
+                            <option value="8" {{ $usage->month == 8 ? 'selected' : '' }}>@lang('August')</option>
+                            <option value="9" {{ $usage->month == 9 ? 'selected' : '' }}>@lang('September')</option>
+                            <option value="10" {{ $usage->month == 10 ? 'selected' : '' }}>@lang('October')</option>
+                            <option value="11" {{ $usage->month == 11 ? 'selected' : '' }}>@lang('November')</option>
+                            <option value="12" {{ $usage->month == 12 ? 'selected' : '' }}>@lang('December')</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="year" class="form-label">@lang('Year')</label>
+                        <input type="number" class="form-control" id="year" name="year" value="{{ $usage->year }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@lang('Close')</button>
+                    <button type="submit" class="btn btn-primary">@lang('Update')</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <form action="{{ route('monthly_usages.update', $monthlyUsage->id) }}" method="POST">
-        @csrf
-        @method('PUT')
-        <div class="card-body">
-            <div class="form-group">
-                <label for="room_id">@lang('Room')</label>
-                <select name="room_id" id="room_id" class="form-control @error('room_id') is-invalid @enderror">
-                    <option value="">@lang('Select Room')</option>
-                    @foreach ($rooms as $room)
-                        <option value="{{ $room->id }}" {{ $room->id == $monthlyUsage->room_id ? 'selected' : '' }}>
-                            {{ $room->room_number }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('room_id')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="utility_type_id">@lang('Utility Type')</label>
-                <select name="utility_type_id" id="utility_type_id" class="form-control @error('utility_type_id') is-invalid @enderror">
-                    <option value="">@lang('Select Utility Type')</option>
-                    @foreach ($utilityTypes as $utilityType)
-                        <option value="{{ $utilityType->id }}" {{ $utilityType->id == $monthlyUsage->utility_type_id ? 'selected' : '' }}>
-                            {{ $utilityType->type }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('utility_type_id')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="month">@lang('Month')</label>
-                <input type="number" name="month" id="month" class="form-control @error('month') is-invalid @enderror" min="1" max="12" value="{{ $monthlyUsage->month }}">
-                @error('month')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="year">@lang('Year')</label>
-                <input type="number" name="year" id="year" class="form-control @error('year') is-invalid @enderror" value="{{ $monthlyUsage->year }}">
-                @error('year')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="usage">@lang('Usage')</label>
-                <input type="number" name="usage" id="usage" class="form-control @error('usage') is-invalid @enderror" step="0.01" value="{{ $monthlyUsage->usage }}">
-                @error('usage')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-        </div>
-        <div class="card-footer">
-            <button type="submit" class="btn btn-outline-primary btn-sm text-uppercase float-right mb-2 ml-2">
-                <i class="fas fa-save"></i> @lang('Update')
-            </button>
-            <a href="{{ route('monthly_usages.index') }}" class="float-right btn btn-dark btn-sm">
-                @lang('Cancel')
-            </a>
-        </div>
-    </form>
 </div>
-@endsection

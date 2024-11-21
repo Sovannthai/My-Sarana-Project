@@ -15,10 +15,9 @@ class StorePriceAdjustmentRequest extends FormRequest
     {
         return [
             'room_id' => 'required|exists:rooms,id',
-            'amount' => 'required|numeric|min:0',
-            'reason' => 'nullable|string',
-            'startdate' => 'required|date',
-            'enddate' => 'nullable|date|after_or_equal:startdate',
+            'percentage' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

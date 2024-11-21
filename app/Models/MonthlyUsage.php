@@ -18,13 +18,12 @@ class MonthlyUsage extends Model
     ];
 
     public function room()
-{
-    return $this->belongsTo(Room::class);
-}
+    {
+        return $this->belongsTo(Room::class);
+    }
 
-public function utilityType()
-{
-    return $this->belongsTo(UtilityType::class, 'utility_type_id');
-}
-
+    public function utilityType()
+    {
+        return $this->belongsTo(UtilityType::class, 'utility_type_id');
+    }
 }
