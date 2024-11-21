@@ -18,6 +18,11 @@ class UpdatePriceAdjustmentRequest extends FormRequest
             'percentage' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'status' => 'required|in:active,inactive',
+            'type' => 'nullable|in:long_term,seasonal,prepayment',
+            'min_months' => 'nullable|integer|min:1',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'min_prepayment_months' => 'nullable|integer|min:1',
         ];
     }
 }

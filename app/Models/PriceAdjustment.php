@@ -14,6 +14,11 @@ class PriceAdjustment extends Model
         'percentage',
         'description',
         'status',
+        'type',
+        'min_months',
+        'start_date',
+        'end_date',
+        'min_prepayment_months'
     ];
 
     /**
