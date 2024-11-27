@@ -10,7 +10,7 @@
             @include('backends.price_adjustment.create')
         </div>
         <div class="card-body">
-            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
+            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive">
                 <thead class="table-secondary">
                     <tr>
                         <th>No.</th>

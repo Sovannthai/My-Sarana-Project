@@ -16,7 +16,7 @@
                         <div class="col-sm-6">
                             <label for="room_id">Room</label>
                             <select name="room_id" id="room_id" class="form-control select2">
-                                @foreach ($availableRooms as $room)
+                                @foreach ($rooms as $room)
                                     <option value="{{ $room->id }}"
                                         {{ $adjustment->room_id == $room->id ? 'selected' : '' }}>
                                         {{ $room->room_number }}
