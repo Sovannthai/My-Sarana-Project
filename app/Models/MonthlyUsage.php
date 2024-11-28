@@ -9,21 +9,17 @@ class MonthlyUsage extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'room_id',
-        'utility_type_id',
-        'month',
-        'year',
-        'usage',
-    ];
+    protected $guarded = [];
 
     public function room()
     {
         return $this->belongsTo(Room::class);
     }
 
-    public function utilityType()
+    public function utilityTypes()
     {
-        return $this->belongsTo(UtilityType::class, 'utility_type_id');
+        return $this->belongsToMany(UtilityType::class, 'monthly_usage_details')
+            ->withPivot('usage')
+            ->withTimestamps();
     }
 }

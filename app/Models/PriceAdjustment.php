@@ -18,7 +18,8 @@ class PriceAdjustment extends Model
         'min_months',
         'start_date',
         'end_date',
-        'min_prepayment_months'
+        'min_prepayment_months',
+        'discount_type'
     ];
 
     /**

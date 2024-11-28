@@ -24,7 +24,6 @@ class PriceAdjustmentController extends Controller
     {
         $validated = $request->validated();
 
-        // Handle conditional validation
         if ($validated['type'] === 'long_term' && !isset($validated['min_months'])) {
             return back()->withErrors(['min_months' => 'Minimum months is required for Long-Term type.']);
         }
@@ -38,8 +37,6 @@ class PriceAdjustmentController extends Controller
         if ($validated['type'] === 'prepayment' && !isset($validated['min_prepayment_months'])) {
             return back()->withErrors(['min_prepayment_months' => 'Minimum Prepayment Months is required for Prepayment type.']);
         }
-
-        // Create the PriceAdjustment
         $priceAdjustment = PriceAdjustment::create($validated);
 
         Session::flash('success', __('Price adjustment added successfully.'));

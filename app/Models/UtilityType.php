@@ -18,6 +18,8 @@ class UtilityType extends Model
 
     public function monthlyUsages()
     {
-        return $this->hasMany(MonthlyUsage::class);
+        return $this->belongsToMany(MonthlyUsage::class, 'monthly_usage_details')
+            ->withPivot('usage')
+            ->withTimestamps();
     }
 }

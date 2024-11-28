@@ -26,11 +26,12 @@
                 </thead>
                 <tbody>
                     @forelse ($monthlyUsages as $usage)
+                    @dd($usage->utilityTypes)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $usage->utilityType ? $usage->utilityType->type : __('Unknown Utility Type') }}</td>
+                            <td>{{ $usage->utilityType->monthly_usage_details ?? __('Unknown Utility Type') }}</td>
                             <td>{{ $usage->usage }}</td>
-                            <td>{{ date('F', mktime(0, 0, 0, $usage->month, 1)) }}</td>
+                            <td>{{ \Illuminate\Support\Carbon::create()->month($usage->month)->format('F') }}</td>
                             <td>{{ $usage->year }}</td>
                             <td>
                                 <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
@@ -68,5 +69,30 @@
     @foreach ($monthlyUsages as $usage)
         @include('backends.monthly_usages.edit', ['usage' => $usage])
     @endforeach
+    <script>
+        $(document).ready(function() {
+            let utilityIndex = 1;
+            $('#add-utility').click(function() {
+                const newUtility = `
+                    <div class="utility-item mb-3">
+                        <label for="utility_type_id_${utilityIndex}" class="form-label">@lang('Utility Type')</label>
+                        <select name="utility_type_id[]" class="form-select">
+                            @foreach ($utilityTypes as $utilityType)
+                                <option value="{{ $utilityType->id }}">{{ $utilityType->type }}</option>
+                            @endforeach
+                        </select>
+                        <label for="usage_${utilityIndex}" class="form-label mt-2">@lang('Usage')</label>
+                        <input type="text" class="form-control usage-input" name="usage[]" required>
+                        <button type="button" class="btn btn-danger mt-2 remove-utility">@lang('Remove')</button>
+                    </div>
+                `;
+                $('#utility-container').append(newUtility);
+                utilityIndex++;
+            });
 
+            $(document).on('click', '.remove-utility', function() {
+                $(this).closest('.utility-item').remove();
+            });
+        });
+    </script>
 @endsection

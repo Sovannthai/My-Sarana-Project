@@ -10,18 +10,16 @@
             @include('backends.price_adjustment.create')
         </div>
         <div class="card-body">
-            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive">
+            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
                 <thead class="table-secondary">
                     <tr>
                         <th>No.</th>
                         <th>Room</th>
-                        <th>Percentage</th>
+                        <th>Discount Type</th>
+                        <th>Discount</th>
                         <th>Description</th>
-                        <th>Type</th>
-                        <th>Min Months</th>
                         <th>Start Date</th>
                         <th>End Date</th>
-                        <th>Min Prepayment Months</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -31,13 +29,11 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $adjustment->room->room_number }}</td>
+                            <td>{{ $adjustment->discount_type }}</td>
                             <td>{{ $adjustment->percentage }}%</td>
                             <td>{{ $adjustment->description ?? '-' }}</td>
-                            <td>{{ ucfirst($adjustment->type) }}</td>
-                            <td>{{ $adjustment->min_months ?? '-' }}</td>
                             <td>{{ $adjustment->start_date ? \Carbon\Carbon::parse($adjustment->start_date)->format('Y-m-d') : '-' }}</td>
                             <td>{{ $adjustment->end_date ? \Carbon\Carbon::parse($adjustment->end_date)->format('Y-m-d') : '-' }}</td>
-                            <td>{{ $adjustment->min_prepayment_months ?? '-' }}</td>
                             <td>
                                 @if($adjustment->status == 'active')
                                     <span class="badge bg-success">@lang('Active')</span>

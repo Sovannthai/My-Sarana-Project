@@ -10,21 +10,6 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="room_id" value="{{ $room->id }}">
-
-                    <div class="mb-3">
-                        <label for="utility_type_id" class="form-label">@lang('Utility Type')</label>
-                        <select name="utility_type_id" class="form-select">
-                            @foreach ($utilityTypes as $utilityType)
-                                <option value="{{ $utilityType->id }}">{{ $utilityType->type }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="usage" class="form-label">@lang('Usage')</label>
-                        <input type="text" class="form-control" id="usage" name="usage" required>
-                    </div>
-
                     <div class="mb-3">
                         <label for="month" class="form-label">@lang('Month')</label>
                         <select name="month" class="form-select select2">
@@ -47,6 +32,19 @@
                         <input type="number" class="form-control" id="year" name="year"
                             value="{{ date('Y') }}" required>
                     </div>
+                    <div id="utility-container">
+                        <div class="utility-item mb-3">
+                            <label for="utility_type_id_0" class="form-label">@lang('Utility Type')</label>
+                            <select name="utility_type_id[]" class="form-select">
+                                @foreach ($utilityTypes as $utilityType)
+                                    <option value="{{ $utilityType->id }}">{{ $utilityType->type }}</option>
+                                @endforeach
+                            </select>
+                            <label for="usage_0" class="form-label mt-2">@lang('Usage')</label>
+                            <input type="text" class="form-control usage-input" name="usage[]" required>
+                        </div>
+                    </div>
+                    <button type="button" id="add-utility" class="btn btn-primary mt-3">@lang('Add More')</button>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@lang('Close')</button>
