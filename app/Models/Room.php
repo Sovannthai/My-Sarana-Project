@@ -29,7 +29,7 @@ class Room extends Model
     /**
      * Get the pricing records associated with the room.
      */
-    public function roomPricings()
+    public function roomPricing()
     {
         return $this->hasMany(RoomPricing::class);
     }
@@ -45,5 +45,10 @@ class Room extends Model
     public function monthlyUsages()
     {
         return $this->hasMany(MonthlyUsage::class);
+    }
+
+    public function userContracts()
+    {
+        return $this->hasMany(UserContract::class);
     }
 }

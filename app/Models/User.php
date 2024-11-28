@@ -60,5 +60,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Message::class, 'user_id', 'telegram_id');
     }
-
+    public function userContracts()
+    {
+        return $this->hasMany(UserContract::class);
+    }
 }

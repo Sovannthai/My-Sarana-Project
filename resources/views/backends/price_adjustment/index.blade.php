@@ -1,8 +1,8 @@
 @extends('backends.master')
 @section('title', 'Price Adjustments')
 @section('contents')
-    <div class="card">
-        <div class="card-header">
+<div class="card">
+      <div class="card-header">
             <label class="card-title font-weight-bold mb-1 text-uppercase">Price Adjustments</label>
             <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop">
@@ -10,7 +10,11 @@
             @include('backends.price_adjustment.create')
         </div>
         <div class="card-body">
+<<<<<<< HEAD
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
+=======
+            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive">
+>>>>>>> pheakdey_branch
                 <thead class="table-secondary">
                     <tr>
                         <th>No.</th>
@@ -62,5 +66,5 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div>s
 @endsection

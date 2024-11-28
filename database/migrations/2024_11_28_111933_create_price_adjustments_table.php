@@ -16,12 +16,18 @@ return new class extends Migration
             $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
             $table->decimal('percentage', 5, 2);
             $table->text('description')->nullable();
+<<<<<<< HEAD:database/migrations/2024_11_28_111933_create_price_adjustments_table.php
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->enum('type', ['long_term', 'seasonal', 'prepayment'])->nullable();
             $table->integer('min_months')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->integer('min_prepayment_months')->nullable();
+=======
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
+>>>>>>> pheakdey_branch:database/migrations/2024_09_10_124500_create_price_adjustments_table.php
             $table->timestamps();
         });
     }
