@@ -4,6 +4,7 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\Localization;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backends\PaymentController;
 use App\Http\Controllers\UtilityRateController;
 use App\Http\Controllers\Backends\ChatController;
 use App\Http\Controllers\Backends\RoleController;
@@ -84,7 +85,11 @@ Route::middleware(['auth', Localization::class, SetLocale::class,UnreadMessagesM
 
     });
 
+    Route::resource('payments', PaymentController::class);
+
     Route::resource('monthly_usages', MonthlyUsageController::class);
+    Route::get('payments/get-room-price/{contractId}', [PaymentController::class, 'getRoomPrice'])->name('payments.getRoomPrice');
+
     Route::get('/monthly_usages/{room}', [MonthlyUsageController::class, 'show'])->name('monthly_usages.show');
 });
 Auth::routes();

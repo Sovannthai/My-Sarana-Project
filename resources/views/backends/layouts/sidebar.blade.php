@@ -69,12 +69,12 @@
                 @endif
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#room-management"
-                        @if (Route::is('rooms.*') || Route::is('price_adjustments.*')) aria-expanded="true" @else aria-expanded="false" @endif>
+                        @if (Route::is('rooms.*') || Route::is('rooms.*')) aria-expanded="true" @else aria-expanded="false" @endif>
                         <i class="fas fa-door-closed"></i>
                         <p>@lang('Rooms Management')</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse @if (Route::is('rooms.*') || Route::is('price_adjustments.*')) show @endif" id="room-management">
+                    <div class="collapse @if (Route::is('rooms.*') || Route::is('rooms.*')) show @endif" id="room-management">
                         <ul class="nav nav-collapse">
                             <li class="@if (Route::is('rooms.*')) active @endif">
                                 <a href="{{ route('rooms.index') }}">
@@ -134,6 +134,12 @@
                     <a href="{{ route('price_adjustments.index') }}">
                         <i class="fas fa-tag"></i>
                         <p>@lang('Discounts')</p>
+                    </a>
+                </li>
+                <li class="nav-item @if (Route::is('payments.index')) active @endif">
+                    <a href="{{ route('payments.index') }}">
+                        <i class="fas fa-Payments"></i>
+                        <p>@lang('Payments')</p>
                     </a>
                 </li>
                 <li class="nav-item @if (Route::is('user-request.index')) active @endif">
