@@ -10,11 +10,7 @@
             @include('backends.price_adjustment.create')
         </div>
         <div class="card-body">
-<<<<<<< HEAD
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
-=======
-            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive">
->>>>>>> pheakdey_branch
                 <thead class="table-secondary">
                     <tr>
                         <th>No.</th>

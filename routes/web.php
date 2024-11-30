@@ -4,12 +4,9 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\Localization;
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
 use App\Http\Middleware\SetSessionData;
-=======
 use App\Http\Controllers\Backends\PaymentController;
 use App\Http\Controllers\UtilityRateController;
->>>>>>> pheakdey_branch
 use App\Http\Controllers\Backends\ChatController;
 use App\Http\Controllers\Backends\RoleController;
 use App\Http\Controllers\Backends\RoomController;

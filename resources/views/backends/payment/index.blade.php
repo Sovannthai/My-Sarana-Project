@@ -12,7 +12,7 @@
     </div>
 
     <div class="card-body">
-        <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive">
+        <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
             <thead class="table-secondary">
                 <tr>
                     <th>No.</th>
