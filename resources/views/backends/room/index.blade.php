@@ -35,7 +35,7 @@
                                 <td>{{ $room->floor }}</td>
                                 <td>
                                     @php
-                                        $latestPricing = $room->roomPricings->sortByDesc('effective_date')->first();
+                                        $latestPricing = $room->roomPricing->sortByDesc('effective_date')->first();
                                     @endphp
                                     @if ($latestPricing)
                                         {{ $currencySymbol }}

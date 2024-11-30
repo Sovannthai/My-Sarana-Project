@@ -30,6 +30,7 @@ class MonthlyUsageController extends Controller
         $monthlyUsages = MonthlyUsage::with('utilityTypes')
             ->where('room_id', $roomId)
             ->get();
+        // dd($monthlyUsages);
         $utilityTypes = Cache::remember('utility_types', now()->addHours(1), function () {
             return UtilityType::all();
         });
@@ -80,10 +81,34 @@ class MonthlyUsageController extends Controller
 
     public function update(Request $request, MonthlyUsage $monthlyUsage)
     {
+        $validated = $request->validate([
+            'room_id' => 'required|exists:rooms,id',
+            'month' => 'required|integer|min:1|max:12',
+            'year' => 'required|integer|min:1900|max:9999',
+            'utility_type_id' => 'required|array',
+            'utility_type_id.*' => 'required|exists:utility_types,id',
+            'usage' => 'required|array',
+            'usage.*' => 'required|numeric|min:0',
+        ]);
+
         try {
-            $monthlyUsage->update($request->validated());
+            DB::transaction(function () use ($monthlyUsage, $validated) {
+                $monthlyUsage->update([
+                    'room_id' => $validated['room_id'],
+                    'month' => $validated['month'],
+                    'year' => $validated['year'],
+                ]);
+                $pivotData = [];
+                foreach ($validated['utility_type_id'] as $index => $utilityTypeId) {
+                    $pivotData[$utilityTypeId] = ['usage' => $validated['usage'][$index]];
+                }
+
+                $monthlyUsage->utilityTypes()->sync($pivotData);
+            });
+
             Session::flash('success', __('Monthly usage updated successfully.'));
         } catch (Exception $e) {
+            Log::error('Failed to update monthly usage: ' . $e->getMessage());
             Session::flash('error', __('Failed to update monthly usage.'));
         }
 

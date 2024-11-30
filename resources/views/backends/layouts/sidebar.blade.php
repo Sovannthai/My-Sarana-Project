@@ -71,20 +71,12 @@
                 @endif
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#room-management"
-<<<<<<< HEAD
-                        @if (Route::is('rooms.*') || Route::is('room-prices.*')) aria-expanded="true" @else aria-expanded="false" @endif>
-=======
                         @if (Route::is('rooms.*') || Route::is('rooms.*')) aria-expanded="true" @else aria-expanded="false" @endif>
->>>>>>> pheakdey_branch
                         <i class="fas fa-door-closed"></i>
                         <p>@lang('Rooms Management')</p>
                         <span class="caret"></span>
                     </a>
-<<<<<<< HEAD
-                    <div class="collapse @if (Route::is('rooms.*') || Route::is('room-prices.*')) show @endif" id="room-management">
-=======
                     <div class="collapse @if (Route::is('rooms.*') || Route::is('rooms.*')) show @endif" id="room-management">
->>>>>>> pheakdey_branch
                         <ul class="nav nav-collapse">
                             <li class="@if (Route::is('rooms.*')) active @endif">
                                 <a href="{{ route('rooms.index') }}">
@@ -133,7 +125,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item @if (Route::is('monthly_usages.index')) active @endif">
+                <li class="nav-item @if (Route::is('monthly_usages.*')) active @endif">
                     <a href="{{ route('monthly_usages.index') }}">
                         <i class="fas fa-chart-line"></i>
                         <p>@lang('Usages Management')</p>

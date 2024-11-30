@@ -1,7 +1,17 @@
 @extends('backends.master')
 @section('title', 'Monthly Usage Records')
 @section('contents')
-
+    <style>
+        .remove-utility {
+            margin-top: 10px;
+        }
+    </style>
+    <div class="back-btn">
+        <a href="{{ route('monthly_usages.index') }}" class="float-left" data-value="veiw">
+            <i class="fas fa-arrow-left"></i>&nbsp;&nbsp;
+            Back To all Rooms
+        </a><br>
+    </div><br>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <label class="card-title font-weight-bold text-uppercase">
@@ -13,8 +23,8 @@
             </a>
         </div>
         <div class="card-body">
-            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
-                <thead class="table-secondary">
+            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
+                <thead class="table-dark">
                     <tr>
                         <th>@lang('No.')</th>
                         <th>@lang('Utility Type')</th>
@@ -26,32 +36,48 @@
                 </thead>
                 <tbody>
                     @forelse ($monthlyUsages as $usage)
-                    @dd($usage->utilityTypes)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $usage->utilityType->monthly_usage_details ?? __('Unknown Utility Type') }}</td>
-                            <td>{{ $usage->usage }}</td>
+                            <td>
+                                @if ($usage->utilityTypes->isNotEmpty())
+                                    <ul>
+                                        @foreach ($usage->utilityTypes as $utilityType)
+                                            <li>{{ $utilityType->type }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <span>@lang('No Utility Types')</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($usage->utilityTypes->isNotEmpty())
+                                    <ul>
+                                        @foreach ($usage->utilityTypes as $utility)
+                                            <li>
+                                                <span>{{ $utility->pivot->usage }}</span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <span>@lang('No Usage Data')</span>
+                                @endif
+                            </td>
                             <td>{{ \Illuminate\Support\Carbon::create()->month($usage->month)->format('F') }}</td>
                             <td>{{ $usage->year }}</td>
                             <td>
-                                <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editMonthlyUsageModal-{{ $usage->id }}">
-                                    <i class="fas fa-edit"></i> @lang('Edit')
-                                </a>&nbsp;&nbsp;
+                                <a href="#" class="btn btn-outline-primary btn-sm text-uppercase"
+                                    data-bs-toggle="modal" data-bs-target="#editMonthlyUsageModal-{{ $usage->id }}">
+                                    <i class="fas fa-edit"> @lang('Edit')</i>
+                                </a>
 
-                                <form id="deleteForm"
-                                    action="{{ route('monthly_usages.destroy', ['monthly_usage' => $usage->id]) }}"
-                                    method="POST" class="d-inline-block">
+                                <form action="{{ route('monthly_usages.destroy', $usage->id) }}" method="POST"
+                                    class="d-inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
-                                        title="@lang('Delete')">
-                                        <i class="fa fa-trash ambitious-padding-btn text-uppercase">
-                                            @lang('Delete')
-                                        </i>
+                                    <button type="submit" class="btn btn-outline-danger btn-sm text-uppercase">
+                                        <i class="fa fa-trash"> @lang('Delete')</i>
                                     </button>
                                 </form>
-
                             </td>
                         </tr>
                     @empty
@@ -71,27 +97,70 @@
     @endforeach
     <script>
         $(document).ready(function() {
-            let utilityIndex = 1;
-            $('#add-utility').click(function() {
-                const newUtility = `
-                    <div class="utility-item mb-3">
-                        <label for="utility_type_id_${utilityIndex}" class="form-label">@lang('Utility Type')</label>
-                        <select name="utility_type_id[]" class="form-select">
-                            @foreach ($utilityTypes as $utilityType)
-                                <option value="{{ $utilityType->id }}">{{ $utilityType->type }}</option>
-                            @endforeach
-                        </select>
-                        <label for="usage_${utilityIndex}" class="form-label mt-2">@lang('Usage')</label>
-                        <input type="text" class="form-control usage-input" name="usage[]" required>
-                        <button type="button" class="btn btn-danger mt-2 remove-utility">@lang('Remove')</button>
+            let utilityIndex = 0;
+
+            //append a utility row
+            function appendUtilityRow(container, utilityTypes, index = null, utilityTypeId = '', usageValue = '') {
+                const utilityOptions = `
+                    @foreach ($utilityTypes as $utilityType)
+                        <option value="{{ $utilityType->id }}" ${
+                            utilityTypeId == '{{ $utilityType->id }}' ? 'selected' : ''
+                        }>{{ $utilityType->type }}</option>
+                    @endforeach
+                `;
+
+                const newUtilityRow = `
+                    <div class="row utility-item mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label">@lang('Utility Type')</label>
+                            <select name="utility_type_id[]" class="form-select" required>
+                                ${utilityOptions}
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="form-label">@lang('Usage')</label>
+                            <input type="text" class="form-control usage-input" name="usage[]" value="${usageValue}" required>
+                        </div>
+                        <div class="col-sm-2 mt-4">
+                            <button type="button" class="btn btn-danger btn-sm remove-utility">@lang('Remove')</button>
+                        </div>
                     </div>
                 `;
-                $('#utility-container').append(newUtility);
+                container.append(newUtilityRow);
+            }
+
+            // Add utility row
+            $(document).on('click', '#add-utility', function() {
+                const parentModal = $(this).closest('.modal');
+                const container = parentModal.find('#utility-container');
                 utilityIndex++;
+                appendUtilityRow(container, @json($utilityTypes), utilityIndex);
             });
 
+            // Remove utility row
             $(document).on('click', '.remove-utility', function() {
                 $(this).closest('.utility-item').remove();
+            });
+
+            $('.modal').on('show.bs.modal', function() {
+                const parentModal = $(this);
+                const container = parentModal.find('#utility-container');
+                const utilities = container.data(
+                'utilities');
+                utilityIndex = utilities?.length || 0;
+
+                if (utilities) {
+                    container.empty();
+                    utilities.forEach((utility, index) => {
+                        appendUtilityRow(
+                            container,
+                            @json($utilityTypes),
+                            index,
+                            utility.utility_type_id,
+                            utility.usage
+                        );
+                    });
+                }
             });
         });
     </script>

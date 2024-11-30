@@ -17,7 +17,7 @@ class RoomController extends Controller
      */
     public function index(CurrencyService $currencyService)
     {
-        $rooms = Room::with('roomPricings')->get();
+        $rooms = Room::with('roomPricing')->get();
         $baseCurrency = $currencyService->getBaseCurrency();
         $currencySymbol = $baseCurrency === 'USD' ? '$' : '៛';
         $baseExchangeRate = $currencyService->getExchangeRate();

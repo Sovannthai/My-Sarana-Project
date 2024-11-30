@@ -27,19 +27,27 @@
                             </select>
                         </div>
                         <div class="col-sm-4">
-                            <label for="percentage">Percentage</label>
+                            <label for="percentage">Discount Value</label>
                             <input type="number" name="percentage" id="percentage" class="form-control" step="0.01" min="0">
                         </div>
-                        <div class="col-sm-12">
-                            <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control" rows="3"></textarea>
+                        <div class="col-sm-4">
+                            <label for="start_date">Start Date</label>
+                            <input type="date" name="start_date" id="start_date" class="form-control">
                         </div>
-                        <div class="col-sm-12 mt-2">
+                        <div class="col-sm-4">
+                            <label for="end_date">End Date</label>
+                            <input type="date" name="end_date" id="end_date" class="form-control">
+                        </div>
+                        <div class="col-sm-4">
                             <label for="status">Status</label>
                             <select name="status" id="status" class="form-control">
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
                             </select>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="description">Description</label>
+                            <textarea name="description" id="description" class="form-control" rows="3"></textarea>
                         </div>
                         <div class="mt-2">
                             <button type="submit" class="btn btn-outline-primary btn-sm text-uppercase float-right mb-2 ml-2">Submit</button>

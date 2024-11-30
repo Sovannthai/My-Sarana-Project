@@ -1,6 +1,6 @@
 <div class="modal fade" id="createMonthlyUsageModal" tabindex="-1" aria-labelledby="createMonthlyUsageModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form action="{{ route('monthly_usages.store') }}" method="POST">
                 @csrf
@@ -33,18 +33,28 @@
                             value="{{ date('Y') }}" required>
                     </div>
                     <div id="utility-container">
-                        <div class="utility-item mb-3">
-                            <label for="utility_type_id_0" class="form-label">@lang('Utility Type')</label>
-                            <select name="utility_type_id[]" class="form-select">
-                                @foreach ($utilityTypes as $utilityType)
-                                    <option value="{{ $utilityType->id }}">{{ $utilityType->type }}</option>
-                                @endforeach
-                            </select>
-                            <label for="usage_0" class="form-label mt-2">@lang('Usage')</label>
-                            <input type="text" class="form-control usage-input" name="usage[]" required>
+                        <div class="row utility-item mb-3">
+                            <div class="col-sm-6">
+                                <label for="utility_type_id_0" class="form-label">@lang('Utility Type')</label>
+                                <select name="utility_type_id[]" class="form-select">
+                                    @foreach ($utilityTypes as $utilityType)
+                                        <option value="{{ $utilityType->id }}">{{ $utilityType->type }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="usage_0" class="form-label">@lang('Usage')</label>
+                                <input type="text" class="form-control usage-input" name="usage[]" required>
+                            </div>
+                            <div class="col-sm-2 mt-4">
+                                <button type="button"
+                                    class="btn btn-danger btn-sm remove-utility">@lang('Remove')</button>
+                            </div>
                         </div>
                     </div>
-                    <button type="button" id="add-utility" class="btn btn-primary mt-3">@lang('Add More')</button>
+                    <div class="d-flex">
+                        <button type="button" id="add-utility" class="btn btn-primary">@lang('Add More')</button>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@lang('Close')</button>
