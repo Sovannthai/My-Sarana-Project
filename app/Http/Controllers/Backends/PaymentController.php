@@ -16,7 +16,6 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        // Fetch all payments
         $payments = Payment::all();
         $contracts = UserContract::all();
         return view('backends.payment.index', compact('payments', 'contracts'));
@@ -24,17 +23,23 @@ class PaymentController extends Controller
 
     public function getRoomPrice($contractId)
 {
-    $contract = UserContract::with(['room.roomPricing' => function ($query) {
-        $query->latest()->first();
-    }])->findOrFail($contractId);
+    $contract = UserContract::with([
+        'room.roomPricing' => function ($query) {
+            $query->latest()->first();
+        },
+        'room.amenities'
+    ])->findOrFail($contractId);
 
-    $price = $contract->room->roomPricing->first()?->base_price ?? 0;
+    $basePrice = $contract->room->roomPricing->first()?->base_price ?? 0;
+
+    $additionalPrice = $contract->room->amenities->sum('additional_price');
+
+    $totalPrice = $basePrice + $additionalPrice;
 
     return response()->json([
-        'price' => $price
+        'price' => $totalPrice
     ]);
 }
-
 
     /**
      * Store a newly created resource in storage.
@@ -51,7 +56,6 @@ class PaymentController extends Controller
             'year_paid' => $request->year_paid,
         ]);
 
-        // Flash success message and redirect
         Session::flash('success', __('Payment added successfully.'));
         return redirect()->route('payments.index');
     }
@@ -71,7 +75,6 @@ class PaymentController extends Controller
             'year_paid' => $request->year_paid,
         ]);
 
-        // Flash success message and redirect
         Session::flash('success', __('Payment updated successfully.'));
         return redirect()->route('payments.index');
     }
@@ -82,13 +85,10 @@ class PaymentController extends Controller
     public function destroy(Payment $payment)
     {
         try {
-            // Delete payment record
             $payment->delete();
 
-            // Flash success message
             Session::flash('success', __('Payment deleted successfully.'));
         } catch (\Exception $e) {
-            // Flash error message in case of failure
             Session::flash('error', __('Failed to delete payment.'));
         }
 

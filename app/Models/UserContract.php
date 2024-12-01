@@ -11,6 +11,8 @@ class UserContract extends Model
 
     protected $guarded = [];
 
+    protected $table = 'user_contracts';
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -23,6 +25,6 @@ class UserContract extends Model
 
     public function payments()
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Payment::class, 'user_contract_id');
     }
 }
