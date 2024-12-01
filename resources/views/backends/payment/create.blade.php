@@ -1,5 +1,6 @@
 <!-- Create Payment Modal -->
-<div class="modal fade" id="createPaymentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createPaymentModalLabel" aria-hidden="true">
+<div class="modal fade" id="createPaymentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="createPaymentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,13 +15,15 @@
                             <label for="user_contract_id">Tenant</label>
                             <select name="user_contract_id" id="user_contract_id" class="form-control select2">
                                 @foreach ($contracts as $contract)
-                                    <option value="{{ $contract->id }}">{{ $contract->user->name }} - {{ $contract->room->room_number }}</option>
+                                    <option value="{{ $contract->id }}">{{ $contract->user->name }} -
+                                        {{ $contract->room->room_number }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-sm-6">
                             <label for="amount">Amount</label>
-                            <input type="number" name="amount" id="amount" class="form-control" step="0.01" min="0" required disabled>
+                            <input type="number" name="amount" id="amount" class="form-control" step="0.01"
+                                min="0" required disabled>
                         </div>
                         <div class="col-sm-6">
                             <label for="type">Payment Type</label>
@@ -37,11 +40,13 @@
                         </div>
                         <div class="col-sm-6">
                             <label for="month_paid">Month Paid</label>
-                            <input type="number" name="month_paid" id="month_paid" class="form-control" min="1" max="12">
+                            <input type="number" name="month_paid" id="month_paid" class="form-control" min="1"
+                                max="12">
                         </div>
                         <div class="col-sm-6">
                             <label for="year_paid">Year Paid</label>
-                            <input type="number" name="year_paid" id="year_paid" class="form-control" min="1900" max="{{ date('Y') }}">
+                            <input type="number" name="year_paid" id="year_paid" class="form-control" min="1900"
+                                max="{{ date('Y') }}">
                         </div>
                         <div class="col-sm-12 mt-2">
                             <label for="status">Status</label>
@@ -51,8 +56,10 @@
                             </select>
                         </div>
                         <div class="mt-2">
-                            <button type="submit" class="btn btn-outline-primary btn-sm text-uppercase float-right mb-2 ml-2">Submit</button>
-                            <a href="#" type="button" data-bs-dismiss="modal" class="float-right btn btn-dark btn-sm">Cancel</a>
+                            <button type="submit"
+                                class="btn btn-outline-primary btn-sm text-uppercase float-right mb-2 ml-2">Submit</button>
+                            <a href="#" type="button" data-bs-dismiss="modal"
+                                class="float-right btn btn-dark btn-sm">Cancel</a>
                         </div>
                     </div>
                 </form>
@@ -62,33 +69,55 @@
 </div>
 
 <script>
-$(document).ready(function() {
-    // Initially disable the price field
-    $('#amount').prop('disabled', true);
+    $(document).ready(function() {
+        $('#amount').prop('disabled', true);
 
-    // Handle change in payment type selection
-    $('#type').on('change', function() {
-        var paymentType = $(this).val();
+        $('#type').on('change', function() {
+            var paymentType = $(this).val();
 
-        if (paymentType === 'rent') {
-            // Enable the amount field for rent
-            $('#amount').prop('disabled', false);
+            if (paymentType === 'rent') {
+                $('#amount').prop('disabled', false);
 
-            // When the payment type is rent, get the tenant's contract room price
-            var contractId = $('#user_contract_id').val();
+                var contractId = $('#user_contract_id').val();
 
-            console.log(contractId)
+                console.log(contractId)
 
-            if (contractId) {
-                // Make an AJAX call to fetch the room price based on the selected contract
+                if (contractId) {
+                    $.ajax({
+                        url: "{{ route('payments.getRoomPrice', '') }}/" + contractId,
+                        method: 'GET',
+                        success: function(response) {
+                            if (response.price) {
+                                $('#amount').val(response.price).prop('disabled', false);
+                            } else {
+                                alert('Error: Price not found.');
+                                $('#amount').val('').prop('disabled', true);
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error("AJAX Error:", xhr.responseText);
+                            alert('Failed to fetch room price. Please try again.');
+                        }
+                    });
+
+                }
+            } else {
+                $('#amount').val('').prop('disabled', true);
+            }
+        });
+
+        $('#user_contract_id').on('change', function() {
+            var contractId = $(this).val();
+
+            console.log("Selected contract ID: " + contractId);
+
+            if ($('#type').val() === 'rent' && contractId) {
                 $.ajax({
                     url: "{{ route('payments.getRoomPrice', '') }}/" + contractId,
                     method: 'GET',
                     success: function(response) {
-                        // Log the response to ensure data is returned correctly
                         console.log("Room Price Response:", response);
 
-                        // Check if a price is returned and populate the amount field
                         if (response.price) {
                             $('#amount').val(response.price).prop('disabled', false);
                         } else {
@@ -96,46 +125,10 @@ $(document).ready(function() {
                         }
                     },
                     error: function(xhr, status, error) {
-                        // Handle AJAX errors
                         console.error("AJAX Error:", error);
                     }
                 });
             }
-        } else {
-            // If payment type is not rent, disable the amount field
-            $('#amount').val('').prop('disabled', true);
-        }
+        });
     });
-
-    // Handle change in tenant selection (user_contract_id)
-    $('#user_contract_id').on('change', function() {
-        var contractId = $(this).val();
-
-        // Log to check if the contractId is being retrieved
-        console.log("Selected contract ID: " + contractId);
-
-        if ($('#type').val() === 'rent' && contractId) {
-            // Make an AJAX call to fetch the room price based on the selected contract
-            $.ajax({
-                url: "{{ route('payments.getRoomPrice', '') }}/" + contractId,
-                method: 'GET',
-                success: function(response) {
-                    // Log the response to ensure data is returned correctly
-                    console.log("Room Price Response:", response);
-
-                    // Check if a price is returned and populate the amount field
-                    if (response.price) {
-                        $('#amount').val(response.price).prop('disabled', false);
-                    } else {
-                        $('#amount').val('').prop('disabled', true);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Handle AJAX errors
-                    console.error("AJAX Error:", error);
-                }
-            });
-        }
-    });
-});
 </script>

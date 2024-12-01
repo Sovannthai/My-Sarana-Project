@@ -145,7 +145,7 @@
                 </li>
                 <li class="nav-item @if (Route::is('payments.index')) active @endif">
                     <a href="{{ route('payments.index') }}">
-                        <i class="fas fa-Payments"></i>
+                        <i class="fas fa-credit-card"></i>
                         <p>@lang('Payments')</p>
                     </a>
                 </li>

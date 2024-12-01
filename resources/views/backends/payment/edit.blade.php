@@ -15,8 +15,8 @@
                             <div class="col-sm-6">
                                 <label for="user_contract_id">Tenant</label>
                                 <select name="user_contract_id" id="user_contract_id" class="form-control select2">
-                                    @foreach ($userContracts as $contract)
-                                        <option value="{{ $contract->id }}" {{ $payment->user_contract_id == $contract->id ? 'selected' : '' }}>{{ $contract->tenant->name }} - {{ $contract->room->name }}</option>
+                                    @foreach ($contracts as $contract)
+                                        <option value="{{ $contract->id }}" {{ $payment->user_contract_id == $contract->id ? 'selected' : '' }}>{{ $contract->user->name }} - {{ $contract->room->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

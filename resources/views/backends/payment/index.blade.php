@@ -12,7 +12,7 @@
     </div>
 
     <div class="card-body">
-        <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive">
+        <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
             <thead class="table-secondary">
                 <tr>
                     <th>No.</th>
@@ -30,7 +30,7 @@
                 @foreach ($payments as $payment)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $payment->userContract->tenant->name }}</td>
+                        <td>{{ $payment->userContract->user->name }}</td>
                         <td>{{ $payment->amount }} {{ $payment->currency ?? 'USD' }}</td>
                         <td>{{ ucfirst($payment->type) }}</td>
                         <td>{{ $payment->payment_date ? \Carbon\Carbon::parse($payment->payment_date)->format('Y-m-d') : '-' }}</td>
