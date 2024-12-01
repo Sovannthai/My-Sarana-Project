@@ -22,7 +22,7 @@ class UpdatePaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_contract_id' => 'required|exists:contracts,id',
+            'user_contract_id' => 'required|exists:user_contracts,id',
             'amount' => 'required|numeric|min:0',
             'type' => 'required|in:rent,utility,advance',
             'payment_date' => 'required|date',

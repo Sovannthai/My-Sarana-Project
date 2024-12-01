@@ -30,7 +30,7 @@
                 @foreach ($payments as $payment)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $payment->userContract->tenant->name }}</td>
+                        <td>{{ $payment->userContract->user->name }}</td>
                         <td>{{ $payment->amount }} {{ $payment->currency ?? 'USD' }}</td>
                         <td>{{ ucfirst($payment->type) }}</td>
                         <td>{{ $payment->payment_date ? \Carbon\Carbon::parse($payment->payment_date)->format('Y-m-d') : '-' }}</td>

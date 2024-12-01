@@ -13,6 +13,7 @@ class Payment extends Model
 
     public function userContract()
     {
-        return $this->belongsTo(UserContract::class, 'user_contract_id', 'id');
+        return $this->belongsTo(UserContract::class);
     }
+
 }
