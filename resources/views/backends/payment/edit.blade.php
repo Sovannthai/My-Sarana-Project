@@ -46,9 +46,10 @@
                             </div>
                             <div class="col-sm-12 mt-2">
                                 <label for="status">Status</label>
-                                <select name="status" id="status" class="form-control">
-                                    <option value="completed" {{ $payment->status == 'completed' ? 'selected' : '' }}>Completed</option>
-                                    <option value="pending" {{ $payment->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <select name="status" id="status" class="form-control select2">
+                                    <option value="completed" {{ $payment->payment_status == 'completed' ? 'selected' : '' }}>Completed</option>
+                                    <option value="partial" {{ $payment->payment_status == 'partial' ? 'selected' : '' }}>Partial</option>
+                                    <option value="pending" {{ $payment->payment_status == 'pending' ? 'selected' : '' }}>Pending</option>
                                 </select>
                             </div>
                             <div class="mt-2">

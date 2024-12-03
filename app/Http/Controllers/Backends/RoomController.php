@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Backends;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Session;
-use App\Models\Room;
-use App\Http\Requests\StoreRoomRequest;
-use App\Http\Requests\UpdateRoomRequest;
-use App\Services\CurrencyService;
+use Exception;
 use App\Services;
+use App\Models\Room;
+use App\Models\Amenity;
+use App\Http\Requests\Request;
+use App\Services\CurrencyService;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreRoomRequest;
+use Illuminate\Support\Facades\Session;
+use App\Http\Requests\UpdateRoomRequest;
 
 class RoomController extends Controller
 {
@@ -21,7 +24,8 @@ class RoomController extends Controller
         $baseCurrency = $currencyService->getBaseCurrency();
         $currencySymbol = $baseCurrency === 'USD' ? '$' : '៛';
         $baseExchangeRate = $currencyService->getExchangeRate();
-        return view('backends.room.index', compact('rooms','currencySymbol','baseExchangeRate'));
+        $amenities = Amenity::where('status','1')->get();
+        return view('backends.room.index', compact('rooms', 'currencySymbol', 'baseExchangeRate', 'amenities'));
     }
 
     /**
@@ -35,18 +39,28 @@ class RoomController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoomRequest $request)
+    public function store(Request $request)
     {
-        $room = new Room();
-        $room->room_number = $request->input('room_number');
-        $room->description = $request->input('description');
-        $room->size = $request->input('size');
-        $room->floor = $request->input('floor');
-        $room->status = $request->input('status');
-        $room->save();
+        try {
+            // dd($request->all());
+            $room = new Room();
+            $room->room_number = $request->input('room_number');
+            $room->description = $request->input('description');
+            $room->size = $request->input('size');
+            $room->floor = $request->input('floor');
+            $room->status = $request->input('status');
+            $room->save();
+            if ($request->has('amenity_id')) {
+                $room->amenities()->attach($request->input('amenity_id'));
+            }
 
-        Session::flash('success', __('Room added successfully.'));
-        return redirect()->route('rooms.index');
+            Session::flash('success', __('Room added successfully.'));
+            return redirect()->route('rooms.index');
+        } catch (Exception $e) {
+            dd($e);
+            Session::flash('error', __('An error occurred while adding room.'));
+            return redirect()->route('rooms.index');
+        }
     }
 
     /**
@@ -79,6 +93,9 @@ class RoomController extends Controller
         $room->floor = $request->input('floor');
         $room->status = $request->input('status');
         $room->save();
+        if ($request->has('amenity_id')) {
+            $room->amenities()->attach($request->input('amenity_id'));
+        }
 
         Session::flash('success', __('Room updated successfully.'));
         return redirect()->route('rooms.index');

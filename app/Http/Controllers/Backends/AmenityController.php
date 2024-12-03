@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Backends;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Session;
+use Exception;
 use App\Models\Amenity;
+use App\Services\CurrencyService;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
+use Illuminate\Support\Facades\Session;
 use App\Http\Requests\StoreAmenityRequest;
 use App\Http\Requests\UpdateAmenityRequest;
-use App\Services\CurrencyService;
 
 class AmenityController extends Controller
 {
@@ -121,5 +124,27 @@ class AmenityController extends Controller
         }
 
         return redirect()->route('amenities.index');
+    }
+
+    public function updateStatus(Request $request)
+    {
+        try {
+            $status = $request->input('status') === 'true' ? "1" : "0";
+            $amenity = Amenity::findOrFail($request->input('id'));
+            $amenity->status = $status;
+            $amenity->save();
+            $output = [
+                'success' => 1,
+                'msg' => ('Status update successfully')
+            ];
+        } catch (Exception $e) {
+            Log::info("message");
+            dd($e);
+            $output = [
+                'error' => 0,
+                'msg' => ('Something went wrong')
+            ];
+        }
+        return response()->json($output);
     }
 }

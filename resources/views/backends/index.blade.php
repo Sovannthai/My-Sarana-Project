@@ -1,4 +1,5 @@
 @extends('backends.master')
+@section('title','Home')
 @section('contents')
 @section('content-header', 'Welcome, ' . auth()->user()->name)
 <style>

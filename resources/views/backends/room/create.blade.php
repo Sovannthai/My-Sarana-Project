@@ -32,6 +32,19 @@
                           </div>
 
                           <div class="col-sm-6">
+                            <label for="amenity_id">@lang('Amenity')</label>
+                            <select name="amenity_id[]" id="amenity_id" class="form-control select2" multiple>
+                                <option value="" disabled>@lang('Select amenities')</option>
+                                @foreach ($amenities as $amenity)
+                                    <option value="{{ $amenity->id }}">{{ $amenity->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('amenity_id')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                          <div class="col-sm-6">
                               <label for="status">@lang('Status')</label>
                               <select name="status" id="" class="form-control select2">
                                   <option value="" selected>Select</option>

@@ -71,6 +71,7 @@ Route::middleware(['auth',SetSessionData::class, Localization::class, SetLocale:
 
 
     Route::resource('amenities', AmenityController::class);
+    Route::post('/update-status', [AmenityController::class, 'updateStatus'])->name('amenity.update_status');
     Route::resource('rooms', RoomController::class);
     Route::resource('price_adjustments', PriceAdjustmentController::class);
 

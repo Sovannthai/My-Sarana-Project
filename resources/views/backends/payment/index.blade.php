@@ -12,7 +12,7 @@
     </div>
 
     <div class="card-body">
-        <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
+        <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive">
             <thead class="table-secondary">
                 <tr>
                     <th>No.</th>
@@ -37,8 +37,10 @@
                         <td>{{ $payment->month_paid ?? '-' }}</td>
                         <td>{{ $payment->year_paid ?? '-' }}</td>
                         <td>
-                            @if($payment->status == 'completed')
+                            @if($payment->payment_status == 'completed')
                                 <span class="badge bg-success">@lang('Completed')</span>
+                            @elseif($payment->payment_status == 'partial')
+                                <span class="badge bg-info">@lang('Partial')</span>
                             @else
                                 <span class="badge bg-warning">@lang('Pending')</span>
                             @endif

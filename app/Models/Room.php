@@ -21,10 +21,11 @@ class Room extends Model
     /**
      * Get the amenities associated with the room.
      */
-    public function amenities(): BelongsToMany
+    public function amenities()
     {
-        return $this->belongsToMany(Amenity::class, 'room_amenity');
+        return $this->belongsToMany(Amenity::class, 'room_amenity', 'room_id', 'amenity_id');
     }
+
 
     /**
      * Get the pricing records associated with the room.

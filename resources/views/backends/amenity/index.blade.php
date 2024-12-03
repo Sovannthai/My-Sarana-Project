@@ -15,8 +15,8 @@
                     <tr>
                         <th>@lang('No.')</th>
                         <th>@lang('Name')</th>
-                        <th>@lang('Description')</th>
                         <th>@lang('Additional Price')<span style="font-size:15px;">({{ $currencySymbol }})</span></th>
+                        <th>@lang('Status')</th>
                         <th>@lang('Actions')</th>
                     </tr>
                 </thead>
@@ -27,8 +27,17 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $amenity->name }}</td>
-                                <td>{{ $amenity->description ?? '-' }}</td>
                                 <td>{{ $currencySymbol }} {{ number_format($amenity->converted_price, 2) }}</td>
+                                <td>
+                                    <div
+                                        class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                        <input type="checkbox" class="custom-control-input toggle-status"
+                                            id="customSwitches{{ $amenity->id }}" data-id="{{ $amenity->id }}"
+                                            {{ $amenity->status == '1' ? 'checked' : '' }}>
+                                        <label class="custom-control-label" for="customSwitches{{ $amenity->id }}"></label>
+                                    </div>
+                                </td>
+
                                 <td>
                                     <a href="" class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
                                         title="@lang('Edit')" data-bs-toggle="modal"
@@ -55,4 +64,36 @@
             </table>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('.toggle-status').on('change', function() {
+                var status = $(this).prop('checked');
+                var id = $(this).data('id');
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('amenity.update_status') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        id: id,
+                        status: status
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.success === 1) {
+                            toastr.success(response.msg);
+                        } else {
+                            toastr.error(response.msg);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        toastr.error("An error occurred: " + xhr.responseJSON?.msg || error);
+                    }
+                });
+            });
+        });
+    </script>
+
 @endsection

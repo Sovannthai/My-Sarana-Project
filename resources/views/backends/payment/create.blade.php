@@ -52,6 +52,7 @@
                             <label for="status">Status</label>
                             <select name="status" id="status" class="form-control">
                                 <option value="completed">Completed</option>
+                                <option value="partial">Partial</option>
                                 <option value="pending">Pending</option>
                             </select>
                         </div>

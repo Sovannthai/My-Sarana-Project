@@ -106,13 +106,18 @@
     $(document).ready(function() {
         $('.dropify').dropify();
     });
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "@lang('Select amenities')",
+            allowClear: true
+        });
+    });
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         lightbox.option({
-        'resizeDuration': 200,
+            'resizeDuration': 200,
             'wrapAround': true
         });
     });
 </script>
-

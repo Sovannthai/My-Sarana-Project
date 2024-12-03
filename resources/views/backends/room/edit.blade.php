@@ -33,14 +33,31 @@
                             <input type="number" name="floor" id="floor" class="form-control"
                                 value="{{ $room->floor }}">
                         </div>
-
+                        <div class="col-sm-6">
+                            <label for="amenity_id">@lang('Amenity')</label>
+                            <select name="amenity_id[]" id="amenity_id" class="form-control select2" multiple>
+                                <option value="" disabled>@lang('Select amenities')</option>
+                                @foreach ($amenities as $amenity)
+                                    <option value="{{ $amenity->id }}"
+                                        @if (in_array($amenity->id, old('amenity_id', $room->amenities->pluck('id')->toArray() ?? []))) selected @endif>
+                                        {{ $amenity->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('amenity_id')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
                         <div class="col-sm-6">
                             <label for="status">@lang('Status')</label>
                             <select name="status" id="" class="form-control select2">
                                 <option value="" selected>Select</option>
-                                <option value="available"  {{ $room->status   == 'available' ? 'selected':'' }}>Available</option>
-                                <option value="occupied"   {{ $room->status    == 'occupied' ? 'selected':'' }}>Occupied</option>
-                                <option value="maintenance"{{ $room->status == 'maintenance' ? 'selected':'' }}>Maintenance</option>
+                                <option value="available" {{ $room->status == 'available' ? 'selected' : '' }}>Available
+                                </option>
+                                <option value="occupied" {{ $room->status == 'occupied' ? 'selected' : '' }}>Occupied
+                                </option>
+                                <option value="maintenance"{{ $room->status == 'maintenance' ? 'selected' : '' }}>
+                                    Maintenance</option>
                             </select>
                         </div>
                         <div class="col-sm-12">

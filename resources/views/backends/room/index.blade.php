@@ -10,15 +10,15 @@
             @include('backends.room.create')
         </div>
         <div class="card-body">
-            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
+            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
                 <thead class="table-dark">
                     <tr>
                         <th>@lang('No.')</th>
                         <th>@lang('Room Number')</th>
-                        <th>@lang('Description')</th>
                         <th>@lang('Size')</th>
                         <th>@lang('Floor')</th>
-                        <th>@lang('Price')
+                        <th>@lang('Price')</th>
+                        <th>@lang('Amenity')</th>
                         <th>@lang('Status')</th>
                         <th>@lang('Actions')</th>
                     </tr>
@@ -30,7 +30,6 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $room->room_number }}</td>
-                                <td>{{ $room->description ?? '-' }}</td>
                                 <td>{{ $room->size }}</td>
                                 <td>{{ $room->floor }}</td>
                                 <td>
@@ -42,6 +41,14 @@
                                         {{ number_format($latestPricing->base_price * $baseExchangeRate, 2) }}
                                     @else
                                         @lang('Not Set')
+                                    @endif
+                                </td>
+                                <td>
+                                    @foreach ($room->amenities as $amenity)
+                                        <li>{{ $amenity->name }}</li>
+                                    @endforeach
+                                    @if ($room->amenities->isEmpty())
+                                        <li>@lang('Not Set')</li>
                                     @endif
                                 </td>
                                 <td>{{ $room->status }}</td>
