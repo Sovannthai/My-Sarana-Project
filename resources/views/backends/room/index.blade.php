@@ -37,7 +37,7 @@
                                         $latestPricing = $room->roomPricing->sortByDesc('effective_date')->first();
                                     @endphp
                                     @if ($latestPricing)
-                       i                {{ $currencySymbol }}
+                                        {{ $currencySymbol }}
                                         {{ number_format($latestPricing->base_price * $baseExchangeRate, 2) }}
                                     @else
                                         @lang('Not Set')

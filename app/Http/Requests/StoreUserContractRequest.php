@@ -27,7 +27,7 @@ class StoreUserContractRequest extends FormRequest
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
             'monthly_rent' => 'required|numeric|min:0',
-            'contract_pdf' => 'required|file|mimes:pdf|max:2048',
+            'contract_pdf' => 'nullable',
         ];
     }
 }

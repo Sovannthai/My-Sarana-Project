@@ -100,7 +100,7 @@ class UserController extends Controller
             $user->email = $request->email;
             $user->password = $request->password;
             if ($request->hasFile('image')) {
-                $user->image = $this->uploadImage($request->file('image'));
+                $user->image =  
             }
 
             $role = Role::findOrFail($request->role);

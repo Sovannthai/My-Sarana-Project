@@ -37,52 +37,64 @@
                                 @endforeach
                             </select>
                         </div>
-
-                        <!-- Start Date -->
                         <div class="col-sm-6">
                             <label for="start_date">@lang('Start Date')</label>
                             <input type="date" name="start_date" class="form-control"
                                 value="{{ $contract->start_date }}" required>
                         </div>
-
-                        <!-- End Date -->
                         <div class="col-sm-6">
                             <label for="end_date">@lang('End Date')</label>
                             <input type="date" name="end_date" class="form-control"
                                 value="{{ $contract->end_date }}" required>
                         </div>
-
-                        <!-- Monthly Rent -->
                         <div class="col-sm-6">
                             <label for="monthly_rent">@lang('Monthly Rent')</label>
                             <input type="number" name="monthly_rent" class="form-control" min="0" step="0.01"
                                 value="{{ $contract->monthly_rent }}" required>
                         </div>
-
-                        <!-- Contract PDF -->
                         <div class="col-sm-6">
                             <label for="contract_pdf">@lang('Contract PDF')</label>
-                            <input type="file" name="contract_pdf" class="form-control" accept=".pdf">
-                            <small class="form-text text-muted">
-                                Leave this blank if you don't want to update the PDF file.
-                            </small>
-                        </div>
+                            <input type="file" name="contract_pdf" class="form-control">
+                            @if ($contract->contract_pdf)
+                                @php
+                                    $fileExtension = pathinfo($contract->contract_pdf, PATHINFO_EXTENSION);
+                                @endphp
 
-                        <!-- Current PDF -->
+                                @if (strtolower($fileExtension) === 'pdf')
+                                    <small class="form-text text-muted">
+                                        @lang('Current File:')
+                                        <a href="{{ asset($contract->contract_pdf) }}" target="_blank">
+                                            {{ basename($contract->contract_pdf) }}
+                                        </a>
+                                    </small>
+                                @else
+                                    <small class="form-text text-muted">
+                                        @lang('Current Image:')
+                                        <a href="{{ asset('uploads/all_photo/' . $contract->contract_pdf) }}"
+                                            target="_blank">
+                                            <img src="{{ asset('uploads/all_photo/' . $contract->contract_pdf) }}"
+                                                alt="Uploaded Image" width="50px" height="50px" />
+                                        </a>
+                                    </small>
+                                @endif
+                            @else
+                                <small class="form-text text-muted">
+                                    @lang('No file currently uploaded.')
+                                </small>
+                            @endif
+                        </div>
                         @if ($contract->contract_pdf)
                             <div class="col-12 mt-2">
                                 <p>@lang('Current Contract PDF'):</p>
-                                <a href="{{ asset('storage/' . $contract->contract_pdf) }}" target="_blank"
-                                    class="btn btn-sm btn-outline-primary">
+                                <a href="{{ asset($contract->contract_pdf) }}" target="_blank"
+                                    class="btn btn-info btn-sm">
                                     @lang('View PDF')
                                 </a>
                             </div>
                         @endif
                     </div>
-
-                    <!-- Submit and Cancel Buttons -->
                     <div class="mt-2">
-                        <button type="submit" class="btn btn-outline-primary btn-sm text-uppercase float-right">
+                        <button type="submit" class="btn btn-outline-primary btn-sm text-uppercase float-right ml-2">
                             <i class="fas fa-save"></i> @lang('Update')
                         </button>
                         <a href="" type="button" data-bs-dismiss="modal"

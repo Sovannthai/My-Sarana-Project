@@ -52,10 +52,10 @@
                             <label for="status">@lang('Status')</label>
                             <select name="status" id="" class="form-control select2">
                                 <option value="" selected>Select</option>
-                                <option value="available" {{ $room->status == 'available' ? 'selected' : '' }}>Available
+                                {{-- <option value="available" {{ $room->status == 'available' ? 'selected' : '' }}>Available
                                 </option>
                                 <option value="occupied" {{ $room->status == 'occupied' ? 'selected' : '' }}>Occupied
-                                </option>
+                                </option> --}}
                                 <option value="maintenance"{{ $room->status == 'maintenance' ? 'selected' : '' }}>
                                     Maintenance</option>
                             </select>

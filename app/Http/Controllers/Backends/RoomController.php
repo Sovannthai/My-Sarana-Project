@@ -24,7 +24,7 @@ class RoomController extends Controller
         $baseCurrency = $currencyService->getBaseCurrency();
         $currencySymbol = $baseCurrency === 'USD' ? '$' : '៛';
         $baseExchangeRate = $currencyService->getExchangeRate();
-        $amenities = Amenity::where('status','1')->get();
+        $amenities = Amenity::where('status', '1')->get();
         return view('backends.room.index', compact('rooms', 'currencySymbol', 'baseExchangeRate', 'amenities'));
     }
 
@@ -42,13 +42,12 @@ class RoomController extends Controller
     public function store(Request $request)
     {
         try {
-            // dd($request->all());
             $room = new Room();
             $room->room_number = $request->input('room_number');
             $room->description = $request->input('description');
             $room->size = $request->input('size');
             $room->floor = $request->input('floor');
-            $room->status = $request->input('status');
+            $room->status = $request->input('status') ?? 'available';
             $room->save();
             if ($request->has('amenity_id')) {
                 $room->amenities()->attach($request->input('amenity_id'));
@@ -84,21 +83,27 @@ class RoomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoomRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $room = Room::find($id);
-        $room->room_number = $request->input('room_number');
-        $room->description = $request->input('description');
-        $room->size = $request->input('size');
-        $room->floor = $request->input('floor');
-        $room->status = $request->input('status');
-        $room->save();
-        if ($request->has('amenity_id')) {
-            $room->amenities()->attach($request->input('amenity_id'));
-        }
+        try {
+            $room = Room::find($id);
+            $room->room_number = $request->input('room_number');
+            $room->description = $request->input('description');
+            $room->size = $request->input('size');
+            $room->floor = $request->input('floor');
+            $room->status = $request->input('status');
+            $room->save();
+            if ($request->has('amenity_id')) {
+                $room->amenities()->sync($request->input('amenity_id'));
+            }
 
-        Session::flash('success', __('Room updated successfully.'));
-        return redirect()->route('rooms.index');
+            Session::flash('success', __('Room updated successfully.'));
+            return redirect()->route('rooms.index');
+        } catch (Exception $e) {
+            dd($e);
+            Session::flash('error', __('An error occurred while updating room.'));
+            return redirect()->route('rooms.index');
+        }
     }
 
     /**

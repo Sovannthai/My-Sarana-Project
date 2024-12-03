@@ -41,13 +41,25 @@
                         </div>
                         <div class="col-sm-6">
                             <label for="month_paid">Month Paid</label>
-                            <input type="number" name="month_paid" id="month_paid" class="form-control" min="1"
-                                max="12">
+                            <select name="month_paid" class="form-select select2">
+                                <option value="1">@lang('January')</option>
+                                <option value="2">@lang('February')</option>
+                                <option value="3">@lang('March')</option>
+                                <option value="4">@lang('April')</option>
+                                <option value="5">@lang('May')</option>
+                                <option value="6">@lang('June')</option>
+                                <option value="7">@lang('July')</option>
+                                <option value="8">@lang('August')</option>
+                                <option value="9">@lang('September')</option>
+                                <option value="10">@lang('October')</option>
+                                <option value="11">@lang('November')</option>
+                                <option value="12">@lang('December')</option>
+                            </select>
                         </div>
                         <div class="col-sm-6">
                             <label for="year_paid">Year Paid</label>
-                            <input type="number" name="year_paid" id="year_paid" class="form-control" min="1900"
-                                max="{{ date('Y') }}">
+                            <input type="number" class="form-control" id="year" name="year_paid"
+                            value="{{ date('Y') }}" required>
                         </div>
                         <div class="col-sm-12 mt-2">
                             <label for="status">Status</label>

@@ -33,12 +33,29 @@
                                 <td>{{ $contract->room->room_number }}</td>
                                 <td>{{ $contract->start_date }}</td>
                                 <td>{{ $contract->end_date ?? '-' }}</td>
-                                <td>{{ $currencySymbol }}{{ number_format($contract->monthly_rent, 2) }}</td>
+                                <td>{{ $currencySymbol }} {{ number_format($contract->monthly_rent, 2) }}</td>
                                 <td>
                                     @if ($contract->contract_pdf)
-                                        <a href="{{ asset('storage/' . $contract->contract_pdf) }}" target="_blank" class="btn btn-info btn-sm">
-                                            @lang('View PDF')
-                                        </a>
+                                        @php
+                                            $fileExtension = pathinfo($contract->contract_pdf, PATHINFO_EXTENSION);
+                                        @endphp
+                                        @if (strtolower($fileExtension) === 'pdf')
+                                            <a href="{{ asset($contract->contract_pdf) }}" target="_blank"
+                                                class="btn btn-info btn-sm">
+                                                @lang('View PDF')
+                                            </a>
+                                        @else
+                                            <span>
+                                                <a class="example-image-link"
+                                                    href="{{ asset('uploads/all_photo/' . $contract->contract_pdf) }}"
+                                                    data-lightbox="lightbox-{{ $contract->id }}">
+                                                    <img class="example-image image-thumbnail"
+                                                        src="{{ asset('uploads/all_photo/' . $contract->contract_pdf) }}"
+                                                        alt="profile" width="50px" height="50px"
+                                                        style="cursor:pointer" />
+                                                </a>
+                                            </span>
+                                        @endif
                                     @else
                                         @lang('No File')
                                     @endif
@@ -49,7 +66,8 @@
                                         data-bs-target="#edit_contract-{{ $contract->id }}"><i
                                             class="fa fa-edit ambitious-padding-btn text-uppercase">
                                             @lang('Edit')</i></a>&nbsp;&nbsp;
-                                    <form id="deleteForm" action="{{ route('user_contracts.destroy', ['user_contract' => $contract->id]) }}"
+                                    <form id="deleteForm"
+                                        action="{{ route('user_contracts.destroy', ['user_contract' => $contract->id]) }}"
                                         method="POST" class="d-inline-block">
                                         @csrf
                                         @method('DELETE')

@@ -44,7 +44,7 @@
                             @enderror
                         </div>
 
-                          <div class="col-sm-6">
+                          {{-- <div class="col-sm-6">
                               <label for="status">@lang('Status')</label>
                               <select name="status" id="" class="form-control select2">
                                   <option value="" selected>Select</option>
@@ -52,7 +52,7 @@
                                   <option value="occupied">Occupied</option>
                                   <option value="">Maintenance</option>
                               </select>
-                          </div>
+                          </div> --}}
                           <div class="col-sm-12">
                               <label for="description">@lang('Description')</label>
                               <textarea name="description" rows="5" id="description" class="form-control" placeholder="@lang('Enter room description')"></textarea>

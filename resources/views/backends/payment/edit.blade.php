@@ -38,7 +38,13 @@
                             </div>
                             <div class="col-sm-6">
                                 <label for="month_paid">Month Paid</label>
-                                <input type="number" name="month_paid" id="month_paid" class="form-control" value="{{ $payment->month_paid }}" min="1" max="12">
+                                <select name="month_paid" id="month_paid-{{ $payment->id }}" class="form-select select2">
+                                    @for ($i = 1; $i <= 12; $i++)
+                                        <option value="{{ $i }}" {{ $payment->month_paid == $i ? 'selected' : '' }}>
+                                            {{ \Illuminate\Support\Carbon::create()->month($i)->format('F') }}
+                                        </option>
+                                    @endfor
+                                </select>
                             </div>
                             <div class="col-sm-6">
                                 <label for="year_paid">Year Paid</label>
