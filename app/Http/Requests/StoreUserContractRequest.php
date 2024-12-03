@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePaymentRequest extends FormRequest
+class StoreUserContractRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,12 @@ class UpdatePaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_contract_id' => 'required|exists:user_contracts,id',
-            'amount' => 'required|numeric|min:0',
-            'type' => 'required|in:rent,utility,advance',
-            'payment_date' => 'required|date',
-            'month_paid' => 'required|integer|min:1|max:12',
-            'year_paid' => 'nullable|integer|min:1900|max:' . date('Y'),
+            'user_id' => 'required|exists:users,id',
+            'room_id' => 'required|exists:rooms,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'monthly_rent' => 'required|numeric|min:0',
+            'contract_pdf' => 'required|file|mimes:pdf|max:2048',
         ];
     }
 }

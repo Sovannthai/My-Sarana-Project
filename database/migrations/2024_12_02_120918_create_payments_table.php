@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_contract_id')->constrained('user_contracts')->onDelete('cascade');
             $table->decimal('amount', 10, 2);
-            $table->enum('type', ['rent', 'utility', 'advance']);
+            $table->enum('type', ['all_paid', 'rent', 'utility', 'advance']);
             $table->date('payment_date');
             $table->integer('month_paid')->nullable();
             $table->integer('year_paid')->nullable();

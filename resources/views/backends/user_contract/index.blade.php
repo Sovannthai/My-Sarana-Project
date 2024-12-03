@@ -1,64 +1,55 @@
 @extends('backends.master')
-@section('title', 'Rooms')
+@section('title', 'User Contracts')
 @section('contents')
     <div class="card">
         <div class="card-header">
-            <label class="card-title font-weight-bold mb-1 text-uppercase">Rooms</label>
+            <label class="card-title font-weight-bold mb-1 text-uppercase">User Contracts</label>
             <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-value="view" data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop">
                 <i class="fas fa-plus"> @lang('Add')</i></a>
-            @include('backends.room.create')
+            @include('backends.user_contract.create')
         </div>
         <div class="card-body">
-            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
+            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
                 <thead class="table-dark">
                     <tr>
                         <th>@lang('No.')</th>
-                        <th>@lang('Room Number')</th>
-                        <th>@lang('Size')</th>
-                        <th>@lang('Floor')</th>
-                        <th>@lang('Price')</th>
-                        <th>@lang('Amenity')</th>
-                        <th>@lang('Status')</th>
+                        <th>@lang('User')</th>
+                        <th>@lang('Room')</th>
+                        <th>@lang('Start Date')</th>
+                        <th>@lang('End Date')</th>
+                        <th>@lang('Monthly Rent')</th>
+                        <th>@lang('Contract PDF')</th>
                         <th>@lang('Actions')</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @if ($rooms)
-                        @foreach ($rooms as $room)
+                    @if ($userContracts)
+                        @foreach ($userContracts as $contract)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $room->room_number }}</td>
-                                <td>{{ $room->size }}</td>
-                                <td>{{ $room->floor }}</td>
+                                <td>{{ $contract->user->name }}</td>
+                                <td>{{ $contract->room->room_number }}</td>
+                                <td>{{ $contract->start_date }}</td>
+                                <td>{{ $contract->end_date ?? '-' }}</td>
+                                <td>{{ $currencySymbol }}{{ number_format($contract->monthly_rent, 2) }}</td>
                                 <td>
-                                    @php
-                                        $latestPricing = $room->roomPricing->sortByDesc('effective_date')->first();
-                                    @endphp
-                                    @if ($latestPricing)
-                       i                {{ $currencySymbol }}
-                                        {{ number_format($latestPricing->base_price * $baseExchangeRate, 2) }}
+                                    @if ($contract->contract_pdf)
+                                        <a href="{{ asset('storage/' . $contract->contract_pdf) }}" target="_blank" class="btn btn-info btn-sm">
+                                            @lang('View PDF')
+                                        </a>
                                     @else
-                                        @lang('Not Set')
+                                        @lang('No File')
                                     @endif
                                 </td>
-                                <td>
-                                    @foreach ($room->amenities as $amenity)
-                                        <li>{{ $amenity->name }}</li>
-                                    @endforeach
-                                    @if ($room->amenities->isEmpty())
-                                        <li>@lang('Not Set')</li>
-                                    @endif
-                                </td>
-                                <td>{{ $room->status }}</td>
                                 <td>
                                     <a href="" class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
                                         title="@lang('Edit')" data-bs-toggle="modal"
-                                        data-bs-target="#edit_room-{{ $room->id }}"><i
+                                        data-bs-target="#edit_contract-{{ $contract->id }}"><i
                                             class="fa fa-edit ambitious-padding-btn text-uppercase">
                                             @lang('Edit')</i></a>&nbsp;&nbsp;
-                                    <form id="deleteForm" action="{{ route('rooms.destroy', ['room' => $room->id]) }}"
+                                    <form id="deleteForm" action="{{ route('user_contracts.destroy', ['user_contract' => $contract->id]) }}"
                                         method="POST" class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
@@ -70,7 +61,7 @@
                                     </form>
                                 </td>
                             </tr>
-                            @include('backends.room.edit')
+                            @include('backends.user_contract.edit')
                         @endforeach
                     @endif
                 </tbody>
