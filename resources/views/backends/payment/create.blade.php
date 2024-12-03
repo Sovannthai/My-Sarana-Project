@@ -29,6 +29,7 @@
                             <label for="type">Payment Type</label>
                             <select name="type" id="type" class="form-control">
                                 <option value="" selected>-- Select Type --</option>
+                                <option value="all_paid">Paid for All</option>
                                 <option value="rent">Rent</option>
                                 <option value="utility">Utility</option>
                                 <option value="advance">Advance</option>

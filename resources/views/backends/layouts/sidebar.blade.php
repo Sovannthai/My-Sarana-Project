@@ -51,6 +51,11 @@
                                         <span class="sub-item">@lang('Users')</span>
                                     </a>
                                 </li>
+                                <li class="@if (Route::is('user_contracts.*')) active @endif">
+                                    <a href="{{ route('user_contracts.index') }}">
+                                        <span class="sub-item">@lang('Contract')</span>
+                                    </a>
+                                </li>
                                 @if (auth()->user()->can('view role'))
                                     <li class="@if (Route::is('roles.*')) active @endif">
                                         <a href="{{ route('roles.index') }}">

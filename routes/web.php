@@ -4,8 +4,8 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\Localization;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backends\UserContractController;
 use App\Http\Middleware\SetSessionData;
-use App\Http\Controllers\Backends\PaymentController;
 use App\Http\Controllers\UtilityRateController;
 use App\Http\Controllers\Backends\ChatController;
 use App\Http\Controllers\Backends\RoleController;
@@ -14,6 +14,7 @@ use App\Http\Controllers\Backends\UserController;
 use App\Http\Middleware\UnreadMessagesMiddleware;
 use App\Http\Controllers\Backends\AmenityController;
 use App\Http\Controllers\Backends\InvoiceController;
+use App\Http\Controllers\Backends\PaymentController;
 use App\Http\Controllers\Auth\TelegramLoginController;
 use App\Http\Controllers\Backends\UtilitiesController;
 use App\Http\Controllers\Backends\PermissionController;
@@ -95,6 +96,7 @@ Route::middleware(['auth',SetSessionData::class, Localization::class, SetLocale:
     });
 
     Route::resource('payments', PaymentController::class);
+    Route::resource('user_contracts', UserContractController::class);
 
     Route::resource('monthly_usages', MonthlyUsageController::class);
     Route::get('payments/get-room-price/{contractId}', [PaymentController::class, 'getRoomPrice'])->name('payments.getRoomPrice');

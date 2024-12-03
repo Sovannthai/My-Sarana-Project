@@ -55,7 +55,6 @@ class PaymentController extends Controller
             'month_paid' => $request->month_paid,
             'year_paid' => $request->year_paid,
         ]);
-
         Session::flash('success', __('Payment added successfully.'));
         return redirect()->route('payments.index');
     }
