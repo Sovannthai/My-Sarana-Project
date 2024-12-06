@@ -26,7 +26,6 @@
                 </thead>
                 <tbody>
                     @forelse ($monthlyUsages as $usage)
-                    @dd($usage->utilityTypes)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $usage->utilityType->monthly_usage_details ?? __('Unknown Utility Type') }}</td>
