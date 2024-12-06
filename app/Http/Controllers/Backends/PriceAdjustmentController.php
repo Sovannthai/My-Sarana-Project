@@ -18,6 +18,7 @@ class PriceAdjustmentController extends Controller
         $rooms = Room::all();
         $usedRoomIds = PriceAdjustment::pluck('room_id')->toArray();
         $availableRooms = Room::whereNotIn('id', $usedRoomIds)->get();
+
         return view('backends.price_adjustment.index', compact('priceAdjustments', 'rooms', 'availableRooms'));
     }
 
@@ -32,6 +33,7 @@ class PriceAdjustmentController extends Controller
     public function show($id)
     {
         $priceAdjustment = PriceAdjustment::findOrFail($id);
+
         return view('backends.price_adjustment.show', compact('priceAdjustment'));
     }
 
@@ -49,6 +51,7 @@ class PriceAdjustmentController extends Controller
         try {
             $priceAdjustment = PriceAdjustment::findOrFail($id);
             $priceAdjustment->delete();
+
             Session::flash('success', __('Price adjustment deleted successfully.'));
         } catch (\Exception $e) {
             Session::flash('error', __('Failed to delete price adjustment.'));

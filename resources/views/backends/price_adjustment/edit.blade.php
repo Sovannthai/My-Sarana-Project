@@ -4,21 +4,19 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Edit Price Adjustment</h5>
+                <h5 class="modal-title" id="edit_priceLabel">Edit Price Adjustment</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('price_adjustments.update', ['price_adjustment' => $adjustment->id]) }}"
-                    method="POST">
+                <form action="{{ route('price_adjustments.update', ['price_adjustment' => $adjustment->id]) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="row">
                         <div class="col-sm-4">
                             <label for="room_id">Room</label>
                             <select name="room_id" id="room_id" class="form-control select2">
-                                @foreach ($rooms as $room)
-                                    <option value="{{ $room->id }}"
-                                        {{ $adjustment->room_id == $room->id ? 'selected' : '' }}>
+                                @foreach ($availableRooms as $room)
+                                    <option value="{{ $room->id }}" @if($adjustment->room_id == $room->id) selected @endif>
                                         {{ $room->room_number }}
                                     </option>
                                 @endforeach
@@ -58,7 +56,6 @@
                             <label for="description">Description</label>
                             <textarea name="description" id="description" class="form-control" rows="3">{{ $adjustment->description }}</textarea>
                         </div>
-
                         <div class="mt-2">
                             <button type="submit"
                                 class="btn btn-outline-primary btn-sm text-uppercase float-right mb-2 ml-2">Update</button>

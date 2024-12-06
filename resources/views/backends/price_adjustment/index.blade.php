@@ -13,15 +13,33 @@
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th>No.</th>
-                        <th>Room</th>
-                        <th>Discount Type</th>
-                        <th>Discount</th>
-                        <th>Description</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $adjustment->room->room_number }}</td>
+                        <td>{{ $adjustment->percentage }}%</td>
+                        <td>{{ $adjustment->description ?? '-' }}</td>
+                        <td>{{ $adjustment->start_date ? \Carbon\Carbon::parse($adjustment->start_date)->format('Y-m-d') : '-' }}</td>
+                        <td>{{ $adjustment->end_date ? \Carbon\Carbon::parse($adjustment->end_date)->format('Y-m-d') : '-' }}</td>
+                        <td>
+                            @if($adjustment->status == 'active')
+                                <span class="badge bg-success">@lang('Active')</span>
+                            @else
+                                <span class="badge bg-danger">@lang('Inactive')</span>
+                            @endif
+                        </td>
+                        <td>
+                            <a href="" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                               data-bs-target="#edit_price-{{ $adjustment->id }}">
+                                <i class="fa fa-edit">@lang('Edit')</i>
+                            </a>
+                            <form action="{{ route('price_adjustments.destroy', ['price_adjustment' => $adjustment->id]) }}"
+                                  method="POST" class="d-inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-outline-danger btn-sm delete-btn">
+                                    <i class="fa fa-trash">@lang('Delete')</i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 </thead>
                 <tbody>
