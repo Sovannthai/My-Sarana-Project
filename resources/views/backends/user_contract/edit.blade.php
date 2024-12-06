@@ -84,13 +84,15 @@
                             @endif
                         </div>
                         @if ($contract->contract_pdf)
-                            <div class="col-12 mt-2">
-                                <p>@lang('Current Contract PDF'):</p>
-                                <a href="{{ asset($contract->contract_pdf) }}" target="_blank"
-                                    class="btn btn-info btn-sm">
-                                    @lang('View PDF')
-                                </a>
-                            </div>
+                            @if (strtolower($fileExtension) === 'pdf')
+                                <div class="col-12 mt-2">
+                                    <p>@lang('Current Contract PDF'):</p>
+                                    <a href="{{ asset($contract->contract_pdf) }}" target="_blank"
+                                        class="btn btn-info btn-sm">
+                                        @lang('View PDF')
+                                    </a>
+                                </div>
+                            @endif
                         @endif
                     </div>
                     <div class="mt-2">
