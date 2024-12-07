@@ -103,8 +103,84 @@ class PaymentController extends Controller
         }
         $totalPrice = $basePrice + $amenity_prices;
 
+        $additionalPrice = $contract->room->amenities->sum('additional_price');
+
+        $totalPrice = $basePrice + $additionalPrice;
         return response()->json([
             'price' => $totalPrice
+        ]);
+    }
+
+    public function getUtilityAmount($contractId)
+    {
+        $contract = UserContract::with([
+            'room.monthlyUsages.details.utilityType.utilityrates'
+        ])->findOrFail($contractId);
+
+        $monthlyUsages = $contract->room->monthlyUsages;
+
+        if (!$monthlyUsages || $monthlyUsages->isEmpty()) {
+            return response()->json([
+                'price' => 0,
+                'message' => 'No monthly usage details found.'
+            ]);
+        }
+
+        $monthlyUsageDetails = $monthlyUsages->flatMap(function ($usage) {
+            return $usage->details;
+        });
+
+        if ($monthlyUsageDetails->isEmpty()) {
+            return response()->json([
+                'price' => 0,
+                'message' => 'No monthly usage details found.'
+            ]);
+        }
+
+        $totalUtilityPrice = $monthlyUsageDetails->reduce(function ($carry, $detail) {
+            $activeRate = $detail->utilityType->utilityrates->where('status', '1')->first();
+
+            if ($activeRate) {
+                $ratePerUnit = $activeRate->rate_per_unit ?? 0;
+                return $carry + ($detail->usage * $ratePerUnit);
+            }
+
+            return $carry;
+        }, 0);
+
+        return response()->json([
+            'price' => $totalUtilityPrice
+        ]);
+    }
+
+    public function getTotalAmount($contractId)
+    {
+        $contract = UserContract::with([
+            'room.roomPricing' => function ($query) {
+                $query->latest()->first();
+            },
+            'room.amenities',
+            'room.monthlyUsages.details.utilityType.utilityrates'
+        ])->findOrFail($contractId);
+
+        $basePrice = $contract->room->roomPricing->first()?->base_price ?? 0;
+        $additionalPrice = $contract->room->amenities->sum('additional_price');
+        $roomPrice = $basePrice + $additionalPrice;
+
+        $monthlyUsages = $contract->room->monthlyUsages;
+
+        $utilityPrice = $monthlyUsages?->flatMap(fn($usage) => $usage->details)
+            ->reduce(function ($carry, $detail) {
+                $activeRate = $detail->utilityType->utilityrates->where('status', '1')->first();
+                return $carry + (($detail->usage ?? 0) * ($activeRate?->rate_per_unit ?? 0));
+            }, 0) ?? 0;
+
+        $totalAmount = $roomPrice + $utilityPrice;
+
+        return response()->json([
+            'totalAmount' => $totalAmount,
+            'roomPrice' => $roomPrice,
+            'utilityPrice' => $utilityPrice
         ]);
     }
 
@@ -186,7 +262,7 @@ class PaymentController extends Controller
             $payment->delete();
 
             Session::flash('success', __('Payment deleted successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Session::flash('error', __('Failed to delete payment.'));
         }
 

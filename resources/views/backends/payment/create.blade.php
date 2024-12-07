@@ -14,11 +14,14 @@
                         <div class="col-sm-12">
                             <label for="user_contract_id">Contract</label>
                             <select name="user_contract_id" id="user_contract_id" class="form-control select2">
-                                <option value="" selected>-- Select Contract --</option>
-                                @foreach ($contracts as $contract)
-                                    <option value="{{ $contract->id }}">{{ $contract->user->name }} -
-                                        {{ $contract->room->room_number }}</option>
-                                @endforeach
+                                <<<<<<< HEAD <option value="" selected>-- Select Contract --</option>
+                                    =======
+                                    <option value="" selected>-- Select Tenant --</option>
+                                    >>>>>>> pheakdey_branch
+                                    @foreach ($contracts as $contract)
+                                        <option value="{{ $contract->id }}">{{ $contract->user->name }} -
+                                            {{ $contract->room->room_number }}</option>
+                                    @endforeach
                             </select>
                         </div>
                         <div class="col-sm-4">
@@ -38,7 +41,7 @@
                         </div>
                         <div class="col-sm-6">
                             <label for="type">Payment Type</label>
-                            <select name="type" id="type" class="form-control">
+                            <select name="type" id="type" class="form-control select2">
                                 <option value="" selected>-- Select Type --</option>
                                 <option value="all_paid">Paid for All</option>
                                 <option value="rent">Rent</option>
@@ -100,6 +103,20 @@
 
 <script>
     $(document).ready(function() {
+
+        $('#createPaymentModal').on('show.bs.modal', function() {
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            const currentMonth = today.getMonth() + 1;
+            const currentYear = today.getFullYear();
+
+
+            $('#payment_date').val(formattedDate);
+            $('select[name="month_paid"]').val(currentMonth);
+            $('input[name="year_paid"]').val(currentYear);
+        });
+
+
         $('#amount').prop('disabled', true);
         $('#type').on('change', function() {
             var paymentType = $(this).val();
@@ -130,6 +147,7 @@
                 fetchPrice("{{ route('payments.getTotalRoomPrice', '') }}/" + contractId);
             }
         });
+
         function fetchPrice(url) {
             $.ajax({
                 url: url,

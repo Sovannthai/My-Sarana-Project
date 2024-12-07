@@ -52,4 +52,23 @@ class Room extends Model
     {
         return $this->hasMany(UserContract::class);
     }
+
+    public function getUtilityDetails()
+    {
+        $monthlyUsage = $this->monthlyUsage;
+
+        if (!$monthlyUsage) {
+            return [];
+        }
+
+        return $monthlyUsage->details->map(function ($detail) {
+            $utilityType = $detail->utilityType;
+            $activeRate = $utilityType ? $utilityType->activeRate() : null;
+
+            return [
+                'utility_type' => $utilityType ? $utilityType->name : null,
+                'active_rate' => $activeRate ? $activeRate->rate_per_unit : null,
+            ];
+        });
+    }
 }
