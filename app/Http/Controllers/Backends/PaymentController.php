@@ -22,24 +22,67 @@ class PaymentController extends Controller
     }
 
     public function getRoomPrice($contractId)
+    {
+        $contract = UserContract::with([
+            'room.roomPricing' => function ($query) {
+                $query->latest()->first();
+            },
+            'room.amenities'
+        ])->findOrFail($contractId);
+
+        $basePrice = $contract->room->roomPricing->first()?->base_price ?? 0;
+
+        $additionalPrice = $contract->room->amenities->sum('additional_price');
+
+        $totalPrice = $basePrice + $additionalPrice;
+
+        return response()->json([
+            'price' => $totalPrice
+        ]);
+    }
+
+public function getUtilityAmount($contractId)
 {
     $contract = UserContract::with([
-        'room.roomPricing' => function ($query) {
-            $query->latest()->first();
-        },
-        'room.amenities'
+        'room.monthlyUsages.details.utilityType.utilityrates'
     ])->findOrFail($contractId);
 
-    $basePrice = $contract->room->roomPricing->first()?->base_price ?? 0;
+    $monthlyUsages = $contract->room->monthlyUsages;
 
-    $additionalPrice = $contract->room->amenities->sum('additional_price');
+    if (!$monthlyUsages || $monthlyUsages->isEmpty()) {
+        return response()->json([
+            'price' => 0,
+            'message' => 'No monthly usage details found.'
+        ]);
+    }
 
-    $totalPrice = $basePrice + $additionalPrice;
+    $monthlyUsageDetails = $monthlyUsages->flatMap(function ($usage) {
+        return $usage->details;
+    });
+
+    if ($monthlyUsageDetails->isEmpty()) {
+        return response()->json([
+            'price' => 0,
+            'message' => 'No monthly usage details found.'
+        ]);
+    }
+
+    $totalUtilityPrice = $monthlyUsageDetails->reduce(function ($carry, $detail) {
+        $activeRate = $detail->utilityType->utilityrates->where('status', '1')->first();
+
+        if ($activeRate) {
+            $ratePerUnit = $activeRate->rate_per_unit ?? 0;
+            return $carry + ($detail->usage * $ratePerUnit);
+        }
+
+        return $carry;
+    }, 0);
 
     return response()->json([
-        'price' => $totalPrice
+        'price' => $totalUtilityPrice
     ]);
 }
+
 
     /**
      * Store a newly created resource in storage.

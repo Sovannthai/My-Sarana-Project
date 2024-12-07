@@ -22,4 +22,14 @@ class MonthlyUsage extends Model
             ->withPivot('usage')
             ->withTimestamps();
     }
+
+    public function monthlyUsageDetails()
+    {
+        return $this->hasMany(MonthlyUsageDetail::class);
+    }
+
+    public function details()
+    {
+        return $this->hasMany(MonthlyUsageDetail::class);
+    }
 }

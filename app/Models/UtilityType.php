@@ -22,4 +22,10 @@ class UtilityType extends Model
             ->withPivot('usage')
             ->withTimestamps();
     }
+
+    public function activeRate()
+    {
+        return $this->rates()->where('status', '1')->first();
+    }
+
 }

@@ -84,7 +84,22 @@
 
 <script>
     $(document).ready(function() {
+
+        $('#createPaymentModal').on('show.bs.modal', function() {
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+            const currentMonth = today.getMonth() + 1; // Months are zero-based, so add 1
+            const currentYear = today.getFullYear();
+
+            // Set values for payment_date, month_paid, and year_paid
+            $('#payment_date').val(formattedDate); // Set the payment date
+            $('select[name="month_paid"]').val(currentMonth); // Set the month (value matches <option>)
+            $('input[name="year_paid"]').val(currentYear); // Set the year
+        });
+
+
         $('#amount').prop('disabled', true);
+
 
         $('#type').on('change', function() {
             var paymentType = $(this).val();
@@ -93,8 +108,6 @@
                 $('#amount').prop('disabled', false);
 
                 var contractId = $('#user_contract_id').val();
-
-                console.log(contractId)
 
                 if (contractId) {
                     $.ajax({
@@ -113,25 +126,57 @@
                             alert('Failed to fetch room price. Please try again.');
                         }
                     });
+                }
+            } else if (paymentType === 'utility') {
+                var contractId = $('#user_contract_id').val();
 
+                if (contractId) {
+                    $.ajax({
+                        url: "{{ route('payments.getUtilityAmount', '') }}/" + contractId,
+                        method: 'GET',
+                        success: function(response) {
+                            if (response.price) {
+                                $('#amount').val(response.price).prop('disabled', false);
+                            } else {
+                                alert('Error: Utility amount not found.');
+                                $('#amount').val('').prop('disabled', true);
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error("AJAX Error:", xhr.responseText);
+                            alert('Failed to fetch utility amount. Please try again.');
+                        }
+                    });
                 }
             } else {
                 $('#amount').val('').prop('disabled', true);
             }
         });
 
+        // Handle user_contract_id change
         $('#user_contract_id').on('change', function() {
             var contractId = $(this).val();
-
-            console.log("Selected contract ID: " + contractId);
 
             if ($('#type').val() === 'rent' && contractId) {
                 $.ajax({
                     url: "{{ route('payments.getRoomPrice', '') }}/" + contractId,
                     method: 'GET',
                     success: function(response) {
-                        console.log("Room Price Response:", response);
-
+                        if (response.price) {
+                            $('#amount').val(response.price).prop('disabled', false);
+                        } else {
+                            $('#amount').val('').prop('disabled', true);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error:", error);
+                    }
+                });
+            } else if ($('#type').val() === 'utility' && contractId) {
+                $.ajax({
+                    url: "{{ route('payments.getUtilityAmount', '') }}/" + contractId,
+                    method: 'GET',
+                    success: function(response) {
                         if (response.price) {
                             $('#amount').val(response.price).prop('disabled', false);
                         } else {
@@ -146,3 +191,4 @@
         });
     });
 </script>
+
