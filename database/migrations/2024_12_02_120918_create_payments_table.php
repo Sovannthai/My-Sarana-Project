@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_contract_id')->constrained('user_contracts')->onDelete('cascade');
-            $table->decimal('amount', 10, 2);
-            $table->enum('type', ['all_paid', 'rent', 'utility', 'advance']);
-            $table->date('payment_date');
+            $table->unsignedBigInteger('user_contract_id');
+            $table->decimal('amount', 10, 2)->nullable();
+            $table->enum('type', ['all_paid', 'rent', 'utility', 'advance'])->nullable();
+            $table->date('payment_date')->nullable();
             $table->integer('month_paid')->nullable();
             $table->integer('year_paid')->nullable();
+            $table->enum('payment_status',['pending','partial','completed'])->default('pending');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->timestamps();
+            $table->foreign('user_contract_id')->references('id')->on('user_contracts')->onDelete('cascade');
         });
     }
 
