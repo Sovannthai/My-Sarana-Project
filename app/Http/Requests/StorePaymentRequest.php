@@ -24,7 +24,7 @@ class StorePaymentRequest extends FormRequest
         return [
             'user_contract_id' => 'required|exists:user_contracts,id',
             'amount' => 'required|numeric|min:0',
-            'type' => 'required|in:rent,utility,advance',
+            'type' => 'required|in:all_paid,rent,utility,advance',
             'payment_date' => 'required|date',
             'month_paid' => 'required|integer|min:1|max:12',
             'year_paid' => 'nullable|integer|min:1900|max:' . date('Y'),
