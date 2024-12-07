@@ -5,7 +5,7 @@
         <div class="card-header">
             <label class="card-title font-weight-bold mb-1 text-uppercase">Price Adjustments</label>
             <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop">
+                data-bs-target="#create_price">
                 <i class="fas fa-plus"> @lang('Add')</i></a>
             @include('backends.price_adjustment.create')
         </div>
@@ -40,9 +40,9 @@
                             </td>
                             <td>
                                 @if ($adjustment->discount_type == 'amount')
-                                    {{ $adjustment->percentage }} $
+                                    {{ $adjustment->discount_value }} $
                                 @else
-                                    {{ $adjustment->percentage }} %
+                                    {{ $adjustment->discount_value }} %
                                 @endif
                             </td>
                             <td>{{ $adjustment->description ?? '-' }}</td>

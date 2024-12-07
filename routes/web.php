@@ -101,6 +101,7 @@ Route::middleware(['auth',SetSessionData::class, Localization::class, SetLocale:
 
     Route::resource('monthly_usages', MonthlyUsageController::class);
     Route::get('payments/get-room-price/{contractId}', [PaymentController::class, 'getRoomPrice'])->name('payments.getRoomPrice');
+    Route::get('/get-total-room-price/{id}', [PaymentController::class, 'getTotalRoomPrice'])->name('payments.getTotalRoomPrice');
 
     Route::get('/monthly_usages/{room}', [MonthlyUsageController::class, 'show'])->name('monthly_usages.show');
 });

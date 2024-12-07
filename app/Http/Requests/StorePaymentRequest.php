@@ -28,6 +28,9 @@ class StorePaymentRequest extends FormRequest
             'payment_date' => 'required|date',
             'month_paid' => 'required|integer|min:1|max:12',
             'year_paid' => 'nullable|integer|min:1900|max:' . date('Y'),
+            'payment_status' => 'nullable',
+            'total_amount' => 'nullable',
+            'total_due_amount' => 'nullable',
         ];
     }
 }

@@ -15,7 +15,7 @@
                         <div class="col-sm-4">
                             <label for="room_id">Room</label>
                             <select name="room_id" id="room_id" class="form-control select2">
-                                @foreach ($availableRooms as $room)
+                                @foreach ($rooms as $room)
                                     <option value="{{ $room->id }}" @if($adjustment->room_id == $room->id) selected @endif>
                                         {{ $room->room_number }}
                                     </option>
@@ -32,8 +32,8 @@
 
                         <div class="col-sm-4" id="amount-field" >
                             <label for="amount">Discount Value</label>
-                            <input type="number" name="percentage" id="amount" class="form-control"
-                                   value="{{ $adjustment->percentage }}" step="0.01" min="0">
+                            <input type="number" name="discount_value" id="amount" class="form-control"
+                                   value="{{ $adjustment->discount_value }}" step="0.01" min="0">
                         </div>
                         <div class="col-sm-4">
                             <label for="start_date">Start Date</label>
