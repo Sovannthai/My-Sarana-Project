@@ -99,6 +99,14 @@
             background-origin: border-box;
             background-clip: padding-box, border-box;
         }
+        .form-control input:read-only{
+            position: relative;
+            border: 1px solid transparent;
+            background-image: linear-gradient(white, white),
+                linear-gradient(45deg, slateblue, #ff75c3, #0d9bb3);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
 
         .select2 {
             border-radius: 4px;

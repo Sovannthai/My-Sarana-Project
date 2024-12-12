@@ -4802,8 +4802,8 @@ label {
 
 .form-control:disabled,
 .form-control[readonly] {
-    background: #e8e8e8 !important;
-    border-color: #e8e8e8 !important
+    /* background: #e8e8e8 !important; */
+    /* border-color: #e8e8e8 !important */
 }
 
 .form-control:disabled,

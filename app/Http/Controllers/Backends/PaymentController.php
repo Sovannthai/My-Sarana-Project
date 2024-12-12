@@ -23,7 +23,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        $payments = Payment::all();
+        $payments = Payment::orderBy('id','desc')->get();
         $contracts = UserContract::all();
         return view('backends.payment.index', compact('payments', 'contracts'));
     }
@@ -42,6 +42,8 @@ class PaymentController extends Controller
             ->pluck('amenity_id')
             ->toArray();
         $amenity_prices = Amenity::whereIn('id', $amenityIds)->sum('additional_price');
+        $amenities = Amenity::whereIn('id', $amenityIds)->get(['name', 'additional_price']);
+        // dd($amenities);
         $discount = PriceAdjustment::where('room_id', $contract->room_id)->where('status', 'active')->first();
         if ($discount->discount_type == 'amount') {
             $basePrice = $basePrice - $discount->discount_value;
@@ -76,7 +78,14 @@ class PaymentController extends Controller
         $totalRoomPrice = $totalCost + $totalPrice;
 
         return response()->json([
-            'price' => $totalRoomPrice
+            'price' => $totalRoomPrice,
+            'discount'=>$discount,
+            'amenities'=>$amenities,
+            'amenity_prices'=>$amenity_prices,
+            'utilityUsage'=>$utilityUsage,
+            'totalCost'=>$totalCost,
+            'utilityRates'=>$utilityRates,
+            'room_price'=>$basePrice
         ]);
     }
 
