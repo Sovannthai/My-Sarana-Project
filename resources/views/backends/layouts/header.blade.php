@@ -44,6 +44,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js"></script>
 
+
     {{-- Select2 --}}
     <link rel="stylesheet" href="{{ asset('backends/plugin/select2/select2/css/select2.min.css') }}">
     <link rel="stylesheet"
@@ -99,7 +100,8 @@
             background-origin: border-box;
             background-clip: padding-box, border-box;
         }
-        .form-control input:read-only{
+
+        .form-control input:read-only {
             position: relative;
             border: 1px solid transparent;
             background-image: linear-gradient(white, white),

@@ -251,7 +251,7 @@
             $('.select2').select2({
                 // allowClear: true
             });
-            $(".thumbnail").fancybox();
+            // $(".thumbnail").fancybox();
             $(document).on("click", ".btn-modal", function(e) {
                 e.preventDefault();
                 var container = $(this).data("container");

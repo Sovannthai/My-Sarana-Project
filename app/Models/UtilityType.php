@@ -27,5 +27,9 @@ class UtilityType extends Model
     {
         return $this->rates()->where('status', '1')->first();
     }
+    public function paymentutility()
+    {
+        return $this->hasMany(PaymentUtility::class);
+    }
 
 }

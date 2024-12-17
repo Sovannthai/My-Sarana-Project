@@ -20,4 +20,8 @@ class Amenity extends Model
     {
         return $this->belongsToMany(Room::class, 'room_amenity');
     }
+    public function paymentamenity()
+    {
+        return $this->hasMany(PaymentAmenity::class);
+    }
 }

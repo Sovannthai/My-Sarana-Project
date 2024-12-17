@@ -5,13 +5,11 @@
     <div class="card">
         <div class="card-header">
             <label class="card-title font-weight-bold mb-1 text-uppercase">Payments Management</label>
-            <a href="#" class="btn btn-primary float-right text-uppercase btn-sm" data-bs-toggle="modal"
-                data-bs-target="#createPaymentModal">
-                <i class="fas fa-plus"> @lang('Add Payment')</i>
+            <a class="btn btn-primary float-right text-uppercase btn-sm btn-modal btn-add"
+                data-href="{{ route('payments.create') }}" data-toggle="modal" data-container=".createPaymentModal">
+                {{ __('Add New') }}
             </a>
-            @include('backends.payment.create')
         </div>
-
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive">
                 <thead class="table-dark">
@@ -33,17 +31,32 @@
                         <tr>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
                                         Action
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#editPaymentModal-{{ $payment->id }}">
-                                                <i class="fa fa-edit"> @lang('Edit')</i></a></li>
+                                        <li class="mb-1">
+                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#editpaymentmodal-{{ $payment->id }}">
+                                                <i class="fa fa-edit"> @lang('Edit')</i>
+                                            </a>
+                                        </li>
+                                        @if($payment->type == 'advance')
+                                        <li class="mb-1">
+                                            <a class="dropdown-item" href="#">
+                                                <i class="fas fa-file-alt"></i> @lang('Utilities Payment')
+                                            </a>
+                                        </li>
+                                        @endif
+                                        <li class="mb-1">
+                                            <a class="dropdown-item" href="#">
+                                                <i class="fas fa-file-alt"></i> @lang('Print Invoice')
+                                            </a>
+                                        </li>
                                         <li>
                                             <form action="{{ route('payments.destroy', ['payment' => $payment->id]) }}"
-                                                method="POST" class="d-inline-block">
+                                                method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class=" dropdown-item text-danger btn delete-btn">
@@ -51,23 +64,23 @@
                                                 </button>
                                             </form>
                                         </li>
-                                        <li><a class="dropdown-item" href="#"> <i class="fas fa-file-alt">
-                                                </i> @lang('Print Invoice')</a></li>
                                     </ul>
                                 </div>
                             </td>
                             <td>
                                 @if ($payment->payment_status == 'completed')
-                                    <span class="badge bg-success">@lang('Completed')</span>
+                                    <a href="#" class="btn btn-success btn-sm">@lang('Completed')</a>
                                 @elseif($payment->payment_status == 'partial')
-                                    <span class="badge bg-info">@lang('Partial')</span>
+                                    <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#add_payment_due-{{ $payment->id }}">@lang('Partial')</a>
                                 @else
-                                    <span class="badge bg-warning">@lang('Pending')</span>
+                                    <a href="#" class="btn btn-warning btn-sm">@lang('Pending')</a>
                                 @endif
                             </td>
                             <td>{{ $payment->payment_date ? \Carbon\Carbon::parse($payment->payment_date)->format('Y-m-d') : '-' }}
                             </td>
-                            <td>{{ $payment->userContract->user->name }}</td>
+                            <td>{{ @$payment->userContract->user->name }} ({{ @$payment->userContract->room->room_number }})
+                            </td>
                             <td>$ {{ $payment->total_amount }}</td>
                             <td>$ {{ $payment->amount }}</td>
                             <td>$ {{ $payment->total_due_amount ?? '--' }}</td>
@@ -91,11 +104,30 @@
                             <td>{{ $payment->month_paid ? $months[$payment->month_paid] : '-' }}</td>
                             <td>{{ $payment->year_paid ?? '-' }}</td>
                         </tr>
-                        @include('backends.payment.edit')
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-
+    <div class="modal fade createPaymentModal" id="createPaymentModal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="createPaymentModalLabel" aria-hidden="true">
+        {{-- Modal Create Payment --}}
+    </div>
+    @include('backends.payment.edit')
+    @include('backends.payment.partial.add_payment_due')
 @endsection
+<script>
+    $(document).on("click", ".btn-modal", function(e) {
+        e.preventDefault();
+        var container = $(this).data("container");
+        console.log(1);
+
+        $.ajax({
+            url: $(this).data("href"),
+            dataType: "html",
+            success: function(result) {
+                $(container).html(result).modal("show");
+            },
+        });
+    });
+</script>

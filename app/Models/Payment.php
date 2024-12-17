@@ -15,5 +15,13 @@ class Payment extends Model
     {
         return $this->belongsTo(UserContract::class);
     }
+    public function paymentamenities()
+    {
+        return $this->hasMany(PaymentAmenity::class,'payment_id');
+    }
+    public function paymentutilities()
+    {
+        return $this->hasMany(PaymentUtility::class,'payment_id');
+    }
 
 }
