@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('payments', function (Blueprint $table) {
-            $table->enum('payment_status',['completed', 'pending','partial'])->nullable();
+        Schema::create('expense_categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('icon')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('payments', function (Blueprint $table) {
-            $table->dropColumn('payment_status');
-        });
+        Schema::dropIfExists('expense_categories');
     }
 };

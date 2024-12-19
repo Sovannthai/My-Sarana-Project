@@ -4,7 +4,6 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\Localization;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Backends\UserContractController;
 use App\Http\Middleware\SetSessionData;
 use App\Http\Controllers\UtilityRateController;
 use App\Http\Controllers\Backends\ChatController;
@@ -22,8 +21,11 @@ use App\Http\Controllers\Backends\RoomPricingController;
 use App\Http\Controllers\Backends\UserRequestController;
 use App\Http\Controllers\Backends\UtilityTypeController;
 use App\Http\Controllers\Backends\MonthlyUsageController;
+use App\Http\Controllers\Backends\UserContractController;
 use App\Http\Controllers\Backends\BusinessSettingController;
+use App\Http\Controllers\Backends\ExpenseCategoryController;
 use App\Http\Controllers\Backends\PriceAdjustmentController;
+use App\Http\Controllers\Backends\ExpenseTransactionController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -105,6 +107,9 @@ Route::middleware(['auth',SetSessionData::class, Localization::class, SetLocale:
 
 
     Route::resource('user_contracts', UserContractController::class);
+    Route::resource('expense_categories', ExpenseCategoryController::class);
+    Route::resource('expense_transactions', ExpenseTransactionController::class);
+    Route::get('dashboard', [ExpenseTransactionController::class, 'dashboard'])->name('expense_dashboard.dashboard');
 
     Route::resource('monthly_usages', MonthlyUsageController::class);
     Route::get('payments/get-room-price/{contractId}', [PaymentController::class, 'getRoomPrice'])->name('payments.getRoomPrice');
