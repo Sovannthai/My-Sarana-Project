@@ -66,8 +66,18 @@
                                             @endforeach
                                         </ul>
                                     </td>
-                                    <td>$ {{ number_format($utilities->first()->rate_per_unit, 2) }}</td>
-                                    <td>{{ $utilities->sum('total_amount') }}</td>
+                                    <td>
+                                        <ul>
+                                            @foreach ($utilities as $utility)
+                                                <li>$ {{ number_format($utility->rate_per_unit, 2) }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </td>
+                                    <td><ul>
+                                        @foreach ($utilities as $utility)
+                                            <li>$ {{ number_format($utility->total_amount, 2) }}</li>
+                                        @endforeach
+                                    </ul></td>
                                     <td>{{ $months[$utilities->first()->month_paid] ?? '-' }}</td>
                                     <td>{{ $utilities->first()->year_paid }}</td>
                                     <td>

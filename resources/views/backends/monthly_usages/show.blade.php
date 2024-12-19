@@ -74,7 +74,7 @@
                                     class="d-inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger btn-sm text-uppercase">
+                                    <button type="submit" class="btn btn-outline-danger delete-btn btn-sm text-uppercase">
                                         <i class="fa fa-trash"> @lang('Delete')</i>
                                     </button>
                                 </form>

@@ -226,7 +226,7 @@ class PaymentController extends Controller
             $total_amount = $request->input('total_amount');
             $total_paid = $request->input('amount');
             if ($request->input('advance_payment_amount')) {
-                dd($request->all());
+                // dd($request->all());
                 $total_due = 0;
                 $total_amount = $request->input('advance_payment_amount');
             } else {
@@ -237,8 +237,8 @@ class PaymentController extends Controller
             $status = in_array($request->input('type'), ['rent', 'utility']) ? 'partial' : 'completed';
             $payment = Payment::create([
                 'room_price' => $request->room_price,
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
+                'start_date' => $request->form_date,
+                'end_date' => $request->to_date,
                 'total_discount' => $request->discount_value,
                 'discount_type' => $request->discount_type,
                 'total_amount_amenity' => $request->total_amount_amenity,
