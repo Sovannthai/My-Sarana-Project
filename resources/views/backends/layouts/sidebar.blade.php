@@ -154,6 +154,33 @@
                         <p>@lang('Payments')</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#Expense"
+                        @if (Route::is('expense_transactions.*') || Route::is('expense_categories.*') || Route::is('expense_dashboard.*')) aria-expanded="true" @else aria-expanded="false" @endif>
+                        <i class="fas fa-wallet"></i>
+                        <p>@lang('Expenses')</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse @if (Route::is('expense_transactions.*') || Route::is('expense_categories.*') || Route::is('expense_dashboard.*')) show @endif" id="Expense">
+                        <ul class="nav nav-collapse">
+                            <li class="@if (Route::is('expense_dashboard.*')) active @endif">
+                                <a href="{{ route('expense_dashboard.dashboard') }}">
+                                    <span class="sub-item">@lang('Dashboard')</span>
+                                </a>
+                            </li>
+                            <li class="@if (Route::is('expense_transactions.*')) active @endif">
+                                <a href="{{ route('expense_transactions.index') }}">
+                                    <span class="sub-item">@lang('Expense List')</span>
+                                </a>
+                            </li>
+                            <li class="@if (Route::is('expense_categories.*')) active @endif">
+                                <a href="{{ route('expense_categories.index') }}">
+                                    <span class="sub-item">@lang('Expense Categories')</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item @if (Route::is('user-request.index')) active @endif">
                     <a href="{{ route('user-request.index') }}">
                         <i class="fas fa-comments"></i>
