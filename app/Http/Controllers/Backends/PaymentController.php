@@ -211,7 +211,6 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         try {
-            // Store payment data
             // dd($request->all());
             $contractId = $request->input('user_contract_id');
             $currentDate = Carbon::now();
