@@ -42,12 +42,13 @@
                                                 <i class="fa fa-edit"> @lang('Edit')</i>
                                             </a>
                                         </li>
-                                        @if($payment->type == 'advance')
-                                        <li class="mb-1">
-                                            <a class="dropdown-item" href="#">
-                                                <i class="fas fa-file-alt"></i> @lang('Utilities Payment')
-                                            </a>
-                                        </li>
+                                        @if ($payment->type == 'advance')
+                                            <li class="mb-1">
+                                                <a class=" dropdown-item btn-modal btn-add" data-bs-toggle="modal"
+                                                    data-bs-target="#utility_list_modal-{{ $payment->id }}">
+                                                    <i class="fas fa-file-alt"></i> @lang('Utilities Payment')
+                                                </a>
+                                            </li>
                                         @endif
                                         <li class="mb-1">
                                             <a class="dropdown-item" href="#">
@@ -113,8 +114,14 @@
         tabindex="-1" aria-labelledby="createPaymentModalLabel" aria-hidden="true">
         {{-- Modal Create Payment --}}
     </div>
+    <div class="modal fade add_uitlity_payment" id="add_uitlity_payment" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="add_uitlity_paymentLabel" aria-hidden="true">
+        {{-- Modal Utility Payment --}}
+    </div>
+
     @include('backends.payment.edit')
     @include('backends.payment.partial.add_payment_due')
+    @include('backends.payment.partial._list_utilities')
 @endsection
 <script>
     $(document).on("click", ".btn-modal", function(e) {

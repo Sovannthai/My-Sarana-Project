@@ -44,7 +44,7 @@
                             <p>@lang('User Management')</p>
                             <span class="caret"></span>
                         </a>
-                        <div class="collapse @if (Route::is('roles.*') || Route::is('permission.*') || Route::is('users.*')) show @endif" id="forms">
+                        <div class="collapse @if (Route::is('roles.*') || Route::is('permission.*') || Route::is('users.*')|| Route::is('user_contracts.*')) show @endif" id="forms">
                             <ul class="nav nav-collapse">
                                 <li class="@if (Route::is('users.*')) active @endif">
                                     <a href="{{ route('users.index') }}">
@@ -76,12 +76,12 @@
                 @endif
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#room-management"
-                        @if (Route::is('rooms.*') || Route::is('rooms.*')) aria-expanded="true" @else aria-expanded="false" @endif>
+                        @if (Route::is('rooms.*') || Route::is('room-prices.*')) aria-expanded="true" @else aria-expanded="false" @endif>
                         <i class="fas fa-door-closed"></i>
                         <p>@lang('Rooms Management')</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse @if (Route::is('rooms.*') || Route::is('rooms.*')) show @endif" id="room-management">
+                    <div class="collapse @if (Route::is('rooms.*') || Route::is('room-prices.*')) show @endif" id="room-management">
                         <ul class="nav nav-collapse">
                             <li class="@if (Route::is('rooms.*')) active @endif">
                                 <a href="{{ route('rooms.index') }}">
@@ -159,6 +159,32 @@
                         <i class="fas fa-comments"></i>
                         <p>@lang('Chat')</p><span class="badge badge-danger">{{ $unreadMessagesCount }}</span>
                     </a>
+                </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#reports">
+                        <i class="fa fas fa-chart-bar"></i>
+                        <p>@lang('Report')</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="reports">
+                        <ul class="nav nav-collapse">
+                            <li class="">
+                                <a href="#">
+                                    <span class="sub-item">@lang('Room Report')</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    <span class="sub-item">@lang('Utilties Report')</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    <span class="sub-item">@lang('Payment Report')</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#tables"

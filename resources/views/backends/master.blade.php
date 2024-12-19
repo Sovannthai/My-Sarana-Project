@@ -64,7 +64,7 @@
                 toastr.options = {
                     "closeButton": true,
                     "progressBar": true,
-                    "timeOut": "3000",
+                    "timeOut": "5000",
                     "extendedTimeOut": "2000",
                     "positionClass": "toast-top-right"
                 };
@@ -74,7 +74,7 @@
                 toastr.options = {
                     "closeButton": true,
                     "progressBar": true,
-                    "timeOut": "3000",
+                    "timeOut": "5000",
                     "extendedTimeOut": "2000",
                     "positionClass": "toast-top-right"
                 };
@@ -82,51 +82,51 @@
             @endif
         });
         //Alert and store message get from telegram bot
-            // $(document).ready(function() {
-            //     const audio = new Audio('{{ asset('uploads/sound/success.mp3') }}');
-            //     audio.load();
+        // $(document).ready(function() {
+        //     const audio = new Audio('{{ asset('uploads/sound/success.mp3') }}');
+        //     audio.load();
 
-            //     function playAudio() {
-            //         audio.play().catch(function(error) {
-            //             console.error('Audio play failed:', error);
-            //         });
-            //     }
+        //     function playAudio() {
+        //         audio.play().catch(function(error) {
+        //             console.error('Audio play failed:', error);
+        //         });
+        //     }
 
-            //     function fetchMessages() {
-            //         $.ajax({
-            //             url: '{{ route('get-chat-from-user') }}',
-            //             method: 'GET',
-            //             success: function(data) {
-            //                 toastr.options = {
-            //                     closeButton: true,
-            //                     progressBar: true,
-            //                     timeOut: 7000,
-            //                     extendedTimeOut: 2000,
-            //                     positionClass: "toast-top-right",
-            //                 };
+        //     function fetchMessages() {
+        //         $.ajax({
+        //             url: '{{ route('get-chat-from-user') }}',
+        //             method: 'GET',
+        //             success: function(data) {
+        //                 toastr.options = {
+        //                     closeButton: true,
+        //                     progressBar: true,
+        //                     timeOut: 7000,
+        //                     extendedTimeOut: 2000,
+        //                     positionClass: "toast-top-right",
+        //                 };
 
-            //                 if (data.success) {
-            //                     if (data.messages && data.messages.length > 0) {
-            //                         playAudio();
-            //                         data.messages.forEach(function(message) {
-            //                             toastr.info(
-            //                                 `New message from ${message.sender}: ${message.text}`
-            //                             );
-            //                         });
-            //                     }
-            //                 }
-            //             },
-            //             error: function(xhr) {
-            //                 console.error('Error:', xhr);
-            //                 toastr.error('An error occurred while fetching messages.');
-            //             }
-            //         });
-            //     }
-            //     $(window).on('click', function() {
-            //         playAudio();
-            //     });
-            //     setInterval(fetchMessages, 2000);
-            // });
+        //                 if (data.success) {
+        //                     if (data.messages && data.messages.length > 0) {
+        //                         playAudio();
+        //                         data.messages.forEach(function(message) {
+        //                             toastr.info(
+        //                                 `New message from ${message.sender}: ${message.text}`
+        //                             );
+        //                         });
+        //                     }
+        //                 }
+        //             },
+        //             error: function(xhr) {
+        //                 console.error('Error:', xhr);
+        //                 toastr.error('An error occurred while fetching messages.');
+        //             }
+        //         });
+        //     }
+        //     $(window).on('click', function() {
+        //         playAudio();
+        //     });
+        //     setInterval(fetchMessages, 2000);
+        // });
     </script>
     <script>
         $(document).ready(function() {

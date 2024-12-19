@@ -20,7 +20,7 @@
                                 <label for="paid_due_amount">Total Due</label>
                                 <input type="number" step="any" min="0.00" class="form-control"
                                     id="paid_due_amount" name="paid_due_amount"
-                                    value="{{ $payment->total_due_amount }}" disabled style="color: black">
+                                    value="{{ $payment->total_due_amount }}" readonly style="color: black">
                             </div>
                             <div class="col-sm-6">
                                 <label for="due_type">Due Type</label>

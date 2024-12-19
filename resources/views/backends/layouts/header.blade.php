@@ -50,6 +50,7 @@
     <link rel="stylesheet"
         href="{{ asset('backends/plugin/select2/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <style>
+
         .footer {
             background-color: #f8f9fa;
             /* Adjust as needed */

@@ -227,6 +227,7 @@ class PaymentController extends Controller
             $total_amount = $request->input('total_amount');
             $total_paid = $request->input('amount');
             if ($request->input('advance_payment_amount')) {
+                dd($request->all());
                 $total_due = 0;
                 $total_amount = $request->input('advance_payment_amount');
             } else {
@@ -293,6 +294,107 @@ class PaymentController extends Controller
             return redirect()->route('payments.index');
         }
     }
+
+    public function createUitilityPayment($id)
+    {
+        $payment = Payment::findOrFail($id);
+        $contract = UserContract::where('room_id', $payment->userContract->room_id)->first();
+        return view('backends.payment.partial.payment_utility', compact('payment', 'contract'));
+    }
+    public function advanceUtilityPayment($id)
+    {
+        $month_paid = request()->input('month_paid');
+        $contract = UserContract::with([
+            'room.roomPricing' => function ($query) {
+                $query->latest()->first();
+            },
+            'room.amenities'
+        ])->findOrFail($id);
+        $utility = MonthlyUsage::where('room_id', $contract->room_id)->where('month', $month_paid)->latest()->first();
+        $utilityUsage = [];
+        $totalCost = 0;
+
+        if ($utility) {
+            foreach ($utility->utilityTypes as $type) {
+                $utilityUsage[] = [
+                    'utility_type_id' => $type->id,
+                    'utility_type' => $type->type,
+                    'usage' => $type->pivot->usage,
+                ];
+            }
+        } else {
+            $utilityUsage[] = ['message' => 'not found'];
+        }
+        $utilityRates = UtilityRate::where('status', 1)->get();
+        foreach ($utilityUsage as $usageData) {
+            if (isset($usageData['utility_type_id'])) {
+                $rate = $utilityRates->firstWhere('utility_type_id', $usageData['utility_type_id']);
+                if ($rate) {
+                    $totalCost += $usageData['usage'] * $rate->rate_per_unit;
+                }
+            }
+        }
+
+        return response()->json([
+            'utility_usage' => $utilityUsage,
+            'total_cost' => $totalCost,
+            'utilityRates' => $utilityRates,
+        ]);
+    }
+    public function storeAdvanceUtilityPayment(Request $request)
+    {
+        try {
+            $payment_id = $request->input('payment_id');
+            $month_paid = $request->input('month_paid');
+            $year_paid = $request->input('year_paid');
+            $utilityIds = $request->input('utility_ids');
+            $utilityUsages = $request->input('utility_usages');
+            $utilityRates = $request->input('utility_rates');
+            $utilityTotals = $request->input('utility_totals');
+
+            foreach ($utilityIds as $index => $utilityId) {
+                $exists = PaymentUtility::where('payment_id', $payment_id)
+                ->where('utility_id', $utilityId)
+                ->where('month_paid', $month_paid)
+                ->where('year_paid', $year_paid)
+                ->exists();
+                if ($exists) {
+                    Session::flash('error', __('The utility payment of this month is paid already.'));
+                    return redirect()->back();
+                }
+                PaymentUtility::create([
+                    'payment_id' => $payment_id,
+                    'utility_id' => $utilityId,
+                    'usage' => $utilityUsages[$index],
+                    'rate_per_unit' => $utilityRates[$index],
+                    'total_amount' => $utilityTotals[$index],
+                    'month_paid' => $month_paid,
+                    'year_paid' => $year_paid,
+                ]);
+            }
+            Session::flash('success', __('Utility payment added successfully.'));
+            return redirect()->route('payments.index');
+        } catch (Exception $e) {
+            dd($e);
+            Session::flash('error', __('Something went wrong'));
+            return redirect()->route('payments.index');
+        }
+    }
+    public function deleteUtilityAdvancePayment($id)
+    {
+        try {
+            $paymentUtility = PaymentUtility::where('payment_id', $id);
+
+            if (!$paymentUtility->exists()) {
+                return response()->json(['status' => 'error', 'message' => 'Payment not found'], 404);
+            }
+            $paymentUtility->delete();
+            return response()->json(['status' => 'success', 'message' => 'Utility payment deleted successfully.']);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Something went wrong. Please try again.'], 500);
+        }
+    }
+
 
     /**
      * Update the specified resource in storage.

@@ -97,6 +97,13 @@ Route::middleware(['auth',SetSessionData::class, Localization::class, SetLocale:
     });
 
     Route::resource('payments', PaymentController::class);
+    Route::get('get-utilities-by-payment/{id}', [PaymentController::class, 'getUtilityByPayment'])->name('get-utilities.payment');
+    Route::get('create-utility-payment/{id}',[PaymentController::class,'createUitilityPayment'])->name('createUitilityPayment');
+    Route::get('/advance-utility-payment/{id}', [PaymentController::class, 'advanceUtilityPayment'])->name('advance-payment.utility');
+    Route::post('store-advance-utility-payment', [PaymentController::class, 'storeAdvanceUtilityPayment'])->name('store-advance-utility-payment');
+    Route::delete('delete-advance-utility-payment/{id}',[PaymentController::class, 'deleteUtilityAdvancePayment'])->name('delete-advance-utility-payment');
+
+
     Route::resource('user_contracts', UserContractController::class);
 
     Route::resource('monthly_usages', MonthlyUsageController::class);
