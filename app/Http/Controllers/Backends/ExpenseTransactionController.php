@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backends;
 
+use DB;
+use App\Models\Payment;
 use App\Models\ExpenseCategory;
 use App\Models\ExpenseTransaction;
 use App\Http\Controllers\Controller;
@@ -11,15 +13,53 @@ use App\Http\Requests\UpdateExpenseTransactionRequest;
 
 class ExpenseTransactionController extends Controller
 {
-        public function dashboard()
+    public function dashboard()
 {
-    $totalTransactions = ExpenseTransaction::count();
-    $totalCategories = ExpenseCategory::count();
+    $totalAmount = Payment::sum('total_amount');
+    $totalUtilityAmount = Payment::sum('total_utility_amount');
+    $totalIncome = $totalAmount + $totalUtilityAmount;
+
     $totalExpense = ExpenseTransaction::sum('amount');
+    $balance = $totalIncome - $totalExpense;
+
     $recentTransactions = ExpenseTransaction::latest()->take(5)->get();
 
-    return view('backends.expense_transaction.dashboard', compact('totalTransactions', 'totalCategories', 'totalExpense', 'recentTransactions'));
+    $expensesByCategory = ExpenseTransaction::selectRaw('SUM(amount) as total, category_id')
+        ->groupBy('category_id')
+        ->with('category')
+        ->get();
+
+    $chartLabels = $expensesByCategory->map(fn($expense) => $expense->category->title ?? 'Uncategorized');
+    $chartValues = $expensesByCategory->pluck('total');
+
+    $monthlyRoomData = Payment::selectRaw('MONTH(payment_date) as month, SUM(total_amount) as total')
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
+
+    $monthlyUtilityData = Payment::selectRaw('MONTH(payment_date) as month, SUM(total_utility_amount) as total')
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
+
+    $months = $monthlyRoomData->pluck('month')->map(fn($m) => date('F', mktime(0, 0, 0, $m, 1)));
+
+    $monthlyRoomValues = $monthlyRoomData->pluck('total');
+    $monthlyUtilityValues = $monthlyUtilityData->pluck('total');
+
+    return view('backends.expense_transaction.dashboard', compact(
+        'totalIncome',
+        'balance',
+        'totalExpense',
+        'recentTransactions',
+        'chartLabels',
+        'chartValues',
+        'months',
+        'monthlyRoomValues',
+        'monthlyUtilityValues'
+    ));
 }
+
 
 
     public function index()
