@@ -18,6 +18,7 @@
                     <div class="col-sm-4">
                         <label for="month_paid">Month Paid</label>
                         <select name="month_paid" id="month_paid" class="form-select">
+                            <option value="" selected>-- Select Month --</option>
                             <option value="1">@lang('January')</option>
                             <option value="2">@lang('February')</option>
                             <option value="3">@lang('March')</option>

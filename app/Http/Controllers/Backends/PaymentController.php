@@ -351,12 +351,29 @@ class PaymentController extends Controller
             $utilityRates = $request->input('utility_rates');
             $utilityTotals = $request->input('utility_totals');
 
+            $payment = Payment::find($payment_id);
+
+            if (!$payment) {
+                Session::flash('error', __('Invalid payment ID.'));
+                return redirect()->back();
+            }
+
+            $start_date = Carbon::parse($payment->start_date);
+            $end_date = Carbon::parse($payment->end_date);
+
             foreach ($utilityIds as $index => $utilityId) {
+
+                $utilityDate = Carbon::create($year_paid, $month_paid, 1);
+                if ($utilityDate->lt($start_date) || $utilityDate->gt($end_date)) {
+                    Session::flash('error', __('The utility payment date is outside the allowed payment period.'));
+                    return redirect()->back();
+                }
+                // Check if payment utility already exists in this month
                 $exists = PaymentUtility::where('payment_id', $payment_id)
-                ->where('utility_id', $utilityId)
-                ->where('month_paid', $month_paid)
-                ->where('year_paid', $year_paid)
-                ->exists();
+                    ->where('utility_id', $utilityId)
+                    ->where('month_paid', $month_paid)
+                    ->where('year_paid', $year_paid)
+                    ->exists();
                 if ($exists) {
                     Session::flash('error', __('The utility payment of this month is paid already.'));
                     return redirect()->back();
