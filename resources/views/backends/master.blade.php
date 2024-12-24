@@ -279,6 +279,32 @@
             });
         });
     </script>
+    {{-- Auto Update Discount Status --}}
+    <script>
+        function checkDiscountStatus() {
+            $.ajax({
+                url: `{{ route('auto_update_discount_status') }}`,
+                type: 'GET',
+                success: function(response) {
+                    console.log(response.message);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating discounts: ", error);
+                }
+            });
+        }
+
+        function getTimeUntilMidnight() {
+            const now = new Date();
+            const midnight = new Date();
+            midnight.setHours(24, 0, 0, 0);
+            return midnight - now;
+        }
+        setTimeout(function() {
+            checkDiscountStatus();
+            setInterval(checkDiscountStatus, 24 * 60 * 60 * 1000);
+        }, getTimeUntilMidnight());
+    </script>
 </body>
 
 </html>

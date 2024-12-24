@@ -47,11 +47,11 @@
                             <input type="date" name="end_date" class="form-control"
                                 value="{{ $contract->end_date }}" required>
                         </div>
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <label for="monthly_rent">@lang('Monthly Rent')</label>
                             <input type="number" name="monthly_rent" class="form-control" min="0" step="0.01"
                                 value="{{ $contract->monthly_rent }}" required>
-                        </div>
+                        </div> --}}
                         <div class="col-sm-6">
                             <label for="contract_pdf">@lang('Contract PDF')</label>
                             <input type="file" name="contract_pdf" class="form-control">

@@ -15,7 +15,7 @@
         .invoice-container {
             max-width: 595px;
             /* A5 size width */
-            margin: 40px auto;
+            margin: auto;
             padding: 20px;
             background-color: #f9f9f9;
             border: 1px solid #ddd;
@@ -107,127 +107,58 @@
             <div class="invoice-details" style="width: 50%; float: right;">
                 <p><strong>Date:</strong> {{ $invoiceData->created_at }}</p>
                 <p><strong>Customer:</strong> {{ $user->name }}</p>
+                <p><strong>Room:</strong> {{ @$invoiceData->userContract->room->room_number  }}</p>
             </div>
         </div>
         <div style="clear: both;"></div>
         <table class="invoice-table nowrap">
             <tr>
-                <th>Room Details</th>
-                <th>Rental Period</th>
+                <th>Utility Type</th>
+                <th>Usage</th>
                 <th>Rate</th>
                 <th>Total</th>
             </tr>
-            <tr>
-                <td><strong>Room:</strong> {{ @$invoiceData->userContract->room->room_number }}
-                    @if ($invoiceData->paymentAmenities)
-                    <div style="margin-left: 15px;">
-                        @foreach ($invoiceData->paymentAmenities as $amenity)
-                        <li>{{ $amenity->amenity->name }}</li>
-                        @endforeach
-                    </div>
-                    @endif
-                </td>
-                @if ($invoiceData->type == 'advance')
-                  <td>{{ $invoiceData->start_date }} - {{ $invoiceData->end_date }}</td>
-                @endif
-                @php
-                $months = [
-                1 => 'January',
-                2 => 'February',
-                3 => 'March',
-                4 => 'April',
-                5 => 'May',
-                6 => 'June',
-                7 => 'July',
-                8 => 'August',
-                9 => 'September',
-                10 => 'October',
-                11 => 'November',
-                12 => 'December',
-                ];
-                @endphp
-                @if($invoiceData->type != 'advance')
-                <td>{{ $invoiceData->month_paid ? $months[$invoiceData->month_paid] : '-' }}
-                    ({{ $invoiceData->year_paid }})</td>
-                @endif
-                <td>$ {{ number_format($invoiceData->total_amount_before_discount, 2) }}</td>
-                <td>$ {{ number_format($invoiceData->total_amount_before_discount, 2) }}</td>
-            </tr>
-            {{-- Discount --}}
-            @if ($invoiceData->total_discount > 0)
-            <tr>
-                <td colspan="3" style="text-align: right;"><strong>Discount</strong></td>
-                <td>
-                    @if ($invoiceData->discount_type == 'amount')
-                    <span>$</span> {{ $invoiceData->total_discount }}
-                    @else
-                    <span>%</span> {{ $invoiceData->total_discount }}
-                    @endif
-                </td>
-            </tr>
-            @endif
-            {{-- Total Room Price --}}
-            <?php
-            $totalRoomPrice = 0;
-            if (@$invoiceData->discount_type == 'amount') {
-                $totalRoomPrice = $invoiceData->total_amount_before_discount - $invoiceData->total_discount;
-            } elseif (@$invoiceData->discount_type == 'percentage') {
-                $totalRoomPrice = $invoiceData->total_amount_before_discount - ($invoiceData->total_amount_before_discount * $invoiceData->total_discount) / 100;
-            } else {
-                $totalRoomPrice = $invoiceData->total_amount_before_discount;
-            }
-            ?>
-            <tr>
-                <td colspan="3" style="text-align: right;"><strong>Subtotal</strong></td>
-                <td>$ {{ number_format($totalRoomPrice, 2) }}</td>
-            </tr>
-            <!-- Electricity Charges -->
-            {{-- @dd($invoiceData->paymentUtilities) --}}
             @if ($invoiceData->paymentUtilities)
             @foreach ($invoiceData->paymentUtilities as $utility)
             <tr>
-                <td colspan="2" style="text-align: right;"><strong>{{ @$utility->utility->type }}</strong>
-                </td>
-                <td>{{ $utility->usage }} ($ {{ number_format($utility->rate_per_unit, 2) }})</td>
+                <td><strong>{{ @$utility->utility->type }}</strong></td>
+                <td>{{ $utility->usage }}</td>
+                <td>$ {{ number_format($utility->rate_per_unit, 2) }}</td>
                 <td>$ {{ number_format($utility->total_amount, 2) }}</td>
             </tr>
             @endforeach
             @endif
             <!-- Total Amount -->
+            <?php
+                $totalAmount = 0;
+                foreach ($invoiceData->paymentUtilities as $utility) {
+                    $totalAmount += $utility->total_amount;
+                }
+            ?>
             <tr>
                 <td colspan="3" style="text-align: right;"><strong>Total Amount</strong></td>
-                <td>$ {{ number_format($invoiceData->total_amount, 2) }}</td>
+                <td>$ {{ number_format($totalAmount, 2) }}</td>
             </tr>
             <tr>
                 <td colspan="3" style="text-align: right;"><strong>Amount Paid</strong></td>
-                <td>$ {{ number_format($invoiceData->amount, 2) }}</td>
+                <td>$ {{ number_format($totalAmount, 2) }}</td>
             </tr>
-            @if ($invoiceData->total_due_amount)
+            {{-- @if ($invoiceData->total_due_amount)
             <tr>
                 <td colspan="3" style="text-align: right;"><strong>Due Amount</strong></td>
                 <td>$ {{ number_format($invoiceData->total_due_amount, 2) }}</td>
             </tr>
-            @endif
+            @endif --}}
         </table>
         <div class="row flex-between">
             <div style="width: 50%; float: left; text-align: center;">
                 <strong>ABA QR:</strong><br>
-                <img src="{{ public_path('uploads/all_photo/qr.png') }}" alt="ABA QR Code"
-                    style="width: 120px; height: 120px;">
+                <img src="{{ public_path('uploads/all_photo/qr.png') }}" alt="ABA QR Code" style="width: 120px; height: 120px;">
             </div>
             <div style="width: 50%; float: right;">
-                {{-- <div style="margin-top: 20px;">
-                    <strong>Payment Method:</strong><span> ABA</span>
-                </div> --}}
                 <div style="margin-top: 10px;">
                     <strong>Exchange Rate:</strong><span> $1.00 (4000.00 Riel)</span>
                 </div>
-                {{-- <div style="margin-top: 10px;">
-                    <strong>Amount Paid:</strong><span> $615.00</span>
-                </div> --}}
-                {{-- <div style="margin-top: 10px;">
-                    <strong>Payment Status:</strong><span> Paid</span>
-                </div> --}}
             </div>
         </div>
         <div style="clear: both;"></div>

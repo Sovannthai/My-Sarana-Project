@@ -24,7 +24,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        $payments = Payment::orderByDesc('created_at')->get();
+        $payments = Payment::latest('invoice_no')->get();
         $contracts = UserContract::all();
         return view('backends.payment.index', compact('payments', 'contracts'));
     }
@@ -43,6 +43,7 @@ class PaymentController extends Controller
             ->pluck('amenity_id')
             ->toArray();
         $amenity_prices = Amenity::whereIn('id', $amenityIds)->sum('additional_price');
+        $total_room_price_before_discount = $room_price_befor_discount + $amenity_prices;
         $amenities = Amenity::whereIn('id', $amenityIds)->get(['id', 'name', 'additional_price']);
         // dd($amenities);
         $discount = PriceAdjustment::where('room_id', $contract->room_id)->where('status', 'active')->first();
@@ -89,6 +90,7 @@ class PaymentController extends Controller
             'utilityUsage' => $utilityUsage,
             'totalCost' => $totalCost,
             'utilityRates' => $utilityRates,
+            'total_room_price_before_discount' => $total_room_price_before_discount,
             'room_price' => $room_price_befor_discount,
         ]);
     }
@@ -225,6 +227,7 @@ class PaymentController extends Controller
             }
             $total_amount = $request->input('total_amount');
             $total_paid = $request->input('amount');
+            $total_room_price_before_discount = $request->input('total_room_price_before_discount');
             if ($request->input('advance_payment_amount')) {
                 // dd($request->all());
                 $total_due = 0;
@@ -235,6 +238,8 @@ class PaymentController extends Controller
             }
             $status = '';
             $status = in_array($request->input('type'), ['rent', 'utility']) ? 'partial' : 'completed';
+            $totalPayments = Payment::count();
+            $invoiceNo = 'INV' . str_pad($totalPayments + 1, 5, '0', STR_PAD_LEFT);
             $payment = Payment::create([
                 'room_price' => $request->room_price,
                 'start_date' => $request->form_date,
@@ -252,6 +257,8 @@ class PaymentController extends Controller
                 'payment_status' => $status,
                 'total_amount' => $total_amount,
                 'total_due_amount' => $total_due,
+                'total_amount_before_discount' => $total_room_price_before_discount,
+                'invoice_no' => $invoiceNo,
             ]);
             // Check amenity
             if ($request->has('amenity_ids')) {
@@ -387,6 +394,11 @@ class PaymentController extends Controller
                     'month_paid' => $month_paid,
                     'year_paid' => $year_paid,
                 ]);
+
+                $payment->update([
+                    'total_utility_amount' => $payment->total_utility_amount + $utilityTotals[$index],
+                    'total_amount' => $payment->total_amount + $utilityTotals[$index],
+                ]);
             }
             Session::flash('success', __('Utility payment added successfully.'));
             return redirect()->route('payments.index');
@@ -396,16 +408,32 @@ class PaymentController extends Controller
             return redirect()->route('payments.index');
         }
     }
-    public function deleteUtilityAdvancePayment($id)
+    public function deleteUtilityAdvancePayment($payment_id)
     {
         try {
-            $paymentUtility = PaymentUtility::where('payment_id', $id);
+            $paymentUtilities = PaymentUtility::where('payment_id', $payment_id)->get();
 
-            if (!$paymentUtility->exists()) {
+            if ($paymentUtilities->isEmpty()) {
+                return response()->json(['status' => 'error', 'message' => 'Utility payments not found'], 404);
+            }
+
+            $payment = Payment::find($payment_id);
+
+            if (!$payment) {
                 return response()->json(['status' => 'error', 'message' => 'Payment not found'], 404);
             }
-            $paymentUtility->delete();
-            return response()->json(['status' => 'success', 'message' => 'Utility payment deleted successfully.']);
+            // Calculate the total amount to be subtracted
+            $totalUtilityAmount = $paymentUtilities->sum('total_amount');
+
+            // Update the total utility amount and total amount
+            $payment->total_utility_amount -= $totalUtilityAmount;
+            $payment->total_amount -= $totalUtilityAmount;
+            $payment->save();
+
+            // Delete the utility payments
+            PaymentUtility::where('payment_id', $payment_id)->delete();
+
+            return response()->json(['status' => 'success', 'message' => 'Utility payments deleted successfully.']);
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => 'Something went wrong. Please try again.'], 500);
         }

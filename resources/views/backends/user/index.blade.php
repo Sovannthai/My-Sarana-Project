@@ -43,21 +43,6 @@
                                         title="@lang('Edit')"><i class="fa fa-edit ambitious-padding-btn">
                                             @lang('Edit')</i></a>&nbsp;&nbsp;
                                 @endif
-                                @if ($user->telegram_id != null)
-                                    <form action="{{ route('send-invoice', ['userId' => $user->id]) }}" method="POST"
-                                        style="display: inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-outline-warning btn-sm">
-                                            @lang('Send Invoice')
-                                        </button>
-                                    </form>
-                                @endif
-                                @if (@$user->roles->first()->name != 'Admin')
-                                    <a href="{{ route('invoice.download', $user->id) }}"
-                                        class="btn btn-outline-info btn-sm">
-                                        Download Invoice
-                                    </a>
-                                @endif
                                 @if (@$user->roles->first()->name != 'Admin')
                                     @if (auth()->user()->can('delete user'))
                                         <form id="deleteForm" action="{{ route('users.destroy', ['user' => $user->id]) }}"

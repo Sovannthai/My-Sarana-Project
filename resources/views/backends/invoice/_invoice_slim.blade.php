@@ -13,13 +13,14 @@
         }
 
         .invoice-container {
-            max-width: 595px;
-            /* A5 size width */
-            margin: 40px auto;
+            margin: 0 auto;
             padding: 20px;
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .invoice-header {
@@ -29,13 +30,10 @@
             text-align: center;
         }
 
-        .invoice-details p {
-            margin-bottom: 10px;
-        }
-
         .invoice-table {
             width: 100%;
             border-collapse: collapse;
+            page-break-inside: auto;
         }
 
         .invoice-table th,
@@ -54,47 +52,66 @@
             text-align: center;
         }
 
-        /* Print media styling */
         @media print {
+            @page {
+                size: auto;
+                margin: 10mm;
+            }
+
             body {
                 background-color: transparent;
                 margin: 0;
             }
 
             .invoice-container {
-                max-width: 100%;
-                padding: 0;
-                box-shadow: none;
                 border: none;
-                page-break-inside: avoid;
-            }
-
-            .invoice-table th,
-            .invoice-table td {
-                font-size: 12px;
-                width: 100%;
+                box-shadow: none;
+                width: auto;
             }
 
             .invoice-header {
                 background-color: #333 !important;
                 color: white !important;
             }
+
+            .invoice-table th,
+            .invoice-table td {
+                font-size: 12px;
+            }
+            .footer-invoice{
+                margin-top: 40px;
+                text-align: center;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            img {
+                display: block !important;
+            }
         }
 
-        .flex-between {
-            display: flex;
-            justify-content: space-between;
+        @media print and (min-width: 210mm) {
+            .invoice-container {
+                transform: scale(0.95);
+                transform-origin: top left;
+            }
         }
 
-        .footer-invoice {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 18px;
+        @media print and (min-width: 8.5in) and (max-width: 11in) {
+            .invoice-container {
+                transform: scale(0.9);
+                transform-origin: top left;
+            }
         }
     </style>
 </head>
 
 <body>
+    <div class="no-print" style="margin-bottom: 20px; margin-top:20px;margin-left:10px;">
+        <button onclick="window.print()">Print Invoice</button>
+    </div>
     <div class="invoice-container">
         <div class="invoice-header">
             <h1 class="text-uppercase">Invoice</h1>
@@ -128,7 +145,7 @@
                     @endif
                 </td>
                 @if ($invoiceData->type == 'advance')
-                  <td>{{ $invoiceData->start_date }} - {{ $invoiceData->end_date }}</td>
+                <td>{{ $invoiceData->start_date }} - {{ $invoiceData->end_date }}</td>
                 @endif
                 @php
                 $months = [
@@ -153,7 +170,6 @@
                 <td>$ {{ number_format($invoiceData->total_amount_before_discount, 2) }}</td>
                 <td>$ {{ number_format($invoiceData->total_amount_before_discount, 2) }}</td>
             </tr>
-            {{-- Discount --}}
             @if ($invoiceData->total_discount > 0)
             <tr>
                 <td colspan="3" style="text-align: right;"><strong>Discount</strong></td>
@@ -166,7 +182,6 @@
                 </td>
             </tr>
             @endif
-            {{-- Total Room Price --}}
             <?php
             $totalRoomPrice = 0;
             if (@$invoiceData->discount_type == 'amount') {
@@ -181,8 +196,6 @@
                 <td colspan="3" style="text-align: right;"><strong>Subtotal</strong></td>
                 <td>$ {{ number_format($totalRoomPrice, 2) }}</td>
             </tr>
-            <!-- Electricity Charges -->
-            {{-- @dd($invoiceData->paymentUtilities) --}}
             @if ($invoiceData->paymentUtilities)
             @foreach ($invoiceData->paymentUtilities as $utility)
             <tr>
@@ -193,7 +206,6 @@
             </tr>
             @endforeach
             @endif
-            <!-- Total Amount -->
             <tr>
                 <td colspan="3" style="text-align: right;"><strong>Total Amount</strong></td>
                 <td>$ {{ number_format($invoiceData->total_amount, 2) }}</td>
@@ -209,29 +221,14 @@
             </tr>
             @endif
         </table>
-        <div class="row flex-between">
-            <div style="width: 50%; float: left; text-align: center;">
-                <strong>ABA QR:</strong><br>
-                <img src="{{ public_path('uploads/all_photo/qr.png') }}" alt="ABA QR Code"
-                    style="width: 120px; height: 120px;">
-            </div>
-            <div style="width: 50%; float: right;">
-                {{-- <div style="margin-top: 20px;">
-                    <strong>Payment Method:</strong><span> ABA</span>
-                </div> --}}
-                <div style="margin-top: 10px;">
+        {{-- <div class="row flex-between">
+            <div>
+                <div style="margin-top: 10px;" class="float-right">
                     <strong>Exchange Rate:</strong><span> $1.00 (4000.00 Riel)</span>
                 </div>
-                {{-- <div style="margin-top: 10px;">
-                    <strong>Amount Paid:</strong><span> $615.00</span>
-                </div> --}}
-                {{-- <div style="margin-top: 10px;">
-                    <strong>Payment Status:</strong><span> Paid</span>
-                </div> --}}
             </div>
-        </div>
-        <div style="clear: both;"></div>
-        <div class="mt-3 footer-invoice">
+        </div> --}}
+        <div class="mt-5 footer-invoice">
             <strong>Thank you for choosing our room rental services!</strong>
         </div>
     </div>

@@ -17,6 +17,7 @@
                         <th>Action</th>
                         <th>Status</th>
                         <th>Payment Date</th>
+                        <th>Invoice No.</th>
                         <th>User</th>
                         <th>Total Amount</th>
                         <th>Paid Amount</th>
@@ -35,11 +36,16 @@
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         Action
                                     </button>
-                                    <ul class="dropdown-menu">
-                                        <li class="mb-1">
+                                    <ul class="dropdown-menu" style="font-size: 16px">
+                                        {{-- <li class="mb-1">
                                             <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                                 data-bs-target="#editpaymentmodal-{{ $payment->id }}">
                                                 <i class="fa fa-edit"> @lang('Edit')</i>
+                                            </a>
+                                        </li> --}}
+                                        <li class="mb-1">
+                                            <a class="dropdown-item btn-modal btn-add" href="#" data-href="{{ route('payment-details.show',['id'=>@$payment->userContract->user->id]) }}" data-toggle="modal" data-container=".createPaymentModal">
+                                                <i class="fas fa-eye"></i> @lang('View Invoice')
                                             </a>
                                         </li>
                                         @if ($payment->type == 'advance')
@@ -51,10 +57,26 @@
                                             </li>
                                         @endif
                                         <li class="mb-1">
-                                            <a class="dropdown-item" href="#">
+                                            <a class="dropdown-item" href="#" onclick="printInvoice({{ @$payment->userContract->user->id }})">
                                                 <i class="fas fa-file-alt"></i> @lang('Print Invoice')
                                             </a>
                                         </li>
+                                        <li class="mb-1">
+                                            <a class="dropdown-item" href="{{ route('invoice.download', @$payment->userContract->user->id) }}">
+                                                <i class="fas fa-download"></i> @lang('Download Invoice')
+                                            </a>
+                                        </li>
+                                        @if(@$payment->userContract->user->telegram_id != null)
+                                        <li class="mb-1">
+                                            <form action="{{ route('send-invoice', ['userId' => @$payment->userContract->user->id]) }}" method="POST"
+                                                style="display: inline;">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item">
+                                                    <i class="fas fa-paper-plane"></i> @lang('Send Invoice To Telegram')
+                                                </button>
+                                            </form>
+                                        </li>
+                                        @endif
                                         <li>
                                             <form action="{{ route('payments.destroy', ['payment' => $payment->id]) }}"
                                                 method="POST">
@@ -80,12 +102,13 @@
                             </td>
                             <td>{{ $payment->payment_date ? \Carbon\Carbon::parse($payment->payment_date)->format('Y-m-d') : '-' }}
                             </td>
+                            <td>{{ $payment->invoice_no }}</td>
                             <td>{{ @$payment->userContract->user->name }} ({{ @$payment->userContract->room->room_number }})
                             </td>
                             <td>$ {{ $payment->total_amount }}</td>
                             <td>$ {{ $payment->amount }}</td>
                             <td>$ {{ $payment->total_due_amount ?? '--' }}</td>
-                            <td>{{ Str::upper($payment->type) }}</td>
+                            <td class="text-capitalize">{{ $payment->type }}</td>
                             @php
                                 $months = [
                                     1 => 'January',
@@ -118,6 +141,10 @@
         tabindex="-1" aria-labelledby="add_uitlity_paymentLabel" aria-hidden="true">
         {{-- Modal Utility Payment --}}
     </div>
+    <div class="modal fade payment_details_modal" id="payment_details_modal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="payment_details_modalLabel" aria-hidden="true">
+        {{-- Modal Utility Payment --}}
+    </div>
 
     @include('backends.payment.edit')
     @include('backends.payment.partial.add_payment_due')
@@ -137,4 +164,11 @@
             },
         });
     });
+</script>
+<script>
+    function printInvoice(userId) {
+        var url = "{{ route('invoice.print', ':userId') }}";
+        url = url.replace(':userId', userId);
+        window.open(url, '_blank');
+    }
 </script>

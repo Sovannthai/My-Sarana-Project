@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+use App\Models\PriceAdjustment;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\Localization;
@@ -42,7 +44,7 @@ Route::get('language/{locale}', function ($locale) {
 Route::post('/api/telegram-login', [TelegramLoginController::class, 'telegramLogin'])->name('store_user.telegram');
 Route::get('/telegram_callback', [TelegramLoginController::class, 'telegramAuthCallback'])->name('telegram_callback');
 
-Route::middleware(['auth',SetSessionData::class, Localization::class, SetLocale::class,UnreadMessagesMiddleware::class])->group(function () {
+Route::middleware(['auth', SetSessionData::class, Localization::class, SetLocale::class, UnreadMessagesMiddleware::class])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permission', PermissionController::class);
     Route::resource('users', UserController::class);
@@ -65,7 +67,7 @@ Route::middleware(['auth',SetSessionData::class, Localization::class, SetLocale:
     Route::post('/send-message', [UserRequestController::class, 'sendMessage'])->name('send-message.send');
 
     //Room Pricing
-    Route::resource('room-prices',RoomPricingController::class);
+    Route::resource('room-prices', RoomPricingController::class);
     //Business Settings
     Route::get('business-setting', [BusinessSettingController::class, 'index'])->name('business_setting.index');
     Route::put('update-business-setting', [BusinessSettingController::class, 'update'])->name('business_setting.update');
@@ -77,6 +79,17 @@ Route::middleware(['auth',SetSessionData::class, Localization::class, SetLocale:
     Route::post('/update-status', [AmenityController::class, 'updateStatus'])->name('amenity.update_status');
     Route::resource('rooms', RoomController::class);
     Route::resource('price_adjustments', PriceAdjustmentController::class);
+
+    // Auto update discount status
+    Route::get('/discounts/check-end-dates', function () {
+        $today = Carbon::now();
+
+        PriceAdjustment::where('status', 'active')
+            ->whereDate('end_date', '<=', $today)
+            ->update(['status' => 'inactive']);
+        return response()->json(['message' => 'Discount statuses updated successfully.']);
+    })->name('auto_update_discount_status');
+
 
 
     Route::prefix('utilities')->group(function () {
@@ -100,10 +113,14 @@ Route::middleware(['auth',SetSessionData::class, Localization::class, SetLocale:
 
     Route::resource('payments', PaymentController::class);
     Route::get('get-utilities-by-payment/{id}', [PaymentController::class, 'getUtilityByPayment'])->name('get-utilities.payment');
-    Route::get('create-utility-payment/{id}',[PaymentController::class,'createUitilityPayment'])->name('createUitilityPayment');
+    Route::get('create-utility-payment/{id}', [PaymentController::class, 'createUitilityPayment'])->name('createUitilityPayment');
     Route::get('/advance-utility-payment/{id}', [PaymentController::class, 'advanceUtilityPayment'])->name('advance-payment.utility');
     Route::post('store-advance-utility-payment', [PaymentController::class, 'storeAdvanceUtilityPayment'])->name('store-advance-utility-payment');
-    Route::delete('delete-advance-utility-payment/{id}',[PaymentController::class, 'deleteUtilityAdvancePayment'])->name('delete-advance-utility-payment');
+    Route::post('/check-utility-payment', [PaymentController::class, 'checkUtilityPayment'])->name('check.utility.payment');
+    Route::delete('delete-advance-utility-payment/{id}', [PaymentController::class, 'deleteUtilityAdvancePayment'])->name('delete-advance-utility-payment');
+    Route::get('payment-details/{id}',[InvoiceController::class,'viewInvoiceDetails'])->name('payment-details.show');
+    Route::get('download-utility-invoice/{id}',[InvoiceController::class,'downloadUtilitiesInvoice'])->name('utility-invoice.download');
+    Route::get('/invoice/print/{userId}', [InvoiceController::class, 'printInvoice'])->name('invoice.print');
 
 
     Route::resource('user_contracts', UserContractController::class);

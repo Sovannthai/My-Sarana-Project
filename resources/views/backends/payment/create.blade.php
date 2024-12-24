@@ -13,6 +13,7 @@
         <div class="modal-body">
             <form action="{{ route('payments.store') }}" method="POST" id="createPaymentForm">
                 @csrf
+                <input type="hidden" name="total_room_price_before_discount" id="total_room_price_before_discount">
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="user_contract_id">Contract</label>
@@ -351,6 +352,7 @@
                             $('#total_amount_amenity').val(response.amenity_prices);
                             $('#total_utility_amount').val(response.totalCost);
                             $('#room_price').val(response.room_price);
+                            $('#total_room_price_before_discount').val(response.total_room_price_before_discount);
                         } else {
                             // alert('Discount data is incomplete.');
                             $('#total_amount').val(response.price);
@@ -359,6 +361,7 @@
                             $('#total_amount_amenity').val(response.amenity_prices);
                             $('#total_utility_amount').val();
                             $('#room_price').val(response.room_price);
+                            $('#total_room_price_before_discount').val(response.total_room_price_before_discount);
                         }
                         //Amenity
                         var amenityHtml = '';

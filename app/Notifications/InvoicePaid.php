@@ -21,12 +21,12 @@ class InvoicePaid extends Notification
 
     public function toTelegram($notifiable)
     {
-        $url = url('/invoice/' . $this->invoice->id);
+        $url = asset('uploads/pdf/' . $this->invoice->id);
 
         return TelegramMessage::create()
             ->to($notifiable->telegram_id)
             ->content("Hello there!")
-            ->line("Your invoice has been *PAID*")
+            ->line("Please check your invoice details and pay back to me!")
             // ->lineIf($this->invoice->amount > 0, "Amount paid: {$this->invoice->amount}")
             ->line("Thank you!")
             ->button('View Invoice', $url)

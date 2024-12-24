@@ -31,111 +31,247 @@
     }
 </style>
 @if (auth()->user()->can('view dashborad'))
-    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-        <h3 class="fw-bold mb-3">@yield('content-header')</h3>
+<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+    <h3 class="fw-bold mb-3">@yield('content-header')</h3>
+</div>
+<div class="row">
+    <div class="col-sm-6 col-md-3">
+        <a href="{{ route('users.index') }}">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category text-dark">@lang('Total Renter')</p>
+                                <h4 class="card-title">{{ $total_renters }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
     </div>
-    <div class="row">
-        <div class="col-sm-6 col-md-3">
-            <a href="{{ route('users.index') }}">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                    <i class="fas fa-users"></i>
-                                </div>
+
+    <div class="col-sm-6 col-md-3">
+        <a href="{{ route('payments.index') }}">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-success bubble-shadow-small">
+                                <i class="fas fa-money-bill-wave"></i>
                             </div>
-                            <div class="col col-stats ms-3 ms-sm-0">
-                                <div class="numbers">
-                                    <p class="card-category text-dark">@lang('Total Renter')</p>
-                                    <h4 class="card-title">{{ $total_renters }}</h4>
-                                </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category text-dark">@lang('Total Amount')</p>
+                                <h4 class="card-title">$ {{ number_format($room_income_amount,2) }}</h4>
                             </div>
                         </div>
                     </div>
                 </div>
-            </a>
-        </div>
-        <div class="col-sm-6 col-md-3">
-            <a href="{{ route('rooms.index') }}">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-info bubble-shadow-small">
-                                    <i class="fas fa-door-closed"></i>
-                                </div>
-                            </div>
-                            <div class="col col-stats ms-3 ms-sm-0">
-                                <div class="numbers">
-                                    <p class="card-category text-dark">@lang('Total Room')</p>
-                                    <h4 class="card-title">{{ $total_rooms }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-sm-6 col-md-3">
-            <a href="#">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-success bubble-shadow-small">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                </div>
-                            </div>
-                            <div class="col col-stats ms-3 ms-sm-0">
-                                <div class="numbers">
-                                    <p class="card-category text-dark">@lang('Total Amount')</p>
-                                    <h4 class="card-title">$ 1,345</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-sm-6 col-md-3">
-            <a href="{{ route('user-request.index') }}">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-secondary bubble-shadow-small">
-                                    <i class="fa fa-comments"></i>
-                                </div>
-                            </div>
-                            <div class="col col-stats ms-3 ms-sm-0">
-                                <div class="numbers">
-                                    <p class="card-category text-dark">@lang('Total Request')</p>
-                                    <h4 class="card-title">{{ $unreadMessagesCount }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
+            </div>
+        </a>
     </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card card-chart">
-                <div class="card-header" data-toggle="collapse" data-target="#barChartCard">
-                    <div class="card-title text-uppercase">@lang('Total Amount Current Year')</div>
-                </div>
-                <div id="barChartCard" class="collapse show">
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="barChart"></canvas>
+
+    <div class="col-sm-6 col-md-3">
+        <a href="{{ route('payments.index') }}">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-success bubble-shadow-small">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
                         </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category text-dark">@lang('Total Utility Amount')</p>
+                                <h4 class="card-title">$ {{ number_format($total_utility_amount,2) }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <a href="{{ route('payments.index') }}">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-warning bubble-shadow-small">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category text-dark">@lang('Total Due Amount')</p>
+                                <h4 class="card-title">$ {{ number_format($total_due_amount,2) }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <a href="{{ route('expense_transactions.index') }}">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-danger bubble-shadow-small">
+                                <i class="fas fa-hand-holding-usd"></i>
+                            </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category text-dark">@lang('Total Expense')</p>
+                                <h4 class="card-title">$ {{ number_format($total_expenses,2) }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <a href="{{ route('user-request.index') }}">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                <i class="fa fa-comments"></i>
+                            </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category text-dark">@lang('Total Request')</p>
+                                <h4 class="card-title">{{ $unreadMessagesCount }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <a href="{{ route('rooms.index') }}">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-info bubble-shadow-small">
+                                <i class="fas fa-door-closed"></i>
+                            </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category text-dark">@lang('Total Room')</p>
+                                <h4 class="card-title">{{ $total_rooms }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <a href="{{ route('rooms.index') }}">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-info bubble-shadow-small">
+                                <i class="fas fa-door-closed"></i>
+                            </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category text-dark">@lang('Total Available Room')</p>
+                                <h4 class="card-title">{{ $total_avilable_rooms }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <a href="{{ route('rooms.index') }}">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-info bubble-shadow-small">
+                                <i class="fas fa-door-closed"></i>
+                            </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category text-dark">@lang('Total Occupied Room')</p>
+                                <h4 class="card-title">{{ $total_occupied_rooms }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <a href="{{ route('rooms.index') }}">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-info bubble-shadow-small">
+                                <i class="fas fa-wrench"></i>
+                            </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category text-dark">@lang('Total Maintenancec Room')</p>
+                                <h4 class="card-title">{{ $total_maintenance_rooms }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-chart">
+            <div class="card-header" data-toggle="collapse" data-target="#barChartCard">
+                <div class="card-title text-uppercase">@lang('Total Amount Current Year')</div>
+            </div>
+            <div id="barChartCard" class="collapse show">
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="barChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endif
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -164,4 +300,35 @@
         }
     });
 </script>
+{{-- dinamic chat --}}
+{{-- <script>
+    $(document).ready(function() {
+        var monthlyTotals = @json(array_values($monthlyTotals));
+
+        var barChart = document.getElementById('barChart').getContext('2d');
+        var myBarChart = new Chart(barChart, {
+            type: 'bar',
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: "Sales",
+                    backgroundColor: 'rgb(23, 125, 255)',
+                    borderColor: 'rgb(23, 125, 255)',
+                    data: monthlyTotals,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+            }
+        });
+    });
+</script> --}}
 @endsection
