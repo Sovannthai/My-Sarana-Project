@@ -81,7 +81,7 @@ Route::middleware(['auth', SetSessionData::class, Localization::class, SetLocale
     Route::resource('rooms', RoomController::class);
     Route::resource('price_adjustments', PriceAdjustmentController::class);
     Route::get('/reports/room', [ReportController::class, 'room'])->name('reports.room');
-    Route::get('reports/utilities', [ReportController::class, 'utility'])->name('reports.utility');
+    Route::get('reports/utility', [ReportController::class, 'utility'])->name('reports.utility');
 
     // Auto update discount status
     Route::get('/discounts/check-end-dates', function () {
