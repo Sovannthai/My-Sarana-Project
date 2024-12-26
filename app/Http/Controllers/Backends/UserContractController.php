@@ -87,7 +87,6 @@ class UserContractController extends Controller
             }
             return redirect()->route('user_contracts.index')->with('success', 'User contract created successfully.');
         } catch (Exception $e) {
-            dd($e);
             return back()->withErrors(['error' => 'An error occurred while creating the contract.'])->withInput();
         }
     }

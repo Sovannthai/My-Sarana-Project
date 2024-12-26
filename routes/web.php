@@ -13,6 +13,7 @@ use App\Http\Controllers\Backends\RoleController;
 use App\Http\Controllers\Backends\RoomController;
 use App\Http\Controllers\Backends\UserController;
 use App\Http\Middleware\UnreadMessagesMiddleware;
+use App\Http\Controllers\Backends\ReportController;
 use App\Http\Controllers\Backends\AmenityController;
 use App\Http\Controllers\Backends\InvoiceController;
 use App\Http\Controllers\Backends\PaymentController;
@@ -79,6 +80,8 @@ Route::middleware(['auth', SetSessionData::class, Localization::class, SetLocale
     Route::post('/update-status', [AmenityController::class, 'updateStatus'])->name('amenity.update_status');
     Route::resource('rooms', RoomController::class);
     Route::resource('price_adjustments', PriceAdjustmentController::class);
+    Route::get('/reports/room', [ReportController::class, 'room'])->name('reports.room');
+    Route::get('reports/utilities', [ReportController::class, 'utility'])->name('reports.utility');
 
     // Auto update discount status
     Route::get('/discounts/check-end-dates', function () {
