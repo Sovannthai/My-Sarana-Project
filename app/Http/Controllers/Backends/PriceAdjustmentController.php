@@ -12,15 +12,41 @@ use App\Http\Requests\UpdatePriceAdjustmentRequest;
 
 class PriceAdjustmentController extends Controller
 {
-    public function index()
-    {
-        $priceAdjustments = PriceAdjustment::with('room')->get();
-        $rooms = Room::all();
-        $usedRoomIds = PriceAdjustment::where('status','active')->pluck('room_id')->toArray();
-        $availableRooms = Room::whereNotIn('id', $usedRoomIds)->get();
+    // public function index()
+    // {
+    //     $priceAdjustments = PriceAdjustment::with('room')->get();
+    //     $rooms = Room::all();
+    //     $usedRoomIds = PriceAdjustment::where('status','active')->pluck('room_id')->toArray();
+    //     $availableRooms = Room::whereNotIn('id', $usedRoomIds)->get();
 
-        return view('backends.price_adjustment.index', compact('priceAdjustments', 'rooms', 'availableRooms'));
+    //     return view('backends.price_adjustment.index', compact('priceAdjustments', 'rooms', 'availableRooms'));
+    // }
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = PriceAdjustment::with('room');
+            if ($request->has('room_id') && $request->room_id) {
+                $query->where('room_id', $request->room_id);
+            }
+            $priceAdjustments = $query->get();
+
+            return response()->json(['data' => $priceAdjustments]);
+        }
+
+        $rooms = Room::all();
+        $usedRoomIds = PriceAdjustment::where('status', 'active')->pluck('room_id')->toArray();
+        $availableRooms = Room::whereNotIn('id', $usedRoomIds)->get();
+        return view('backends.price_adjustment.index', compact('rooms','availableRooms'));
     }
+
+    public function edit($id)
+    {
+        $adjustment = PriceAdjustment::findOrFail($id);
+        $rooms = Room::all();
+
+        return view('backends.price_adjustment.edit', compact('adjustment', 'rooms'));
+    }
+
 
     public function store(Request $request)
     {

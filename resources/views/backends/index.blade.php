@@ -274,7 +274,8 @@
 </div>
 @endif
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
+{{-- static Chat --}}
+{{-- <script>
     var barChart = document.getElementById('barChart').getContext('2d');
     var myBarChart = new Chart(barChart, {
         type: 'bar',
@@ -299,9 +300,9 @@
             },
         }
     });
-</script>
+</script> --}}
 {{-- dinamic chat --}}
-{{-- <script>
+<script>
     $(document).ready(function() {
         var monthlyTotals = @json(array_values($monthlyTotals));
 
@@ -330,5 +331,5 @@
             }
         });
     });
-</script> --}}
+</script>
 @endsection
