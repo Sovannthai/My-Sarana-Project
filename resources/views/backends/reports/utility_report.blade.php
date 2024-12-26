@@ -35,7 +35,7 @@
                         <select id="filter-utility" class="form-control select2">
                             <option value="">@lang('Filter by Utility Type')</option>
                             @foreach ($utilityTypes as $utilityType)
-                                <option value="{{ $utilityType->id }}">{{ $utilityType->name }}</option>
+                                <option value="{{ $utilityType->id }}">{{ $utilityType->type }}</option>
                             @endforeach
                         </select>
                     </div>
