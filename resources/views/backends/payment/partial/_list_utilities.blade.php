@@ -1,4 +1,4 @@
-@foreach ($payments as $payment)
+@foreach ($payment_using_for_modals as $payment)
 <div class="modal fade utility_list_modal" id="utility_list_modal-{{ $payment->id }}" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="utility_list_modalLabel" aria-hidden="true">
     {{-- Modal Utility List --}}

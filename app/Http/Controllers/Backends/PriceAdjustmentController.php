@@ -12,15 +12,6 @@ use App\Http\Requests\UpdatePriceAdjustmentRequest;
 
 class PriceAdjustmentController extends Controller
 {
-    // public function index()
-    // {
-    //     $priceAdjustments = PriceAdjustment::with('room')->get();
-    //     $rooms = Room::all();
-    //     $usedRoomIds = PriceAdjustment::where('status','active')->pluck('room_id')->toArray();
-    //     $availableRooms = Room::whereNotIn('id', $usedRoomIds)->get();
-
-    //     return view('backends.price_adjustment.index', compact('priceAdjustments', 'rooms', 'availableRooms'));
-    // }
     public function index(Request $request)
     {
         if ($request->ajax()) {

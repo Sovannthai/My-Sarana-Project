@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backends;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\Room;
 use App\Models\Amenity;
 use App\Models\Payment;
 use App\Models\UtilityRate;
@@ -15,6 +16,7 @@ use App\Models\PaymentUtility;
 use App\Models\PriceAdjustment;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
@@ -22,12 +24,47 @@ class PaymentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $payments = Payment::latest('invoice_no')->get();
+        if ($request->ajax()) {
+            $query = Payment::with(['userContract.user', 'userContract.room']);
+
+            if ($request->has('user_id') && $request->user_id) {
+                $query->whereHas('userContract.user', function ($q) use ($request) {
+                    $q->where('id', $request->user_id);
+                });
+            }
+            if($request->has('payment_status') && $request->payment_status){
+                $query->where('payment_status', $request->payment_status);
+            }
+            if($request->has('payment_type') && $request->payment_type){
+                $query->where('type', $request->payment_type);
+            }
+            if($request->has('year_paid') && $request->year_paid){
+                $query->where('year_paid', $request->year_paid);
+            }
+
+            $payments = $query->latest()->get();
+
+            $totalPayment = $payments->sum('total_amount');
+            $amountPaid = $payments->sum('amount');
+            $totalDueAmount = $payments->sum('total_due_amount');
+
+            return response()->json([
+                'data' => $payments,
+                'total_payment' => $totalPayment,
+                'amount_paid' => $amountPaid,
+                'total_due_amount' => $totalDueAmount,
+            ]);
+        }
+
+        $rooms = Room::all();
+        $users = User::all();
+        $payment_using_for_modals = Payment::all();
         $contracts = UserContract::all();
-        return view('backends.payment.index', compact('payments', 'contracts'));
+        return view('backends.payment.index', compact('rooms','payment_using_for_modals','contracts','users'));
     }
+
     public function getTotalRoomPrice($id)
     {
         $contract = UserContract::with([

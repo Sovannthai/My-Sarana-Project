@@ -1,5 +1,5 @@
 <!-- Create Payment Modal -->
-@foreach ($payments as $payment)
+@foreach ($payment_using_for_modals as $payment)
     <style>
         input {
             color: black;

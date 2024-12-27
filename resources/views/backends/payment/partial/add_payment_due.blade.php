@@ -1,4 +1,4 @@
-@foreach ($payments as $payment)
+@foreach ($payment_using_for_modals as $payment)
     <div class="modal fade" id="add_payment_due-{{ $payment->id }}" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
