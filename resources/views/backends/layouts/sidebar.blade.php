@@ -194,7 +194,7 @@
                         <p>@lang('Report')</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse @if (Route::is('reports.room') || Route::is('reports.utility')) show @endif" id="reports">
+                    <div class="collapse @if (Route::is('reports.room') || Route::is('reports.utility') || Route::is('reports.payment')) show @endif" id="reports">
                         <ul class="nav nav-collapse">
                             <li class="@if (Route::is('reports.room')) active @endif">
                                 <a href="{{ route('reports.room') }}">
@@ -205,7 +205,12 @@
                                 <a href="{{ route('reports.utility') }}">
                                     <span class="sub-item">@lang('Utilities Report')</span>
                                 </a>
+                            </li> <li class="@if (Route::is('reports.payment')) active @endif">
+                                <a href="{{ route('reports.payment') }}">
+                                    <span class="sub-item">@lang('Payment Report')</span>
+                                </a>
                             </li>
+
                         </ul>
                     </div>
                 </li>

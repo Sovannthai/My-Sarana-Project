@@ -72,8 +72,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -100,7 +98,7 @@
                 </div>
             </div>
 
-            <div class="col-6 dashboard-card">
+            <div class="col-sm-6 dashboard-card">
                 <div class="card">
                     <!-- Insert the Polar Area Chart -->
                     <div class="mt-3 mb-3">
@@ -109,7 +107,7 @@
                 </div>
             </div>
 
-            <div class="col-6 dashboard-card">
+            <div class="col-sm-6 dashboard-card">
                 <div class="card">
                     <div class="mt-3 mb-3">
                         <canvas id="chart_income"></canvas>
@@ -117,7 +115,7 @@
                 </div>
             </div>
 
-            <div class="col-6 dashboard-card">
+            <div class="col-sm-6 dashboard-card">
                 <div class="card shadow-sm">
                     <div class="card-header bg-gradient-primary text-white d-flex align-items-center justify-content-between">
                         <h4 class="card-title mb-0">Recent Transactions</h4>

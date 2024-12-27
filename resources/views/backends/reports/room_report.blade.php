@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title', 'Room Contracts')
+@section('title', 'Room Report')
 @section('contents')
     <style>
         #filter-room,
@@ -19,7 +19,7 @@
             </a>
         </h5>
         <div id="collapse-filters" class="collapse show" aria-labelledby="heading-filters">
-            <div class="mt-1 ml-3 mb-4">
+            <div class="mt-1 ml-1 mb-4">
                 <div class="row">
                     <div class="col-sm-4">
                         <label for="filter-room">@lang('Room')</label>
@@ -168,8 +168,6 @@
                 function() {
                     table.ajax.reload();
                 });
-
-
         });
     </script>
 @endsection

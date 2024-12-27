@@ -11,7 +11,7 @@
             @include('backends.expense_transaction.create')
         </div>
         <div class="card-body">
-            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
+            <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
                 <thead class="table-dark">
                     <tr>
                         <th>@lang('No.')</th>

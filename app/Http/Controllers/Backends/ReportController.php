@@ -8,6 +8,7 @@ use App\Models\UtilityType;
 use App\Models\MonthlyUsage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
 
 class ReportController extends Controller
 {
@@ -115,6 +116,58 @@ public function utility(Request $request)
         $utilityTypes = UtilityType::all();
 
         return view('backends.reports.utility_report', compact('rooms', 'utilityTypes'));
+    }
+
+    public function paymentReport(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = Payment::with('userContract.user');
+
+            // Apply filters if provided
+            if ($request->has('month') && $request->month) {
+                $query->where('month_paid', $request->month);
+            }
+            if ($request->has('year') && $request->year) {
+                $query->where('year_paid', $request->year);
+            }
+            if ($request->has('type') && $request->type) {
+                $query->where('type', $request->type);
+            }
+            if ($request->has('status') && $request->status) {
+                $query->where('payment_status', $request->status);
+            }
+
+            $payments = $query->get();
+
+            // Format response
+            $formattedData = $payments->map(function ($payment) {
+                return [
+                    'invoice_no' => $payment->invoice_no,
+                    'user_name' => $payment->userContract->user->name ?? 'N/A',
+                    'room_number' => $payment->userContract->room->room_number ?? 'N/A',
+                    'room_price' => $payment->room_price,
+                    'total_amount' => $payment->total_amount,
+                    'amount_paid' => $payment->amount,
+                    'total_due_amount' => $payment->total_due_amount,
+                    'payment_status' => $payment->payment_status,
+                    'payment_date' => $payment->payment_date,
+                    'type' => $payment->type,
+                ];
+            });
+            $totalPayment = $payments->sum('total_amount');
+            $amountPaid = $payments->sum('amount');
+            $totalDueAmount = $payments->sum('total_due_amount');
+
+            return response()->json([
+                'data' => $formattedData,
+                'total_payment' => $totalPayment,
+                'amount_paid' => $amountPaid,
+                'total_due_amount' => $totalDueAmount,
+            ]);
+        }
+
+        $rooms = Room::all();
+        return view('backends.reports.payment_report', compact('rooms'));
     }
 
 }

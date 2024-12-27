@@ -19,7 +19,7 @@
             </a>
         </h5>
         <div id="collapse-filters" class="collapse show" aria-labelledby="heading-filters">
-            <div class="mt-1 ml-3 mb-4">
+            <div class="mt-1 ml-1 mb-4">
                 <div class="row">
                     <div class="col-sm-4">
                         <label for="filter-room">@lang('Room')</label>
@@ -71,7 +71,7 @@
             <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Utility Report')</label>
         </div>
         <div class="card-body">
-            <table id="utility-table" class="table table-bordered text-nowrap table-hover table-responsive">
+            <table id="utility-table" class="table table-bordered text-nowrap table-hover table-responsive-lg">
                 <thead class="table-dark">
                     <tr>
                         <th>@lang('No.')</th>
@@ -91,7 +91,7 @@
     <script>
         $(document).ready(function() {
             const table = $("#utility-table").DataTable({
-                responsive: true,
+                responsive: false,
                 processing: true,
                 serverSide: true,
                 paging: true,
@@ -116,6 +116,8 @@
                     { data: "year", name: "year" },
                     { data: "utility_type", name: "utility_type" },
                     { data: "usage", name: "usage", render: data => `${data} units` },
+                    // { data: 'rate_per_unit', name: 'rate_per_unit' },
+                    // { data: 'total_cost', name: 'total_cost' },
                 ],
                 language: {
                     search: "@lang('Search'):",
