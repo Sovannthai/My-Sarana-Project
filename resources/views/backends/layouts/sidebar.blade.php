@@ -188,31 +188,28 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a data-toggle="collapse" href="#reports">
+                    <a data-toggle="collapse" href="#reports"
+                        @if (Route::is('reports.room') || Route::is('reports.utility')) aria-expanded="true" @else aria-expanded="false" @endif>
                         <i class="fa fas fa-chart-bar"></i>
                         <p>@lang('Report')</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="reports">
+                    <div class="collapse @if (Route::is('reports.room') || Route::is('reports.utility')) show @endif" id="reports">
                         <ul class="nav nav-collapse">
-                            <li class="">
-                                <a href="#">
+                            <li class="@if (Route::is('reports.room')) active @endif">
+                                <a href="{{ route('reports.room') }}">
                                     <span class="sub-item">@lang('Room Report')</span>
                                 </a>
                             </li>
-                            <li class="">
-                                <a href="#">
-                                    <span class="sub-item">@lang('Utilties Report')</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="#">
-                                    <span class="sub-item">@lang('Payment Report')</span>
+                            <li class="@if (Route::is('reports.utility')) active @endif">
+                                <a href="{{ route('reports.utility') }}">
+                                    <span class="sub-item">@lang('Utilities Report')</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
+
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#tables"
                         @if (Route::is('business_setting.*')) aria-expanded="true" @else aria-expanded="false" @endif>
