@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title', 'Price Adjustments')
+@section('title', 'Discount')
 @section('contents')
 <style>
     #filter-room {
@@ -34,10 +34,12 @@
 <div class="card">
     <div class="card-header">
         <label class="card-title font-weight-bold mb-1 text-uppercase">Price Adjustments</label>
+        @can('create discount')
         <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-bs-toggle="modal"
             data-bs-target="#create_price">
             <i class="fas fa-plus"> @lang('Add')</i></a>
         @include('backends.price_adjustment.create')
+        @endcan
     </div>
     <div class="card-body">
         <table id="discount-table" class="table table-bordered text-nowrap table-hover table-responsive">
@@ -129,12 +131,17 @@
                     name: "id",
                     render: function (data, type, row) {
                     return `
+                    @can('update discount')
                         <a href="" class="btn btn-outline-primary btn-sm text-uppercase btn-modal btn-add" data-href="${route('price_adjustments.edit', data)}" data-toggle="modal" data-container=".edit_duscount_modal">
                             <i class="fa fa-edit">@lang("Edit")</i>
                         </a>
+                    @endcan
+                    @can('delete discount')
                         <button type="button" class="btn btn-outline-danger btn-sm text-uppercase delete-button" data-id="${data}">
                             <i class="fa fa-trash">@lang("Delete")</i>
-                        </button>`;
+                        </button>
+                    @endcan`;
+
                     },
                 },
             ],

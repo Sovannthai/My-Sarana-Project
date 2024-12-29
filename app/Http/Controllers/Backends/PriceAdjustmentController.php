@@ -14,6 +14,10 @@ class PriceAdjustmentController extends Controller
 {
     public function index(Request $request)
     {
+        if(!auth()->user()->can('view discount')){
+            abort(403, 'Unauthorized action.');
+        }
+
         if ($request->ajax()) {
             $query = PriceAdjustment::with('room');
             if ($request->has('room_id') && $request->room_id) {

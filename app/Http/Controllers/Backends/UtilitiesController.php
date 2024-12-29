@@ -13,6 +13,10 @@ class UtilitiesController extends Controller
 {
     public function index(Request $request, CurrencyService $currencyService)
     {
+        if(!auth()->user()->can('view utility')){
+            abort(403,'Unauthorized action.');
+        }
+
         $utilityTypes = UtilityType::with('utilityRates')->get();
         $activeUtilityTypeId = $request->query('utility_type_id');
         $baseCurrency = $currencyService->getBaseCurrency();

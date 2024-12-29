@@ -14,51 +14,55 @@ use App\Http\Requests\UpdateExpenseTransactionRequest;
 class ExpenseTransactionController extends Controller
 {
     public function dashboard()
-{
-    $totalAmount = Payment::sum('total_amount');
-    $totalUtilityAmount = Payment::sum('total_utility_amount');
-    $totalIncome = $totalAmount + $totalUtilityAmount;
+    {
+        if(!auth()->user()->can('dashboard expense')){
+            abort(403,'Unauthorized action.');
+        }
 
-    $totalExpense = ExpenseTransaction::sum('amount');
-    $balance = $totalIncome - $totalExpense;
+        $totalAmount = Payment::sum('total_amount');
+        $totalUtilityAmount = Payment::sum('total_utility_amount');
+        $totalIncome = $totalAmount + $totalUtilityAmount;
 
-    $recentTransactions = ExpenseTransaction::latest()->take(5)->get();
+        $totalExpense = ExpenseTransaction::sum('amount');
+        $balance = $totalIncome - $totalExpense;
 
-    $expensesByCategory = ExpenseTransaction::selectRaw('SUM(amount) as total, category_id')
-        ->groupBy('category_id')
-        ->with('category')
-        ->get();
+        $recentTransactions = ExpenseTransaction::latest()->take(5)->get();
 
-    $chartLabels = $expensesByCategory->map(fn($expense) => $expense->category->title ?? 'Uncategorized');
-    $chartValues = $expensesByCategory->pluck('total');
+        $expensesByCategory = ExpenseTransaction::selectRaw('SUM(amount) as total, category_id')
+            ->groupBy('category_id')
+            ->with('category')
+            ->get();
 
-    $monthlyRoomData = Payment::selectRaw('MONTH(payment_date) as month, SUM(total_amount) as total')
-        ->groupBy('month')
-        ->orderBy('month')
-        ->get();
+        $chartLabels = $expensesByCategory->map(fn($expense) => $expense->category->title ?? 'Uncategorized');
+        $chartValues = $expensesByCategory->pluck('total');
 
-    $monthlyUtilityData = Payment::selectRaw('MONTH(payment_date) as month, SUM(total_utility_amount) as total')
-        ->groupBy('month')
-        ->orderBy('month')
-        ->get();
+        $monthlyRoomData = Payment::selectRaw('MONTH(payment_date) as month, SUM(total_amount) as total')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
 
-    $months = $monthlyRoomData->pluck('month')->map(fn($m) => date('F', mktime(0, 0, 0, $m, 1)));
+        $monthlyUtilityData = Payment::selectRaw('MONTH(payment_date) as month, SUM(total_utility_amount) as total')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
 
-    $monthlyRoomValues = $monthlyRoomData->pluck('total');
-    $monthlyUtilityValues = $monthlyUtilityData->pluck('total');
+        $months = $monthlyRoomData->pluck('month')->map(fn($m) => date('F', mktime(0, 0, 0, $m, 1)));
 
-    return view('backends.expense_transaction.dashboard', compact(
-        'totalIncome',
-        'balance',
-        'totalExpense',
-        'recentTransactions',
-        'chartLabels',
-        'chartValues',
-        'months',
-        'monthlyRoomValues',
-        'monthlyUtilityValues'
-    ));
-}
+        $monthlyRoomValues = $monthlyRoomData->pluck('total');
+        $monthlyUtilityValues = $monthlyUtilityData->pluck('total');
+
+        return view('backends.expense_transaction.dashboard', compact(
+            'totalIncome',
+            'balance',
+            'totalExpense',
+            'recentTransactions',
+            'chartLabels',
+            'chartValues',
+            'months',
+            'monthlyRoomValues',
+            'monthlyUtilityValues'
+        ));
+    }
 
 
 

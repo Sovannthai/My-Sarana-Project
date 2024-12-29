@@ -20,6 +20,9 @@ class RoomController extends Controller
      */
     public function index(CurrencyService $currencyService)
     {
+        if (!auth()->user()->can('view room')) {
+            abort(403, 'Unauthorized action.');
+        }
         $rooms = Room::with('roomPricing')->get();
         $baseCurrency = $currencyService->getBaseCurrency();
         $currencySymbol = $baseCurrency === 'USD' ? '$' : '៛';

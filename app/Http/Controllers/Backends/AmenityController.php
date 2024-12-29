@@ -22,6 +22,10 @@ class AmenityController extends Controller
      */
     public function index(CurrencyService $currencyService)
     {
+        if(!auth()->user()->can('view amenity')){
+            abort(403,'Unauthorized action.');
+        }
+
         $amenities = Amenity::all();
         $baseCurrency = $currencyService->getBaseCurrency();
         $currencySymbol = $baseCurrency === 'USD' ? '$' : '៛';

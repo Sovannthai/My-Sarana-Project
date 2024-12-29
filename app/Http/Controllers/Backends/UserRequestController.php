@@ -15,6 +15,9 @@ class UserRequestController extends Controller
 
     public function index()
     {
+        if (!auth()->user()->can('view chat')) {
+            abort(403, 'Unauthorized action.');
+        }
         $user_requests = User::withCount([
             'messages as unread_messages_count' => function ($query) {
                 $query->where('is_read', '0');

@@ -61,7 +61,7 @@
     </div>
     <div class="card">
         <div class="card-header">
-            <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Room Contracts')</label>
+            <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Room Report')</label>
         </div>
         <div class="card-body">
             <table id="contracts-table" class="table table-bordered text-nowrap table-hover table-responsive">

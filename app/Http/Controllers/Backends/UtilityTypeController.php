@@ -14,6 +14,9 @@ class UtilityTypeController extends Controller
      */
     public function index()
     {
+        if(!auth()->user()->can('view utilitytype')){
+            abort(403,'Unauthorized action.');
+        }
         $utilityTypes = UtilityType::orderBy('id','asc')->get();
         return view('backends.utilitie_type.index', compact('utilityTypes'));
     }

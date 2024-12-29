@@ -39,9 +39,11 @@
                             value="{{ collect($exchangeRates)->firstWhere('from_currency', 'KHR')['rate'] ?? '' }}">
                     </div> --}}
                 </div>
+                @can('update setting')
                 <div class="mt-5">
                     <button type="submit" class="btn btn-outline-success float-lg-right">@lang('Update Business Setting')</button>
                 </div>
+                @endcan
             </form>
         </div>
     </div>

@@ -61,10 +61,12 @@
 <div class="card">
     <div class="card-header">
         <label class="card-title font-weight-bold mb-1 text-uppercase">Payments Management</label>
+        @can('create payment')
         <a class="btn btn-primary float-right text-uppercase btn-sm btn-modal btn-add"
             data-href="{{ route('payments.create') }}" data-toggle="modal" data-container=".createPaymentModal">
             {{ __('Add New') }}
         </a>
+        @endcan
     </div>
     <div class="card-body">
         <table id="payment-datatables" class="table table-bordered text-nowrap table-hover table-responsive">
@@ -219,6 +221,7 @@
                                         </button>
                                     </form>
                                 </li>` : ''}
+                                @can('delete payment')
                                 <li>
                                     <form action="${deletePaymentUrl}" method="POST">
                                         @csrf
@@ -228,6 +231,7 @@
                                         </button>
                                     </form>
                                 </li>
+                                @endcan
                             </ul>
                         </div>
                 `;

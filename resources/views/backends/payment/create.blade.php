@@ -26,6 +26,29 @@
                         </select>
                     </div>
                     <div class="col-sm-6">
+                        <label for="month_paid">Month Paid</label>
+                        <select name="month_paid" class="form-select">
+                            <option value="" selected>-- Select Month --</option>
+                            <option value="1">@lang('January')</option>
+                            <option value="2">@lang('February')</option>
+                            <option value="3">@lang('March')</option>
+                            <option value="4">@lang('April')</option>
+                            <option value="5">@lang('May')</option>
+                            <option value="6">@lang('June')</option>
+                            <option value="7">@lang('July')</option>
+                            <option value="8">@lang('August')</option>
+                            <option value="9">@lang('September')</option>
+                            <option value="10">@lang('October')</option>
+                            <option value="11">@lang('November')</option>
+                            <option value="12">@lang('December')</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="year_paid">Year Paid</label>
+                        <input type="number" class="form-control" id="year" name="year_paid"
+                            value="{{ date('Y') }}" required>
+                    </div>
+                    <div class="col-sm-6">
                         <label for="room_price">Room Price</label>
                         <input type="number" name="room_price" id="room_price" class="form-control" step="0.01"
                             min="0" readonly style="color: black;">
@@ -134,28 +157,6 @@
                     <div class="col-sm-6">
                         <label for="payment_date">Payment Date</label>
                         <input type="date" name="payment_date" id="payment_date" class="form-control" required>
-                    </div>
-                    <div class="col-sm-6">
-                        <label for="month_paid">Month Paid</label>
-                        <select name="month_paid" class="form-select">
-                            <option value="1">@lang('January')</option>
-                            <option value="2">@lang('February')</option>
-                            <option value="3">@lang('March')</option>
-                            <option value="4">@lang('April')</option>
-                            <option value="5">@lang('May')</option>
-                            <option value="6">@lang('June')</option>
-                            <option value="7">@lang('July')</option>
-                            <option value="8">@lang('August')</option>
-                            <option value="9">@lang('September')</option>
-                            <option value="10">@lang('October')</option>
-                            <option value="11">@lang('November')</option>
-                            <option value="12">@lang('December')</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <label for="year_paid">Year Paid</label>
-                        <input type="number" class="form-control" id="year" name="year_paid"
-                            value="{{ date('Y') }}" required>
                     </div>
                     <div class="mt-2">
                         <button type="submit"

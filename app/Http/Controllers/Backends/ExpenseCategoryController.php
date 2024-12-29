@@ -12,6 +12,10 @@ class ExpenseCategoryController extends Controller
 {
     public function index()
     {
+        if(!auth()->user()->can('view expense category')){
+            abort(403,'Unauthorized action.');
+        }
+
         $expenseCategories = ExpenseCategory::all();
 
         return view('backends.expense_category.index', compact('expenseCategories'));

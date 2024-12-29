@@ -4,9 +4,10 @@
     <div class="card">
         <div class="card-header">
             <label class="card-title font-weight-bold mb-1 text-uppercase">Permissions</label>
-            <a href="{{ route('permission.create') }}" class="btn btn-primary float-right text-uppercase btn-sm"
-                data-value="veiw">
+            <a href="" class="btn btn-primary float-right text-uppercase btn-sm"
+                data-value="veiw" data-bs-toggle="modal" data-bs-target="#create_permission">
                 <i class="fas fa-plus"> @lang('Add')</i></a>
+                @include('backends.permission.create')
         </div>
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">

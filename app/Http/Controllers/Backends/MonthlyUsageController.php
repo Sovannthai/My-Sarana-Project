@@ -26,6 +26,10 @@ class MonthlyUsageController extends Controller
 
     public function show($roomId)
     {
+        if(!auth()->user()->can('view usagedetails')){
+            abort(403,'Unauthorized action.');
+        }
+
         $room = Room::findOrFail($roomId);
         $monthlyUsages = MonthlyUsage::with('utilityTypes')
             ->where('room_id', $roomId)

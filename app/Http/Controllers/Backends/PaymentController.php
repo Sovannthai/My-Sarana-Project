@@ -26,6 +26,10 @@ class PaymentController extends Controller
      */
     public function index(Request $request)
     {
+        if(!auth()->user()->can('view payment')){
+            abort(403,'Unauthorized action.');  
+        }
+
         if ($request->ajax()) {
             $query = Payment::with(['userContract.user', 'userContract.room']);
 

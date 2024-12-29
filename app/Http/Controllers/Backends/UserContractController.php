@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreUserContractRequest;
 use App\Http\Requests\UpdateUserContractRequest;
+use App\Models\RoomPricing;
 
 class UserContractController extends Controller
 {
@@ -40,6 +41,10 @@ class UserContractController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('view contract')) {
+            abort(403, 'Unauthorized action.'); 
+        }
+
         $userContracts = UserContract::with(['user', 'room'])->get();
         $users = User::whereHas('roles', function ($query) {
             $query->where('name', 'User');
@@ -72,12 +77,13 @@ class UserContractController extends Controller
                     $filePath = $this->uploadImage($file);
                 }
             }
+            $room_price = RoomPricing::where('room_id',$request->input('room_id'))->latest()->first();
             UserContract::create([
                 'user_id' => $request->input('user_id'),
                 'room_id' => $request->input('room_id'),
                 'start_date' => $request->input('start_date'),
                 'end_date' => $request->input('end_date'),
-                'monthly_rent' => $request->input('monthly_rent'),
+                'monthly_rent' => $room_price->base_price,
                 'contract_pdf' => $filePath,
             ]);
             if ($request->input('room_id')) {

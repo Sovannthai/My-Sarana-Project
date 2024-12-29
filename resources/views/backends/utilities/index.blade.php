@@ -10,10 +10,12 @@
     <div class="card">
         <div class="card-header">
             <label class="card-title font-weight-bold mb-1 text-uppercase">Utilities Management</label>
+            @can('create utility')
             <a href="#" class="btn btn-primary float-right text-uppercase btn-sm" data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop">
                 <i class="fas fa-plus"> @lang('Add Utility Rate')</i>
             </a>
+            @endcan
         </div>
         <ul class="nav nav-tabs mb-2" id="utilityTabs">
             @foreach ($utilityTypes as $index => $utilityType)
@@ -174,6 +176,7 @@
                                 </div>
                             </td>
                             <td>
+                                @can('update utility')
                                 <button class="btn btn-sm btn-outline-primary edit-btn"
                                     data-id="${rate.id}"
                                     data-rate="${convertedRate.toFixed(2)}"
@@ -182,6 +185,8 @@
                                     Edit
                                 </button>
                                 &nbsp;&nbsp;
+                                @endcan
+                                @can('delete utility')
                                 <form action="${deleteRoute}" method="POST" class="d-inline-block">
                                     @csrf
                                     @method('DELETE')
@@ -190,6 +195,7 @@
                                         <i class="fa fa-trash"></i> @lang('Delete')
                                     </button>
                                 </form>
+                                @endcan
                             </td>
                         </tr>`;
                                 tableBody.insertAdjacentHTML('beforeend', row);

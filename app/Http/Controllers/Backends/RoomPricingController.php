@@ -13,6 +13,10 @@ class RoomPricingController extends Controller
 {
     public function index(Request $request, CurrencyService $currencyService)
     {
+        if (!auth()->user()->can('view roomprices')){
+            abort(403, 'Unauthorized action.');
+        }
+
         $search = $request->input('search');
         $baseCurrency = $currencyService->getBaseCurrency();
         $currencySymbol = $baseCurrency === 'USD' ? '$' : '៛';

@@ -12,15 +12,18 @@
             Back To all Rooms
         </a><br>
     </div><br>
+    @can('view usagedetails')
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <label class="card-title font-weight-bold text-uppercase">
                 @lang('Monthly Usage Records')
             </label>
+            @can('create usage')
             <a href="#" class="btn btn-primary text-uppercase btn-sm" data-bs-toggle="modal"
                 data-bs-target="#createMonthlyUsageModal">
                 <i class="fas fa-plus"></i> @lang('Add Usage')
             </a>
+            @endcan
         </div>
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
@@ -65,11 +68,13 @@
                             <td>{{ \Illuminate\Support\Carbon::create()->month($usage->month)->format('F') }}</td>
                             <td>{{ $usage->year }}</td>
                             <td>
+                                @can('update usage')
                                 <a href="#" class="btn btn-outline-primary btn-sm text-uppercase"
                                     data-bs-toggle="modal" data-bs-target="#editMonthlyUsageModal-{{ $usage->id }}">
                                     <i class="fas fa-edit"> @lang('Edit')</i>
                                 </a>
-
+                                @endcan
+                                @can('delete usage')
                                 <form action="{{ route('monthly_usages.destroy', $usage->id) }}" method="POST"
                                     class="d-inline-block">
                                     @csrf
@@ -78,6 +83,7 @@
                                         <i class="fa fa-trash"> @lang('Delete')</i>
                                     </button>
                                 </form>
+                                @endcan
                             </td>
                         </tr>
                     @empty
@@ -89,6 +95,7 @@
             </table>
         </div>
     </div>
+    @endcan
 
     @include('backends.monthly_usages.create')
 

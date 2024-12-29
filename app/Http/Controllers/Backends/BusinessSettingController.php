@@ -13,6 +13,9 @@ class BusinessSettingController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('view setting')) {
+            abort(403, 'Unauthorized action.');
+        }
         $business_setting = BusinessSetting::first();
         $exchangeRates = json_decode($business_setting->exchange_rates, true);
         $base_currencies = json_decode($business_setting->base_currency, true);

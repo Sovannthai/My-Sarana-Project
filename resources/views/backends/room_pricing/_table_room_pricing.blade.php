@@ -17,10 +17,13 @@
                     <td>{{ $currencySymbol }} {{ number_format($room->converted_price, 2) }}</td>
                     <td>{{ $room->effective_date }}</td>
                     <td>
+                        @if(auth()->user()->can('update roomprice'))
                         <a href="" class="btn btn-outline-primary btn-sm text-uppercase" data-bs-toggle="modal"
                             data-bs-target="#edit-pricing-{{ $room->id }}">
                             <i class="fa fa-edit"> @lang('Edit')</i>
                         </a>
+                        @endif
+                        @if(auth()->user()->can('delete roomprice'))
                         <form action="{{ route('room-prices.destroy',['room_price'=>$room->id]) }}" method="POST" class="d-inline-block">
                             @csrf
                             @method('DELETE')
@@ -28,6 +31,7 @@
                                 <i class="fa fa-trash"> @lang('Delete')</i>
                             </button>
                         </form>
+                        @endif
                     </td>
                 </tr>
                 @include('backends.room_pricing.edit')

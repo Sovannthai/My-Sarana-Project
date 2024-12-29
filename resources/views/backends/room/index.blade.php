@@ -4,10 +4,12 @@
     <div class="card">
         <div class="card-header">
             <label class="card-title font-weight-bold mb-1 text-uppercase">Rooms</label>
+            @if(auth()->user()->can('create room'))
             <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-value="view" data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop">
                 <i class="fas fa-plus"> @lang('Add')</i></a>
             @include('backends.room.create')
+            @endif
         </div>
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover">
@@ -53,11 +55,14 @@
                                 </td>
                                 <td>{{ $room->status }}</td>
                                 <td>
+                                    @if(auth()->user()->can('update room'))
                                     <a href="" class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
                                         title="@lang('Edit')" data-bs-toggle="modal"
                                         data-bs-target="#edit_room-{{ $room->id }}"><i
                                             class="fa fa-edit ambitious-padding-btn text-uppercase">
                                             @lang('Edit')</i></a>&nbsp;&nbsp;
+                                    @endif
+                                    @if(auth()->user()->can('delete room'))
                                     <form id="deleteForm" action="{{ route('rooms.destroy', ['room' => $room->id]) }}"
                                         method="POST" class="d-inline-block">
                                         @csrf
@@ -68,6 +73,7 @@
                                                 @lang('Delete')</i>
                                         </button>
                                     </form>
+                                    @endif
                                 </td>
                             </tr>
                             @include('backends.room.edit')
