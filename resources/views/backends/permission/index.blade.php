@@ -6,7 +6,7 @@
             <label class="card-title font-weight-bold mb-1 text-uppercase">Permissions</label>
             <a href="" class="btn btn-primary float-right text-uppercase btn-sm"
                 data-value="veiw" data-bs-toggle="modal" data-bs-target="#create_permission">
-                <i class="fas fa-plus"> @lang('Add')</i></a>
+                <i class="fas fa-plus"></i> @lang('Add')</a>
                 @include('backends.permission.create')
         </div>
         <div class="card-body">
@@ -35,7 +35,7 @@
                                         class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
                                         title="@lang('Edit')"><i
                                             class="fa fa-edit ambitious-padding-btn text-uppercase">
-                                            @lang('Edit')</i></a>&nbsp;&nbsp;
+                                           </i> @lang('Edit')</a>&nbsp;&nbsp;
                                     <form id="deleteForm"
                                         action="{{ route('permission.destroy', ['permission' => $permission->id]) }}"
                                         method="POST" class="d-inline-block">
@@ -44,7 +44,7 @@
                                         <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
                                             title="@lang('Delete')">
                                             <i class="fa fa-trash ambitious-padding-btn text-uppercase">
-                                                @lang('Delete')</i>
+                                                </i> @lang('Delete')
                                         </button>
                                     </form>
                                 </td>

@@ -30,7 +30,8 @@
     <link rel="stylesheet" href="{{ asset('backends/assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('backends/assets/css/plugins.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('backends/assets/css/kaiadmin.min.css') }}" />
-    {{-- <link rel="stylesheet" href="{{ asset('backends/plugin/dropfy/dist/css/demo.css') }}"> --}}
+    {{--
+    <link rel="stylesheet" href="{{ asset('backends/plugin/dropfy/dist/css/demo.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('backends/plugin/dropfy/dist/css/dropify.min.css') }}">
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
@@ -42,15 +43,54 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css" rel="stylesheet">
     {{-- Image link Preview --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js"></script>
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=Battambang:wght@100;300;400;700;900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
 
     {{-- Select2 --}}
     <link rel="stylesheet" href="{{ asset('backends/plugin/select2/select2/css/select2.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('backends/plugin/select2/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <style>
-
+        @font-face {
+            font-family: 'Battambang';
+            src: url('fonts\Battambang-Regular.ttf') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        body {
+            font-family: 'Battambang', sans-serif;
+        }
+        p {
+            font-family: 'Battambang', sans-serif;
+        }
+        h1 {
+            font-family: 'Battambang', sans-serif;
+        }
+        h2 {
+            font-family: 'Battambang', sans-serif;
+        }
+        h3 {
+            font-family: 'Battambang', sans-serif;
+        }
+        h4 {
+            font-family: 'Battambang', sans-serif;
+        }
+        h5 {
+            font-family: 'Battambang', sans-serif;
+        }
+        span {
+            font-family: 'Battambang', sans-serif;
+        }
+        li {
+            font-family: 'Battambang', sans-serif;
+        }
+        button{
+            font-family: 'Battambang', sans-serif;
+        }
+        .btn {
+            font-family: 'Battambang', sans-serif;
+        }
         .footer {
             background-color: #f8f9fa;
             /* Adjust as needed */

@@ -33,7 +33,7 @@
                                             class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
                                             title="@lang('Edit')"><i
                                                 class="fa fa-edit ambitious-padding-btn text-uppercase">
-                                                @lang('Edit')</i></a>&nbsp;&nbsp;
+                                                </i> @lang('Edit')</a>&nbsp;&nbsp;
                                     @endif
                                     @if ($role->name != 'Admin')
                                         @if (auth()->user()->can('delete role'))
@@ -45,7 +45,7 @@
                                                 <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
                                                     title="@lang('Delete')">
                                                     <i class="fa fa-trash ambitious-padding-btn text-uppercase">
-                                                        @lang('Delete')</i>
+                                                        </i> @lang('Delete')
                                                 </button>
                                             </form>
                                         @endif

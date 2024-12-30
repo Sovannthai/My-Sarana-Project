@@ -14,14 +14,14 @@
                         data-href="{{ route('createUitilityPayment', ['id' => $payment->id]) }}" data-toggle="modal"
                         data-container=".createPaymentModal">Add Payment</a>
                 </div>
-                <table id="basic-datatables-{{ $payment->id }}" class="table table-bordered text-nowrap"
+                <table id="basic-datatables-{{ $payment->id }}" class="table table-bordered"
                     style="width:100%">
                     <thead class="table-dark">
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Utility</th>
                             <th scope="col">Usage</th>
-                            <th scope="col">Rate</th>
+                            <th scope="col">Rate($)</th>
                             <th scope="col">Subtotal</th>
                             <th scope="col">Total Amount</th>
                             <th scope="col">Month Paid</th>
@@ -70,7 +70,7 @@
                             <td>
                                 <ul>
                                     @foreach ($utilities as $utility)
-                                    <li>$ {{ number_format($utility->rate_per_unit, 2) }}</li>
+                                    <li>{{ number_format($utility->rate_per_unit, 2) }}</li>
                                     @endforeach
                                 </ul>
                             </td>

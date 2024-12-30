@@ -201,7 +201,7 @@
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
-                                <p class="card-category text-dark">@lang('Total Available Room')</p>
+                                <p class="card-category text-dark">@lang('Available Room')</p>
                                 <h4 class="card-title">{{ $total_avilable_rooms }}</h4>
                             </div>
                         </div>
@@ -223,7 +223,7 @@
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
-                                <p class="card-category text-dark">@lang('Total Occupied Room')</p>
+                                <p class="card-category text-dark">@lang('Occupied Room')</p>
                                 <h4 class="card-title">{{ $total_occupied_rooms }}</h4>
                             </div>
                         </div>
@@ -245,7 +245,7 @@
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
-                                <p class="card-category text-dark">@lang('Total Maintenancec Room')</p>
+                                <p class="card-category text-dark nowrap">@lang('Maintenancec Room')</p>
                                 <h4 class="card-title">{{ $total_maintenance_rooms }}</h4>
                             </div>
                         </div>

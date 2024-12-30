@@ -7,7 +7,7 @@
         @if(auth()->user()->can('create contract'))
         <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-value="view" data-bs-toggle="modal"
             data-bs-target="#staticBackdrop">
-            <i class="fas fa-plus"> @lang('Add')</i></a>
+            <i class="fas fa-plus"></i> @lang('Add')</a>
         @include('backends.user_contract.create')
         @endif
     </div>
@@ -65,7 +65,7 @@
                         <a href="" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" title="@lang('Edit')"
                             data-bs-toggle="modal" data-bs-target="#edit_contract-{{ $contract->id }}"><i
                                 class="fa fa-edit ambitious-padding-btn text-uppercase">
-                                @lang('Edit')</i></a>&nbsp;&nbsp;
+                                </i> @lang('Edit')</a>&nbsp;&nbsp;
                         @endif
                         @if(auth()->user()->can('delete contract'))
                         <form id="deleteForm"
@@ -76,7 +76,7 @@
                             <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
                                 title="@lang('Delete')">
                                 <i class="fa fa-trash ambitious-padding-btn text-uppercase">
-                                    @lang('Delete')</i>
+                                    </i> @lang('Delete')
                             </button>
                         </form>
                         @endif
