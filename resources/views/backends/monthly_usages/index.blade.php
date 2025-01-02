@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title', 'Monthly Usages')
+@section('title', __('Monthly Usages'))
 
 @section('contents')
 
@@ -30,7 +30,7 @@
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <label class="card-title font-weight-bold mb-1 text-uppercase">ROOMS</label>
+        <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Room')</label>
     </div>
     <div class="card-body card-container">
         <div class="row">

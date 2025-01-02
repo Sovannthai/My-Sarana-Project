@@ -58,39 +58,51 @@
             font-weight: 400;
             font-style: normal;
         }
+
         body {
             font-family: 'Battambang', sans-serif;
         }
+
         p {
             font-family: 'Battambang', sans-serif;
         }
+
         h1 {
             font-family: 'Battambang', sans-serif;
         }
+
         h2 {
             font-family: 'Battambang', sans-serif;
         }
+
         h3 {
             font-family: 'Battambang', sans-serif;
         }
+
         h4 {
             font-family: 'Battambang', sans-serif;
         }
+
         h5 {
             font-family: 'Battambang', sans-serif;
         }
+
         span {
             font-family: 'Battambang', sans-serif;
         }
+
         li {
             font-family: 'Battambang', sans-serif;
         }
-        button{
+
+        button {
             font-family: 'Battambang', sans-serif;
         }
+
         .btn {
             font-family: 'Battambang', sans-serif;
         }
+
         .footer {
             background-color: #f8f9fa;
             /* Adjust as needed */

@@ -1,5 +1,10 @@
 @extends('backends.master')
-@section('title','Business Setting')
+<style>
+    .hide {
+        display: none;
+    }
+</style>
+@section('title',__('Business Setting'))
 @section('contents')
     <div class="card">
         <div class="card-title text-uppercase mt-2 ml-3 mb-0">@lang('Business Setting')</div>
@@ -18,7 +23,7 @@
                         <input name="web_logo" id="web_logo" type="file" class="dropify" data-height="100" value="{{ @$business_setting->web_logo }}" data-default-file="{{ asset('uploads/all_photo/'.@$business_setting->web_logo) }}" /><br>
                         <input type="hidden" name="web_logo" value="{{ @$business_setting->web_logo }}" id="photo-trigger">
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 hide">
                         <label>@lang('Base Currency')</label>
                         <select name="base_currency" class="form-control select2">
                             @foreach($base_currencies as $currency)
@@ -28,16 +33,16 @@
                             @endforeach
                         </select>
                     </div>
-                    {{-- <div class="col-sm-4">
+                    <div class="col-sm-4 hide">
                         <label>@lang('USD ($) To Khmer (៛)')</label>
                         <input type="text" name="usd_to_khr" step="0.0000001" class="form-control"
                             value="{{ collect($exchangeRates)->firstWhere('from_currency', 'USD')['rate'] ?? '' }}">
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 hide">
                         <label>@lang('Khmer (៛) To USD ($)')</label>
                         <input type="text" name="khr_to_usd" step="0.0000001" class="form-control"
                             value="{{ collect($exchangeRates)->firstWhere('from_currency', 'KHR')['rate'] ?? '' }}">
-                    </div> --}}
+                    </div>
                 </div>
                 @can('update setting')
                 <div class="mt-5">

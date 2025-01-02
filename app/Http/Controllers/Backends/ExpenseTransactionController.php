@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Backends;
 
 use DB;
+use Carbon\Carbon;
 use App\Models\Payment;
+use App\Http\Requests\Request;
 use App\Models\ExpenseCategory;
 use App\Models\ExpenseTransaction;
 use App\Http\Controllers\Controller;
@@ -15,8 +17,8 @@ class ExpenseTransactionController extends Controller
 {
     public function dashboard()
     {
-        if(!auth()->user()->can('dashboard expense')){
-            abort(403,'Unauthorized action.');
+        if (!auth()->user()->can('dashboard expense')) {
+            abort(403, 'Unauthorized action.');
         }
 
         $totalAmount = Payment::sum('total_amount');
@@ -63,16 +65,62 @@ class ExpenseTransactionController extends Controller
             'monthlyUtilityValues'
         ));
     }
-
-
-
-    public function index()
+    public function index(Request $request)
     {
-        $expenseTransactions = ExpenseTransaction::all();
-        $expenseCategories = ExpenseCategory::all();
+        if ($request->ajax()) {
+            $query = ExpenseTransaction::with('category');
 
-        return view('backends.expense_transaction.index', compact('expenseTransactions', 'expenseCategories'));
+            if ($request->has('category_id') && $request->category_id) {
+                $query->where('category_id', $request->category_id);
+            }
+            if ($request->has('date') && $request->date) {
+                $query->whereDate('date', $request->date);
+            }
+            $lastMonthDate = Carbon::now()->startOfMonth()->subMonth();
+            $lastMonth = $lastMonthDate->format('m');
+            if ($request->has('date_range') && $request->date_range) {
+                $dateRange = $request->date_range;
+
+                switch ($dateRange) {
+                    case 'today':
+                        $query->whereDate('date', today());
+                        break;
+                    case 'this_week':
+                        $query->whereBetween('date', [now()->startOfWeek(), now()->endOfWeek()]);
+                        break;
+                    case 'this_month':
+                        $query->whereMonth('date', now()->month);
+                        break;
+                    case 'last_month':
+                        $query->whereMonth('date', $lastMonth);
+                        break;
+                    case 'this_year':
+                        $query->whereYear('date', now()->year);
+                        break;
+                    case 'last_year':
+                        $query->whereYear('date', now()->subYear()->year);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if ($request->has('from_date') && $request->from_date && $request->has('to_date') && $request->to_date) {
+                $query->whereBetween('date', [$request->from_date, $request->to_date]);
+            }
+
+            $expenseTransactions = $query->get();
+
+            return response()->json([
+                'expenseTransactions' => $expenseTransactions
+            ]);
+        }
+
+        $expenseCategories = ExpenseCategory::all();
+        $expenseTransactions = ExpenseTransaction::all();
+        return view('backends.expense_transaction.index', compact('expenseCategories', 'expenseTransactions'));
     }
+
 
     public function store(StoreExpenseTransactionRequest $request)
     {
@@ -81,6 +129,14 @@ class ExpenseTransactionController extends Controller
         Session::flash('success', __('Transaction added successfully.'));
 
         return redirect()->route('expense_transactions.index');
+    }
+
+    public function edit($id)
+    {
+        $transaction = ExpenseTransaction::findOrFail($id);
+        $expenseCategories = ExpenseCategory::all();
+
+        return view('backends.expense_transaction.edit', compact('transaction', 'expenseCategories'));
     }
 
     public function update(UpdateExpenseTransactionRequest $request, $id)

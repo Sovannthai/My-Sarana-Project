@@ -159,6 +159,7 @@
         border-radius: 12px;
     }
 </style>
+@section('title', 'Chat')
 @section('contents')
     <div class="card">
         <div class="card-header text-uppercase">

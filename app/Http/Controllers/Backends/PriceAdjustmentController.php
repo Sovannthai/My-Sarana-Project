@@ -23,6 +23,15 @@ class PriceAdjustmentController extends Controller
             if ($request->has('room_id') && $request->room_id) {
                 $query->where('room_id', $request->room_id);
             }
+
+            if($request->has('discount_type') && $request->discount_type){
+                $query->where('discount_type', $request->discount_type);
+            }
+
+            if($request->has('status') && $request->status){
+                $query->where('status', $request->status);
+            }
+
             $priceAdjustments = $query->get();
 
             return response()->json(['data' => $priceAdjustments]);

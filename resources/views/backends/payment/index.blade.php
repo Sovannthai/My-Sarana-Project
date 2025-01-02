@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title', 'Payments Management')
+@section('title', __('Payments'))
 @section('contents')
 <style>
     .form-control {
@@ -15,7 +15,7 @@
         </a>
     </h5>
     <div id="collapse-example" class="collapse show" aria-labelledby="heading-example">
-        <div class="mt-1 ml-1 mb-4">
+        <div class="mt-1 ml-2 mr-2 mb-4">
             <div class="row">
                 <div class="col-sm-3">
                     <label for="user_id">@lang('User')</label>

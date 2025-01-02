@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title', 'Role')
+@section('title', __('Roles'))
 @section('contents')
     <div class="card">
         <div class="card-header">

@@ -1,9 +1,9 @@
 @extends('backends.master')
-@section('title', 'Amenities')
+@section('title', __('Amenities'))
 @section('contents')
 <div class="card">
     <div class="card-header">
-        <label class="card-title font-weight-bold mb-1 text-uppercase">Amenities</label>
+        <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Amenities')</label>
         @if(auth()->user()->can('create amenity'))
         <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-value="view" data-bs-toggle="modal"
             data-bs-target="#staticBackdrop">

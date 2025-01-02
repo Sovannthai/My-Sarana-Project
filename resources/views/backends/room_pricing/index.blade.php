@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title', 'Rooms Pricing')
+@section('title', __('Room Price'))
 @section('contents')
     <div class="card">
         <h5 class=" ml-3 mt-2 mb-0 card-title">

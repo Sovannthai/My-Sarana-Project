@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title', 'Room Report')
+@section('title', __('Room Report'))
 @section('contents')
     <style>
         #filter-room,
@@ -19,7 +19,7 @@
             </a>
         </h5>
         <div id="collapse-filters" class="collapse show" aria-labelledby="heading-filters">
-            <div class="mt-1 ml-1 mb-4">
+            <div class="mt-1 ml-2 mr-2 mb-4">
                 <div class="row">
                     <div class="col-sm-4">
                         <label for="filter-room">@lang('Room')</label>
@@ -55,6 +55,9 @@
                         <label for="filter-end-date">@lang('End Date')</label>
                         <input type="date" id="filter-end-date" class="form-control">
                     </div>
+                </div>
+                <div>
+                    <a href="{{ route('reports.room') }}" class="btn btn-outline-danger float-left text-capitalize mb-3 mt-3">Reset Filter</a>
                 </div>
             </div>
         </div>

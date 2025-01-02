@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title', 'Monthly Usage Records')
+@section('title', __('Monthly Usages'))
 @section('contents')
     <style>
         .remove-utility {
@@ -16,7 +16,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <label class="card-title font-weight-bold text-uppercase">
-                @lang('Monthly Usage Records')
+                @lang('Monthly Usages')
             </label>
             @can('create usage')
             <a href="#" class="btn btn-primary text-uppercase btn-sm" data-bs-toggle="modal"

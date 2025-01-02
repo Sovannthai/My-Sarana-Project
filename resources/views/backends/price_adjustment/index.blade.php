@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title', 'Discount')
+@section('title', __('Discounts'))
 @section('contents')
 <style>
     #filter-room {
@@ -16,15 +16,31 @@
         </a>
     </h5>
     <div id="collapse-example" class="collapse show" aria-labelledby="heading-example">
-        <div class="mt-1 ml-3 mb-4">
+        <div class="mt-1 ml-2 mr-2 mb-4">
             <div class="row">
                 <div class="col-sm-4">
                     <label for="room_id">@lang('Room')</label>
                     <select id="filter-room" class="form-control select2">
-                        <option value="">@lang('Filter by Room')</option>
+                        <option value="">@lang('All')</option>
                         @foreach($rooms as $room)
                         <option value="{{ $room->id }}">{{ $room->room_number }}</option>
                         @endforeach
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <label for="discount_type">@lang('Discount Type')</label>
+                    <select id="filter-discount" class="form-control select2">
+                        <option value="" selected>@lang('All')</option>
+                        <option value="amount">Amount ($)</option>
+                        <option value="percentage">Percentage (%)</option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <label for="status">@lang('Status')</label>
+                    <select id="filter-status" class="form-control select2">
+                        <option value="" selected>@lang('All')</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
                     </select>
                 </div>
             </div>
@@ -67,6 +83,15 @@
     </div>
 </div>
 <script>
+    $(document).ready(function() {
+        $(document).on('shown.bs.modal', '.modal', function() {
+            $(this).find('.select2').select2({
+                dropdownParent: $(this)
+            });
+        });
+    });
+</script>
+<script>
     $(document).on("click", ".btn-modal", function(e) {
         e.preventDefault();
         var container = $(this).data("container");
@@ -101,6 +126,8 @@
                 url: "{{ route('price_adjustments.index') }}",
                 data: function (d) {
                     d.room_id = $("#filter-room").val();
+                    d.discount_type = $("#filter-discount").val();
+                    d.status = $("#filter-status").val();
                 },
             },
             columns: [
@@ -157,7 +184,7 @@
             },
         });
 
-        $("#filter-room").on("change", function () {
+        $("#filter-room,#filter-discount,#filter-status").on("change", function () {
             table.ajax.reload();
         });
         toastr.options = {

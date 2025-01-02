@@ -1,9 +1,9 @@
 @extends('backends.master')
-@section('title', 'Expense Categories')
+@section('title', __('Expense Category'))
 @section('contents')
 <div class="card">
     <div class="card-header">
-        <label class="card-title font-weight-bold mb-1 text-uppercase">Expense Categories</label>
+        <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Expense Category')</label>
         @can('create expense category')
         <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-value="view" data-bs-toggle="modal"
             data-bs-target="#addExpenseCategoryModal">

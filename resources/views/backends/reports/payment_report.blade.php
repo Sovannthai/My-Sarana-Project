@@ -1,6 +1,6 @@
 @extends('backends.master')
 
-@section('title', 'Payment Report')
+@section('title', __('Payment Report'))
 @section('contents')
 <div class="card">
     <h5 class="ml-3 mt-2 mb-0 card-title">
@@ -11,7 +11,7 @@
         </a>
     </h5>
     <div id="collapse-filters" class="collapse show" aria-labelledby="heading-filters">
-        <div class="mt-1 ml-1 mb-4">
+        <div class="mt-1 ml-2 mr-2 mb-4">
             <div class="row">
                 <!-- Month Filter -->
                 <div class="col-md-3">
@@ -57,6 +57,9 @@
                         <option value="partial">Partial</option>
                     </select>
                 </div>
+            </div>
+            <div>
+                <a href="{{ route('reports.payment') }}" class="btn btn-outline-danger float-right text-capitalize mb-3 mt-3">Reset Filter</a>
             </div>
         </div>
     </div>

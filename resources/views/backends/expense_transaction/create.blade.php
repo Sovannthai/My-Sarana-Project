@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addExpenseTransactionLabel">@lang('Create Expense Transaction')</h5>
+                <h5 class="modal-title" id="addExpenseTransactionLabel">@lang('Create Expense')</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <label for="category_id">@lang('Category')</label>
-                            <select name="category_id" id="category_id" class="form-control @error('category_id') is-invalid @enderror">
+                            <select name="category_id" id="category_id" class="form-control @error('category_id') is-invalid @enderror select2">
                                 <option value="">@lang('Select Category')</option>
                                 @foreach ($expenseCategories as $category)
                                     <option value="{{ $category->id }}">{{ $category->title }}</option>
@@ -28,7 +28,7 @@
                             <label for="amount">@lang('Amount')</label>
                             <input type="number" name="amount" id="amount"
                                 class="form-control @error('amount') is-invalid @enderror"
-                                placeholder="@lang('Enter transaction amount')">
+                                placeholder="@lang('Enter amount')">
                             @error('amount')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -43,7 +43,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-sm-6 mt-2">
+                        <div class="col-sm-12 mt-2">
                             <label for="note">@lang('Note')</label>
                             <textarea name="note" id="note" class="form-control" placeholder="@lang('Enter optional note')"></textarea>
                             @error('note')

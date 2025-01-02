@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title', 'Expense Dashboard')
+@section('title', __('Expense Dashboard'))
 
 @section('contents')
 
@@ -26,11 +26,26 @@
     .dashboard-card {
         margin-bottom: 1.5rem;
     }
+    .btn-active {
+        background-color: transparent !important;
+        color: rgb(0, 0, 0);
+        border-color: #3295ff !important;
+    }
+    .hide {
+        display: none;
+    }
 </style>
-
+    <form method="GET" action="{{ route('expense_dashboard.dashboard') }}">
+        <div class="btn-group mb-4 hide" role="group">
+            <button type="submit" class="btn btn-primary {{ request('filter') === 'this_month' ? 'btn-active' : '' }}" name="filter" value="this_month">This Month</button>
+            {{-- <button type="submit" class="btn btn-primary {{ request('filter') === 'last_month' ? 'btn-active' : '' }}" name="filter" value="last_month">Last Month</button> --}}
+            <button type="submit" class="btn btn-primary {{ request('filter') === 'this_year' ? 'btn-active' : '' }}" name="filter" value="this_year">This Year</button>
+            <button type="submit" class="btn btn-primary {{ request('filter') === 'last_year' ? 'btn-active' : '' }}" name="filter" value="last_year">Last Year</button>
+        </div>
+    </form>
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <label class="card-title font-weight-bold mb-1 text-uppercase">Expense Dashboard</label>
+        <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Expense Dashboard')</label>
     </div>
     <div class="card-body card-container">
         <div class="row">
@@ -46,7 +61,7 @@
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
-                                    <p class="card-category text-dark">Total Income</p>
+                                    <p class="card-category text-dark">@lang('Total Income')</p>
                                     <h4 class="card-title">{{ $totalIncome }}</h4>
                                 </div>
                             </div>
@@ -67,7 +82,7 @@
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
-                                    <p class="card-category text-dark">Total Expenses</p>
+                                    <p class="card-category text-dark">@lang('Total Expenses')</p>
                                     <h4 class="card-title">${{ number_format($totalExpense, 2) }}</h4>
                                 </div>
                             </div>

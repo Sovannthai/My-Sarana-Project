@@ -6,6 +6,7 @@ use App\Models\ExpenseTransaction;
 use App\Models\Payment;
 use App\Models\Room;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,8 +26,49 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filter = $request->input('filter', 'this_year');
+        $currentYear = date('Y');
+        $currentMonth = date('m');
+        $lastMonthDate = Carbon::now()->startOfMonth()->subMonth();
+        $lastMonth = $lastMonthDate->format('m');
+        $lastMonthYear = $lastMonthDate->format('Y');
+
+        if ($filter === 'this_month') {
+            $room_income_amount = Payment::whereYear('payment_date', $currentYear)
+                ->whereMonth('payment_date', $currentMonth)
+                ->sum('total_amount');
+            $total_utility_amount = Payment::whereYear('payment_date', $currentYear)
+                ->whereMonth('payment_date', $currentMonth)
+                ->sum('total_utility_amount');
+            $total_due_amount = Payment::whereYear('payment_date', $currentYear)
+                ->whereMonth('payment_date', $currentMonth)
+                ->sum('total_due_amount');
+            $total_expenses = ExpenseTransaction::whereYear('date', $currentYear)
+                ->whereMonth('date', $currentMonth)
+                ->sum('amount');
+        } elseif ($filter === 'last_month') {
+            // dd(1);
+            $room_income_amount = Payment::whereYear('payment_date', $lastMonthYear)
+                ->whereMonth('payment_date', $lastMonth)
+                ->sum('total_amount');
+            $total_utility_amount = Payment::whereYear('payment_date', $lastMonthYear)
+                ->whereMonth('payment_date', $lastMonth)
+                ->sum('total_utility_amount');
+            $total_due_amount = Payment::whereYear('payment_date', $lastMonthYear)
+                ->whereMonth('payment_date', $lastMonth)
+                ->sum('total_due_amount');
+            $total_expenses = ExpenseTransaction::whereYear('date', $lastMonthYear)
+                ->whereMonth('date', $lastMonth)
+                ->sum('amount');
+        } else {
+            $room_income_amount = Payment::whereYear('payment_date', $currentYear)->sum('total_amount');
+            $total_utility_amount = Payment::whereYear('payment_date', $currentYear)->sum('total_utility_amount');
+            $total_due_amount = Payment::whereYear('payment_date', $currentYear)->sum('total_due_amount');
+            $total_expenses = ExpenseTransaction::whereYear('date', $currentYear)->sum('amount');
+        }
+
         $total_renters = User::whereHas('roles', function ($q) {
             $q->where('id', 8);
         })->count();
@@ -34,12 +76,7 @@ class HomeController extends Controller
         $total_avilable_rooms = Room::where('status', 'available')->count();
         $total_occupied_rooms = Room::where('status', 'occupied')->count();
         $total_maintenance_rooms = Room::where('status', 'maintenance')->count();
-        $room_income_amount = Payment::sum('total_amount');
-        $total_utility_amount = Payment::sum('total_utility_amount');
-        $total_due_amount = Payment::sum('total_due_amount');
-        $total_expenses = ExpenseTransaction::sum('amount');
 
-        $currentYear = date('Y');
         $totalAmounts = Payment::selectRaw('MONTH(payment_date) as month, SUM(total_amount) as total')
             ->whereYear('payment_date', $currentYear)
             ->groupBy('month')
@@ -69,4 +106,5 @@ class HomeController extends Controller
             )
         );
     }
+
 }

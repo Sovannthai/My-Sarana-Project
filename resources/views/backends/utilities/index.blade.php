@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title', 'Utilities Management')
+@section('title', __('Utilities Management'))
 @section('contents')
     <style>
         .nav-link.active {
@@ -9,7 +9,7 @@
     </style>
     <div class="card">
         <div class="card-header">
-            <label class="card-title font-weight-bold mb-1 text-uppercase">Utilities Management</label>
+            <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Utilities Management')</label>
             @can('create utility')
             <a href="#" class="btn btn-primary float-right text-uppercase btn-sm" data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop">

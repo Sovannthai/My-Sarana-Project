@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title', 'Utility Report')
+@section('title', __('Utilities Report'))
 @section('contents')
     <style>
         #filter-room,
@@ -19,9 +19,9 @@
             </a>
         </h5>
         <div id="collapse-filters" class="collapse show" aria-labelledby="heading-filters">
-            <div class="mt-1 ml-1 mb-4">
+            <div class="mt-1 ml-2 mr-2 mb-4">
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <label for="filter-room">@lang('Room')</label>
                         <select id="filter-room" class="form-control select2">
                             <option value="">@lang('Filter by Room')</option>
@@ -30,7 +30,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <label for="filter-utility">@lang('Utility Type')</label>
                         <select id="filter-utility" class="form-control select2">
                             <option value="">@lang('Filter by Utility Type')</option>
@@ -39,7 +39,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <label for="filter-month">@lang('Month')</label>
                         <select id="filter-month" class="form-control select2">
                             <option value="">@lang('Filter by Month')</option>
@@ -57,10 +57,13 @@
                             <option value="12">@lang('Dec')</option>
                         </select>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <label for="filter-year">@lang('Year')</label>
                         <input type="number" id="filter-year" class="form-control" placeholder="@lang('Enter Year')">
                     </div>
+                </div>
+                <div>
+                    <a href="{{ route('reports.utility') }}" class="btn btn-outline-danger float-right text-capitalize mb-3 mt-3">Reset Filter</a>
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 @extends('backends.master')
-@section('title','Home')
+@section('title',__('Home'))
 @section('contents')
 @section('content-header', 'Welcome, ' . auth()->user()->name)
 <style>
@@ -29,34 +29,36 @@
         border-radius: 10px;
         padding: 1rem;
     }
+
+    .btn-active {
+        background-color: transparent !important;
+        color: rgb(0, 0, 0);
+        border-color: #3295ff !important;
+    }
 </style>
 @if (auth()->user()->can('view dashborad'))
-<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+<div class="d-flex justify-content-between align-items-center flex-wrap pt-2 pb-4">
     <h3 class="fw-bold mb-3">@yield('content-header')</h3>
-</div>
-<div class="row">
-    <div class="col-sm-6 col-md-3">
-        <a href="{{ route('users.index') }}">
-            <div class="card card-stats card-round">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-icon">
-                            <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                <i class="fas fa-users"></i>
-                            </div>
-                        </div>
-                        <div class="col col-stats ms-3 ms-sm-0">
-                            <div class="numbers">
-                                <p class="card-category text-dark">@lang('Total Renter')</p>
-                                <h4 class="card-title">{{ $total_renters }}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
+    <form method="GET" action="{{ route('home') }}">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="submit" class="btn btn-primary {{ request('filter') === 'this_month' ? 'btn-active' : '' }}"
+                name="filter" value="this_month">
+                This Month
+            </button>
+            <button type="submit" class="btn btn-primary {{ request('filter') === 'last_month' ? 'btn-active' : '' }}"
+                name="filter" value="last_month">
+                Last Month
+            </button>
+            <button type="submit" class="btn btn-primary {{ request('filter') === 'this_year' ? 'btn-active' : '' }}"
+                name="filter" value="this_year">
+                This Year
+            </button>
+        </div>
+    </form>
 
+</div>
+
+<div class="row">
     <div class="col-sm-6 col-md-3">
         <a href="{{ route('payments.index') }}">
             <div class="card card-stats card-round">
@@ -137,6 +139,28 @@
                             <div class="numbers">
                                 <p class="card-category text-dark">@lang('Total Expense')</p>
                                 <h4 class="card-title">$ {{ number_format($total_expenses,2) }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <a href="{{ route('users.index') }}">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category text-dark">@lang('Total Renter')</p>
+                                <h4 class="card-title">{{ $total_renters }}</h4>
                             </div>
                         </div>
                     </div>

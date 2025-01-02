@@ -1,9 +1,9 @@
 @extends('backends.master')
-@section('title', 'Utilities Type')
+@section('title', __('Utilities Type'))
 @section('contents')
     <div class="card">
         <div class="card-header">
-            <label class="card-title font-weight-bold mb-1 text-uppercase">Utilities Type</label>
+            <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Utilities Type')</label>
             @if(auth()->user()->can('create utilitytype'))
             <a href="" class="float-right btn btn-primary btn-sm" data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop">
