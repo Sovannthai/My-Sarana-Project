@@ -25,7 +25,7 @@
                             </select>
                         </div>
                         <div class="col-sm-4">
-                            <label for="percentage">Discount Value</label>
+                            <label for="percentage">@lang('Discount Value')</label>
                             <input type="number" name="discount_value" id="percentage" class="form-control" step="0.01" min="0">
                         </div>
                         <div class="col-sm-4">
