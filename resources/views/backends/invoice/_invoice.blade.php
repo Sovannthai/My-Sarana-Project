@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room Rental Invoice</title>
+    <title>@lang('Room Rental Invoice')</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -97,28 +97,28 @@
 <body>
     <div class="invoice-container">
         <div class="invoice-header">
-            <h1 class="text-uppercase">Invoice</h1>
+            <h1 class="text-uppercase">@lang('Invoice')</h1>
         </div>
         <div class="row">
             <div class="invoice-details" style="width: 50%; float: left;">
-                <p><strong>Invoice No:</strong> #{{ $invoiceData->invoice_no }}</p>
-                <p><strong>Landlord:</strong> Pheakdey</p>
+                <p><strong>@lang('Invoice No'):</strong> #{{ $invoiceData->invoice_no }}</p>
+                <p><strong>@lang('Landlord'):</strong> Pheakdey</p>
             </div>
             <div class="invoice-details" style="width: 50%; float: right;">
-                <p><strong>Date:</strong> {{ $invoiceData->created_at }}</p>
-                <p><strong>Customer:</strong> {{ $user->name }}</p>
+                <p><strong>@lang('Date'):</strong> {{ $invoiceData->created_at }}</p>
+                <p><strong>@lang('Customer'):</strong> {{ $user->name }}</p>
             </div>
         </div>
         <div style="clear: both;"></div>
         <table class="invoice-table nowrap">
             <tr>
-                <th>Room Details</th>
-                <th>Rental Period</th>
-                <th>Rate</th>
-                <th>Total</th>
+                <th>@lang('Room Details')</th>
+                <th>@lang('Rental Period')</th>
+                <th>@lang('Rate')</th>
+                <th>@lang('Total')</th>
             </tr>
             <tr>
-                <td><strong>Room:</strong> {{ @$invoiceData->userContract->room->room_number }}
+                <td><strong>@lang('Room'):</strong> {{ @$invoiceData->userContract->room->room_number }}
                     @if ($invoiceData->paymentAmenities)
                     <div style="margin-left: 15px;">
                         @foreach ($invoiceData->paymentAmenities as $amenity)
@@ -156,7 +156,7 @@
             {{-- Discount --}}
             @if ($invoiceData->total_discount > 0)
             <tr>
-                <td colspan="3" style="text-align: right;"><strong>Discount</strong></td>
+                <td colspan="3" style="text-align: right;"><strong>@lang('Discounts')</strong></td>
                 <td>
                     @if ($invoiceData->discount_type == 'amount')
                     <span>$</span> {{ $invoiceData->total_discount }}
@@ -178,7 +178,7 @@
             }
             ?>
             <tr>
-                <td colspan="3" style="text-align: right;"><strong>Subtotal</strong></td>
+                <td colspan="3" style="text-align: right;"><strong>@lang('Subtotal')</strong></td>
                 <td>$ {{ number_format($totalRoomPrice, 2) }}</td>
             </tr>
             <!-- Electricity Charges -->
@@ -195,16 +195,16 @@
             @endif
             <!-- Total Amount -->
             <tr>
-                <td colspan="3" style="text-align: right;"><strong>Total Amount</strong></td>
+                <td colspan="3" style="text-align: right;"><strong>@lang('Total Amount')</strong></td>
                 <td>$ {{ number_format($invoiceData->total_amount, 2) }}</td>
             </tr>
             <tr>
-                <td colspan="3" style="text-align: right;"><strong>Amount Paid</strong></td>
+                <td colspan="3" style="text-align: right;"><strong>@lang('Amount Paid')</strong></td>
                 <td>$ {{ number_format($invoiceData->amount, 2) }}</td>
             </tr>
             @if ($invoiceData->total_due_amount)
             <tr>
-                <td colspan="3" style="text-align: right;"><strong>Due Amount</strong></td>
+                <td colspan="3" style="text-align: right;"><strong>@lang('Due Amount')</strong></td>
                 <td>$ {{ number_format($invoiceData->total_due_amount, 2) }}</td>
             </tr>
             @endif
@@ -220,7 +220,7 @@
                     <strong>Payment Method:</strong><span> ABA</span>
                 </div> --}}
                 <div style="margin-top: 10px;">
-                    <strong>Exchange Rate:</strong><span> $1.00 (4000.00 Riel)</span>
+                    <strong>@lang('Exchange Rate'):</strong><span> $1.00 (4000.00 Riel)</span>
                 </div>
                 {{-- <div style="margin-top: 10px;">
                     <strong>Amount Paid:</strong><span> $615.00</span>
@@ -232,7 +232,7 @@
         </div>
         <div style="clear: both;"></div>
         <div class="mt-3 footer-invoice">
-            <strong>Thank you for choosing our room rental services!</strong>
+            <strong>@lang('Thank you for choosing our room rental services') !</strong>
         </div>
     </div>
 </body>

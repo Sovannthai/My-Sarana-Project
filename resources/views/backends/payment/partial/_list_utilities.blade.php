@@ -5,28 +5,28 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Utility Payment</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">@lang('Utility Payment')</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="float-right mb-3">
                     <a href="#" class="btn btn-primary btn-sm btn-modal btn-add"
                         data-href="{{ route('createUitilityPayment', ['id' => $payment->id]) }}" data-toggle="modal"
-                        data-container=".createPaymentModal">Add Payment</a>
+                        data-container=".createPaymentModal">@lang('Add Payment')</a>
                 </div>
                 <table id="basic-datatables-{{ $payment->id }}" class="table table-bordered"
                     style="width:100%">
                     <thead class="table-dark">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Utility</th>
-                            <th scope="col">Usage</th>
-                            <th scope="col">Rate($)</th>
-                            <th scope="col">Subtotal</th>
-                            <th scope="col">Total Amount</th>
-                            <th scope="col">Month Paid</th>
-                            <th scope="col">Year Paid</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">@lang('Utility')</th>
+                            <th scope="col">@lang('Usage')</th>
+                            <th scope="col">@lang('Rate')($)</th>
+                            <th scope="col">@lang('Subtotal')</th>
+                            <th scope="col">@lang('Total Amount')</th>
+                            <th scope="col">@lang('Month Paid')</th>
+                            <th scope="col">@lang('Year Paid')</th>
+                            <th scope="col">@lang('Action')</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,7 +95,7 @@
                                 <div class="dropdown">
                                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        Action
+                                        @lang('Action')
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li class="mb-1">
@@ -128,7 +128,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="8" class="text-center">No data available</td>
+                            <td colspan="8" class="text-center">@lang('No data available')</td>
                         </tr>
                         @endforelse
                     </tbody>

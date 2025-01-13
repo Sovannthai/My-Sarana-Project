@@ -29,7 +29,7 @@
     </div>
     <div class="card">
         <div class="card-header">
-            <label class="card-title font-weight-bold text-uppercase">Rooms Pricing</label>
+            <label class="card-title font-weight-bold text-uppercase">@lang('Rooms Pricing')</label>
             @if(auth()->user()->can('create roomprice'))
             <a href="" class="btn btn-primary float-right text-uppercase" data-bs-toggle="modal"
                 data-bs-target="#create-pricing">
@@ -38,7 +38,7 @@
             @endif
             <div class="search-row col-sm-4 float-lg-right">
                 <input type="text" name="search" id="search" value="{{ request('search') }}"
-                    class=" form-control search-box" autocomplete="off" placeholder="@lang('Search...')">
+                    class=" form-control search-box" autocomplete="off" placeholder="@lang('Search')...">
             </div>
         </div>
         @include('backends.room_pricing._table_room_pricing')

@@ -37,10 +37,10 @@
 </style>
     <form method="GET" action="{{ route('expense_dashboard.dashboard') }}">
         <div class="btn-group mb-4 hide" role="group">
-            <button type="submit" class="btn btn-primary {{ request('filter') === 'this_month' ? 'btn-active' : '' }}" name="filter" value="this_month">This Month</button>
+            <button type="submit" class="btn btn-primary {{ request('filter') === 'this_month' ? 'btn-active' : '' }}" name="filter" value="this_month">@lang('This Month')</button>
             {{-- <button type="submit" class="btn btn-primary {{ request('filter') === 'last_month' ? 'btn-active' : '' }}" name="filter" value="last_month">Last Month</button> --}}
-            <button type="submit" class="btn btn-primary {{ request('filter') === 'this_year' ? 'btn-active' : '' }}" name="filter" value="this_year">This Year</button>
-            <button type="submit" class="btn btn-primary {{ request('filter') === 'last_year' ? 'btn-active' : '' }}" name="filter" value="last_year">Last Year</button>
+            <button type="submit" class="btn btn-primary {{ request('filter') === 'this_year' ? 'btn-active' : '' }}" name="filter" value="this_year">@lang('This Year')</button>
+            <button type="submit" class="btn btn-primary {{ request('filter') === 'last_year' ? 'btn-active' : '' }}" name="filter" value="last_year">@lang('Last Year')</button>
         </div>
     </form>
 <div class="card">
@@ -104,7 +104,7 @@
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
-                                    <p class="card-category text-dark">Balacne</p>
+                                    <p class="card-category text-dark">@lang('Balance')</p>
                                     <h4 class="card-title">${{ number_format($balance, 2) }}</h4>
                                 </div>
                             </div>
@@ -133,12 +133,12 @@
             <div class="col-sm-6 dashboard-card">
                 <div class="card shadow-sm">
                     <div class="card-header bg-gradient-primary text-white d-flex align-items-center justify-content-between">
-                        <h4 class="card-title mb-0">Recent Transactions</h4>
+                        <h4 class="card-title mb-0">@lang('Recent Transactions')</h4>
                         <i class="fas fa-exchange-alt fs-5"></i>
                     </div>
                     <div class="card-body p-3">
                         @if ($recentTransactions->isEmpty())
-                            <p class="text-muted text-center">No recent transactions available.</p>
+                            <p class="text-muted text-center">@lang('No recent transactions available')</p>
                         @else
                             <ul class="list-group">
                                 @foreach ($recentTransactions as $transaction)
@@ -156,7 +156,7 @@
                         @endif
                     </div>
                     <div class="card-footer text-end bg-light">
-                        <a href="{{ route('expense_transactions.index') }}" class="btn btn-link text-primary">View All</a>
+                        <a href="{{ route('expense_transactions.index') }}" class="btn btn-link text-primary">@lang('View All')</a>
                     </div>
                 </div>
             </div>

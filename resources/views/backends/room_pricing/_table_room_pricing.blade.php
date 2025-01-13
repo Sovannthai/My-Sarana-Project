@@ -2,11 +2,11 @@
     <table class="table table-bordered text-nowrap table-hover text-center">
         <thead class="table-dark">
             <tr>
-                <th>No.</th>
-                <th>Room Number</th>
-                <th>Price</th>
-                <th>Effective Date</th>
-                <th>Actions</th>
+                <th>@lang('No.')</th>
+                <th>@lang('Room Number')</th>
+                <th>@lang('Price')</th>
+                <th>@lang('Effective Date')</th>
+                <th>@lang('Actions')</th>
             </tr>
         </thead>
         <tbody>
@@ -20,7 +20,7 @@
                         @if(auth()->user()->can('update roomprice'))
                         <a href="" class="btn btn-outline-primary btn-sm text-uppercase" data-bs-toggle="modal"
                             data-bs-target="#edit-pricing-{{ $room->id }}">
-                            <i class="fa fa-edit"> @lang('Edit')</i>
+                            <i class="fa fa-edit"></i>@lang('Edit')
                         </a>
                         @endif
                         @if(auth()->user()->can('delete roomprice'))
@@ -28,7 +28,7 @@
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn btn-outline-danger btn-sm delete-btn text-uppercase">
-                                <i class="fa fa-trash"> @lang('Delete')</i>
+                                <i class="fa fa-trash"></i>@lang('Delete')
                             </button>
                         </form>
                         @endif

@@ -77,7 +77,7 @@
     <div class="back-btn">
         <a href="{{ route('roles.index') }}" class="float-left" data-value="veiw">
             <i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;
-            Back
+            @lang('Back')
         </a><br>
     </div><br>
     <div class="show-item">
@@ -86,7 +86,7 @@
                 <div class="back-btn">
                     <a href="{{ route('roles.index') }}" class="float-left" data-value="veiw">
                         <i class="fa-solid fa-angles-left"></i>&nbsp;&nbsp;
-                        Back to all Roles
+                        @lang('Back to all Roles')
                     </a><br>
                 </div><br>
                 <div class="card">
@@ -114,7 +114,7 @@
                                 @endif
                             </div>
                             <div class="d-flex">
-                                <label for="" class="mr-2">Permissions</label>
+                                <label for="" class="mr-2">@lang('Permissions')</label>
                             </div><br>
                             <div class="row">
                                 @foreach ($permissions as $permission => $permissionList)

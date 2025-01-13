@@ -43,15 +43,15 @@
         <div class="btn-group" role="group" aria-label="Basic example">
             <button type="submit" class="btn btn-primary {{ request('filter') === 'this_month' ? 'btn-active' : '' }}"
                 name="filter" value="this_month">
-                This Month
+                @lang('This Month')
             </button>
             <button type="submit" class="btn btn-primary {{ request('filter') === 'last_month' ? 'btn-active' : '' }}"
                 name="filter" value="last_month">
-                Last Month
+                @lang('Last Month')
             </button>
             <button type="submit" class="btn btn-primary {{ request('filter') === 'this_year' ? 'btn-active' : '' }}"
                 name="filter" value="this_year">
-                This Year
+                @lang('This Year')
             </button>
         </div>
     </form>
@@ -298,34 +298,6 @@
 </div>
 @endif
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{{-- static Chat --}}
-{{-- <script>
-    var barChart = document.getElementById('barChart').getContext('2d');
-    var myBarChart = new Chart(barChart, {
-        type: 'bar',
-        data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            datasets: [{
-                label: "Sales",
-                backgroundColor: 'rgb(23, 125, 255)',
-                borderColor: 'rgb(23, 125, 255)',
-                data: [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4],
-            }],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            },
-        }
-    });
-</script> --}}
-{{-- dinamic chat --}}
 <script>
     $(document).ready(function() {
         var monthlyTotals = @json(array_values($monthlyTotals));

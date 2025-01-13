@@ -4,7 +4,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Add Due Payment</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">@lang('Add Due Payment')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -17,13 +17,13 @@
                         <input type="hidden" name="total_due" value="{{ $payment->total_due_amount }}">
                         <div class="row">
                             <div class="col-sm-6">
-                                <label for="paid_due_amount">Total Due</label>
+                                <label for="paid_due_amount">@lang('Total Due')</label>
                                 <input type="number" step="any" min="0.00" class="form-control"
                                     id="paid_due_amount" name="paid_due_amount"
                                     value="{{ $payment->total_due_amount }}" readonly style="color: black">
                             </div>
                             <div class="col-sm-6">
-                                <label for="due_type">Due Type</label>
+                                <label for="due_type">@lang('Due Type')</label>
                                 @if ($payment->type == 'rent')
                                     <input type="text" class="form-control" id="due_type" name="due_type" disabled style="color: black" value="Utility">
                                 @elseif($payment->type == 'utility')
@@ -33,16 +33,16 @@
                                 @endif
                             </div>
                             <div class="col-sm-12">
-                                <label for="type">Payment Type</label>
+                                <label for="type">@lang('Payment Type')</label>
                                 <select name="type" id="type" class="form-control">
-                                    <option value="all_paid" selected>Paid for All</option>
+                                    <option value="all_paid" selected>@lang('Paid for All')</option>
                                 </select>
                             </div>
                         </div>
                         <div class="mt-2">
-                            <button type="submit" class="btn btn-primary btn-sm float-right mb-2 ml-1">Submit</button>
+                            <button type="submit" class="btn btn-primary btn-sm float-right mb-2 ml-1">@lang('Submit')</button>
                             <button type="button" class="btn btn-dark btn-sm float-right"
-                                data-bs-dismiss="modal">Close</button>
+                                data-bs-dismiss="modal">@lang('Close')</button>
                         </div>
                     </form>
                 </div>

@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editContractLabel-{{ $contract->id }}">Edit User Contract</h5>
+                <h5 class="modal-title" id="editContractLabel-{{ $contract->id }}">@lang('Edit User Contract')</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -47,11 +47,6 @@
                             <input type="date" name="end_date" class="form-control"
                                 value="{{ $contract->end_date }}" required>
                         </div>
-                        {{-- <div class="col-sm-6">
-                            <label for="monthly_rent">@lang('Monthly Rent')</label>
-                            <input type="number" name="monthly_rent" class="form-control" min="0" step="0.01"
-                                value="{{ $contract->monthly_rent }}" required>
-                        </div> --}}
                         <div class="col-sm-6">
                             <label for="contract_pdf">@lang('Contract PDF')</label>
                             <input type="file" name="contract_pdf" class="form-control">

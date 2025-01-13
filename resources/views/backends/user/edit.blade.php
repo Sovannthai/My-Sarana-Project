@@ -4,7 +4,7 @@
 <div class="back-btn">
     <a href="{{ route('users.index') }}" class="float-left" data-value="veiw">
         <i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;
-        Back
+        @lang('Back')
     </a><br>
 </div><br>
 <div class="card">

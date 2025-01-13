@@ -31,16 +31,16 @@
                     <label for="discount_type">@lang('Discount Type')</label>
                     <select id="filter-discount" class="form-control select2">
                         <option value="" selected>@lang('All')</option>
-                        <option value="amount">Amount ($)</option>
-                        <option value="percentage">Percentage (%)</option>
+                        <option value="amount">@lang('Amount') ($)</option>
+                        <option value="percentage">@lang('Percentage') (%)</option>
                     </select>
                 </div>
                 <div class="col-sm-4">
                     <label for="status">@lang('Status')</label>
                     <select id="filter-status" class="form-control select2">
                         <option value="" selected>@lang('All')</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="active">@lang('Active')</option>
+                        <option value="inactive">@lang('Inactive')</option>
                     </select>
                 </div>
             </div>
@@ -49,7 +49,7 @@
 </div>
 <div class="card">
     <div class="card-header">
-        <label class="card-title font-weight-bold mb-1 text-uppercase">Price Adjustments</label>
+        <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Price Adjustments')</label>
         @can('create discount')
         <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-bs-toggle="modal"
             data-bs-target="#create_price">
@@ -61,15 +61,15 @@
         <table id="discount-table" class="table table-bordered text-nowrap table-hover table-responsive">
             <thead class="table-dark">
                 <tr>
-                    <th>No.</th>
-                    <th>Room</th>
-                    <th>Discount Type</th>
-                    <th>Discount Value(%)</th>
-                    <th>Description</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th>@lang('No.')</th>
+                    <th>@lang('Room')</th>
+                    <th>@lang('Discount Type')</th>
+                    <th>@lang('Discount Value')(%)</th>
+                    <th>@lang('Description')</th>
+                    <th>@lang('Start Date')</th>
+                    <th>@lang('End Date')</th>
+                    <th>@lang('Status')</th>
+                    <th>@lang('Actions')</th>
                 </tr>
             </thead>
             <tbody>

@@ -15,9 +15,9 @@
             <div class="row">
                 <!-- Month Filter -->
                 <div class="col-md-3">
-                    <label for="month" class="form-label">Month</label>
+                    <label for="month" class="form-label">@lang('Month')</label>
                     <select name="month" id="month" class="form-select select2">
-                        <option value="">All</option>
+                        <option value="">@lang('All')</option>
                         @foreach(range(1, 12) as $m)
                         <option value="{{ $m }}">{{ date('F', mktime(0, 0, 0, $m, 10)) }}</option>
                         @endforeach
@@ -26,9 +26,9 @@
 
                 <!-- Year Filter -->
                 <div class="col-md-3">
-                    <label for="year" class="form-label">Year</label>
+                    <label for="year" class="form-label">@lang('Year')</label>
                     <select name="year" id="year" class="form-select select2">
-                        <option value="">All</option>
+                        <option value="">@lang('All')</option>
                         @foreach(range(date('Y'), date('Y') + 50) as $y)
                         <option value="{{ $y }}">{{ $y }}</option>
                         @endforeach
@@ -37,50 +37,50 @@
 
                 <!-- Payment Type Filter -->
                 <div class="col-md-3">
-                    <label for="type" class="form-label">Payment Type</label>
+                    <label for="type" class="form-label">@lang('Payment Type')</label>
                     <select name="type" id="type" class="form-select select2">
-                        <option value="">All</option>
-                        <option value="all_paid">All Paid</option>
-                        <option value="rent">Rent</option>
-                        <option value="utility">Utility</option>
-                        <option value="advance">Advance</option>
+                        <option value="">@lang('All')</option>
+                        <option value="all_paid">@lang('All Paid')</option>
+                        <option value="rent">@lang('Rent')</option>
+                        <option value="utility">@lang('Utility')</option>
+                        <option value="advance">@lang('Advance')</option>
                     </select>
                 </div>
 
                 <!-- Payment Status Filter -->
                 <div class="col-md-3">
-                    <label for="status" class="form-label">Payment Status</label>
+                    <label for="status" class="form-label">@lang('Payment Status')</label>
                     <select name="status" id="status" class="form-select select2">
-                        <option value="">All</option>
-                        <option value="completed">Completed</option>
-                        <option value="pending">Pending</option>
-                        <option value="partial">Partial</option>
+                        <option value="">@lang('All')</option>
+                        <option value="completed">@lang('Completed')</option>
+                        <option value="pending">@lang('Pending')</option>
+                        <option value="partial">@lang('Partial')</option>
                     </select>
                 </div>
             </div>
             <div>
-                <a href="{{ route('reports.payment') }}" class="btn btn-outline-danger float-right text-capitalize mb-3 mt-3">Reset Filter</a>
+                <a href="{{ route('reports.payment') }}" class="btn btn-outline-danger float-right text-capitalize mb-3 mt-3">@lang('Reset Filter')</a>
             </div>
         </div>
     </div>
 </div>
 <div class="card">
-    <div class="card-header">Payment Report</div>
+    <div class="card-header">@lang('Payment Report')</div>
     <div class="card-body">
         <!-- DataTable -->
         <table id="payment-report-datatables" class="table table-bordered table-striped nowrap table-responsive">
             <thead class="table-dark">
                 <tr>
-                    <th>Invoice No</th>
-                    <th>User Name</th>
-                    <th>Room No</th>
-                    <th>Room Price</th>
-                    <th>Total Amount</th>
-                    <th>Paid Amount</th>
-                    <th>Due Amount</th>
-                    <th>Payment Status</th>
-                    <th>Payment Date</th>
-                    <th>Type</th>
+                    <th>@lang('Invoice No')</th>
+                    <th>@lang('User Name')</th>
+                    <th>@lang('Room No')</th>
+                    <th>@lang('Room Price')</th>
+                    <th>@lang('Total Amount')</th>
+                    <th>@lang('Paid Amount')</th>
+                    <th>@lang('Due Amount')</th>
+                    <th>@lang('Payment Status')</th>
+                    <th>@lang('Payment Date')</th>
+                    <th>@lang('Type')</th>
                 </tr>
             </thead>
             <tfoot>
@@ -88,9 +88,9 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th class="text-center">Total Amount: <span id="total-payment"></span></th>
-                    <th class="text-center">Amount Paid: <span id="amount-paid"></span></th>
-                    <th class="text-center">Due Amount: <span id="total-due-amount"></span></th>
+                    <th class="text-center">@lang('Total Amount'): <span id="total-payment"></span></th>
+                    <th class="text-center">@lang('Amount Paid'): <span id="amount-paid"></span></th>
+                    <th class="text-center">@lang('Due Amount'): <span id="total-due-amount"></span></th>
                     <th></th>
                     <th></th>
                     <th></th>

@@ -48,19 +48,6 @@
         </div>
     </div>
     <script>
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     const tabs = document.querySelectorAll('#utilityTabs .nav-link');
-        //     if (tabs.length > 0) {
-        //         tabs[0].classList.add('bg-primary', 'text-white');
-        //     }
-        //     tabs.forEach(tab => {
-        //         tab.addEventListener('click', function() {
-        //             tabs.forEach(t => t.classList.remove('bg-primary', 'text-white'));
-        //             this.classList.add('bg-primary', 'text-white');
-        //         });
-        //     });
-        // });
-
         const form = document.querySelector('#editUtilityForm');
         form.addEventListener('submit', function(e) {
             e.preventDefault(); // Prevent default form submission

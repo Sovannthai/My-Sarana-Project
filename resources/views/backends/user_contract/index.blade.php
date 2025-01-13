@@ -3,7 +3,7 @@
 @section('contents')
 <div class="card">
     <div class="card-header">
-        <label class="card-title font-weight-bold mb-1 text-uppercase">User Contracts</label>
+        <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('User Contracts')</label>
         @if(auth()->user()->can('create contract'))
         <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-value="view" data-bs-toggle="modal"
             data-bs-target="#staticBackdrop">
@@ -39,7 +39,7 @@
                     <td>
                         @if ($contract->contract_pdf)
                         @php
-                        $fileExtension = pathinfo($contract->contract_pdf, PATHINFO_EXTENSION);
+                            $fileExtension = pathinfo($contract->contract_pdf, PATHINFO_EXTENSION);
                         @endphp
                         @if (strtolower($fileExtension) === 'pdf')
                         <a href="{{ asset($contract->contract_pdf) }}" target="_blank" class="btn btn-info btn-sm">
@@ -68,17 +68,17 @@
                                 </i> @lang('Edit')</a>&nbsp;&nbsp;
                         @endif
                         @if(auth()->user()->can('delete contract'))
-                        <form id="deleteForm"
-                            action="{{ route('user_contracts.destroy', ['user_contract' => $contract->id]) }}"
-                            method="POST" class="d-inline-block">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
-                                title="@lang('Delete')">
-                                <i class="fa fa-trash ambitious-padding-btn text-uppercase">
-                                    </i> @lang('Delete')
-                            </button>
-                        </form>
+                            <form id="deleteForm"
+                                action="{{ route('user_contracts.destroy', ['user_contract' => $contract->id]) }}"
+                                method="POST" class="d-inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
+                                    title="@lang('Delete')">
+                                    <i class="fa fa-trash ambitious-padding-btn text-uppercase">
+                                        </i> @lang('Delete')
+                                </button>
+                            </form>
                         @endif
                     </td>
                 </tr>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form</title>
+    <title>@lang('Login Form')</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@200;300;400;500;600;700&display=swap">
     <style>
         * {
@@ -152,10 +152,10 @@
         <div class="row">
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-                <h2>Login</h2>
+                <h2>@lang('Login')</h2>
                 <div class="input-field">
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off" autofocus>
-                    <label for="email">Enter your email</label>
+                    <label for="email">@lang('Enter your email')</label>
                     @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong style="color: rgb(255, 98, 98);">{{ $message }}</strong>
@@ -165,7 +165,7 @@
 
                 <div class="input-field">
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="off">
-                    <label for="password">Enter your password</label>
+                    <label for="password">@lang('Enter your password')</label>
                     @error('password')
                     <span class="invalid-feedback" role="alert">
                         <strong style="color: rgb(255, 98, 98);">{{ $message }}</strong>
@@ -176,14 +176,14 @@
                 <div class="forget">
                     <label for="remember">
                         <input type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                        <span>Remember me</span>
+                        <span>@lang('Remember me')</span>
                     </label>
-                    <a href="#">Forgot password?</a>
+                    <a href="#">@lang('Forgot password')?</a>
                 </div>
-                <button type="submit">Log In</button>
+                <button type="submit">@lang('Login')</button>
 
                 <div class="register">
-                    <p>Don't have an account? <a href="{{ route('register') }}">Register</a></p>
+                    <p>@lang("Don't have an account")? <a href="{{ route('register') }}">@lang('Register')</a></p>
                 </div>
             </form>
             <script async src="https://telegram.org/js/telegram-widget.js?7" data-telegram-login="NotificatonServiceLogin887_bot"

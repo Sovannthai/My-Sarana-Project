@@ -3,7 +3,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Create Permission</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">@lang('Create Permission')</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -32,7 +32,7 @@
                                 class="fas fa-save"></i> {{ __('Submit') }}</button>
                         <a href="" class="float-right btn btn-dark btn-sm "
                             data-value="veiw" data-bs-dismiss="modal">
-                            Close
+                            @lang('Close')
                         </a>
                     </div>
                 </form>

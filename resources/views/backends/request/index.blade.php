@@ -163,15 +163,15 @@
 @section('contents')
     <div class="card">
         <div class="card-header text-uppercase">
-            <h5>List Request</h5>
+            <h5>@lang('List Request')</h5>
         </div>
         <div class="card-body">
             <table id="basic-datatables" class="table table-bordered text-nowrap table-hover table-responsive-lg">
                 <thead class="table-dark">
                     <tr>
-                        <th>Profile</th>
-                        <th>Name</th>
-                        <th>Action</th>
+                        <th>@lang('Profile')</th>
+                        <th>@lang('Name')</th>
+                        <th>@lang('Action')</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -189,7 +189,7 @@
                                 <button class="btn btn-outline-primary btn-sm open-chat"
                                     data-user-id="{{ $row->telegram_id }}" data-bs-toggle="modal"
                                     data-bs-target="#view_message-{{ $row->telegram_id }}">
-                                    Chat
+                                    @lang('Chat')
                                     <span class="badge badge-danger">{{ $row->unread_messages_count }}</span>
                                 </button>
                             </td>
@@ -206,7 +206,7 @@
                                             <img src="{{ $row->avatar }}" alt="profile" width="50px" height="50px"
                                                 class="rounded-circle me-3" />
                                         </a>
-                                        <h5 class="modal-title">Chat with {{ $row->name }}</h5>
+                                        <h5 class="modal-title">@lang('Chat with') {{ $row->name }}</h5>
                                         {{-- <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button> --}}
                                         <a href="{{ route('user-request.index') }}" class="btn-close"></a>

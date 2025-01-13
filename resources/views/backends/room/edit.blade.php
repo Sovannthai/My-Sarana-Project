@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Update Room</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">@lang('Update Room')</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -51,13 +51,10 @@
                         <div class="col-sm-6">
                             <label for="status">@lang('Status')</label>
                             <select name="status" id="" class="form-control select2">
-                                <option value="" selected>Select</option>
-                                <option value="available" {{ $room->status == 'available' ? 'selected' : '' }}>Available
-                                </option>
-                                <option value="occupied" {{ $room->status == 'occupied' ? 'selected' : '' }}>Occupied
-                                </option>
-                                <option value="maintenance"{{ $room->status == 'maintenance' ? 'selected' : '' }}>
-                                    Maintenance</option>
+                                <option value="" selected>@lang('Select')</option>
+                                <option value="available" {{ $room->status == 'available' ? 'selected' : '' }}>@lang('Available')</option>
+                                <option value="occupied" {{ $room->status == 'occupied' ? 'selected' : '' }}>@lang('Occupied')</option>
+                                <option value="maintenance"{{ $room->status == 'maintenance' ? 'selected' : '' }}>@lang('Maintenance')</option>
                             </select>
                         </div>
                         <div class="col-sm-12">

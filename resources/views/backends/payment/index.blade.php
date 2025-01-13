@@ -60,7 +60,7 @@
 </div>
 <div class="card">
     <div class="card-header">
-        <label class="card-title font-weight-bold mb-1 text-uppercase">Payments Management</label>
+        <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Payments Management')</label>
         @can('create payment')
         <a class="btn btn-primary float-right text-uppercase btn-sm btn-modal btn-add"
             data-href="{{ route('payments.create') }}" data-toggle="modal" data-container=".createPaymentModal">
@@ -72,17 +72,17 @@
         <table id="payment-datatables" class="table table-bordered text-nowrap table-hover table-responsive">
             <thead class="table-dark">
                 <tr>
-                    <th>Action</th>
-                    <th>Status</th>
-                    <th>Payment Date</th>
-                    <th>Invoice No.</th>
-                    <th>User</th>
-                    <th>Total Amount</th>
-                    <th>Paid Amount</th>
-                    <th>Due Amount</th>
-                    <th>Payment Type</th>
-                    <th>Month Paid</th>
-                    <th>Year Paid</th>
+                    <th>@lang('Action')</th>
+                    <th>@lang('Status')</th>
+                    <th>@lang('Payment Date')</th>
+                    <th>@lang('Invoice No.')</th>
+                    <th>@lang('User')</th>
+                    <th>@lang('Total Amount')</th>
+                    <th>@lang('Paid Amount')</th>
+                    <th>@lang('Due Amount')</th>
+                    <th>@lang('Payment Type')</th>
+                    <th>@lang('Month Paid')</th>
+                    <th>@lang('Year Paid')</th>
                 </tr>
             </thead>
             <tfoot>
@@ -92,9 +92,9 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th class="text-center">Total Amount: <span id="total-payment"></span></th>
-                    <th class="text-center">Amount Paid: <span id="amount-paid"></span></th>
-                    <th class="text-center">Due Amount: <span id="total-due-amount"></span></th>
+                    <th class="text-center">@lang('Total Amount'): <span id="total-payment"></span></th>
+                    <th class="text-center">@lang('Amount Paid'): <span id="amount-paid"></span></th>
+                    <th class="text-center">@lang('Due Amount'): <span id="total-due-amount"></span></th>
                     <th></th>
                     <th></th>
                     <th></th>
