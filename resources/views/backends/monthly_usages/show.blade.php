@@ -9,7 +9,7 @@
     <div class="back-btn">
         <a href="{{ route('monthly_usages.index') }}" class="float-left" data-value="veiw">
             <i class="fas fa-arrow-left"></i>&nbsp;&nbsp;
-            Back To all Rooms
+            @lang('Back To all Rooms')
         </a><br>
     </div><br>
     @can('view usagedetails')

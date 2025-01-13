@@ -3,7 +3,7 @@
 @section('contents')
     <div class="card">
         <div class="card-header">
-            <label class="card-title font-weight-bold mb-1 text-uppercase">Rooms</label>
+            <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Rooms')</label>
             <a href="{{ route('rooms.create') }}" class="btn btn-primary float-right text-uppercase btn-sm">
                 <i class="fas fa-plus"> @lang('Add Room')</i>
             </a>

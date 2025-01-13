@@ -12,7 +12,7 @@
     <div class="back-btn">
         <a href="{{ route('rooms.index') }}" class="float-left" data-value="view">
             <i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;
-            Back
+            @lang('Back')
         </a><br>
     </div><br>
     <div class="show-item">
@@ -105,7 +105,7 @@
                                 <i class="fas fa-save"></i> {{ __('Submit') }}
                             </button>
                             <a href="{{ route('rooms.index') }}" class="float-right btn btn-dark btn-sm " data-value="view">
-                                Back
+                                @lang('Back')
                             </a>
                         </div>
                     </form>

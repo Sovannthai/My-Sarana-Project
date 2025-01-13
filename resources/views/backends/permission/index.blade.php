@@ -3,7 +3,7 @@
 @section('contents')
     <div class="card">
         <div class="card-header">
-            <label class="card-title font-weight-bold mb-1 text-uppercase">Permissions</label>
+            <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Permissions')</label>
             <a href="" class="btn btn-primary float-right text-uppercase btn-sm"
                 data-value="veiw" data-bs-toggle="modal" data-bs-target="#create_permission">
                 <i class="fas fa-plus"></i> @lang('Add')</a>

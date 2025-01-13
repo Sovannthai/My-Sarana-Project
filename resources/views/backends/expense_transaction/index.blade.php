@@ -51,7 +51,7 @@
 </div>
 <div class="card">
     <div class="card-header">
-        <label class="card-title font-weight-bold mb-1 text-uppercase">Expense Transactions</label>
+        <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Expense Transactions')</label>
         @can('create expense')
         <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-value="view" data-bs-toggle="modal"
             data-bs-target="#addExpenseTransactionModal">

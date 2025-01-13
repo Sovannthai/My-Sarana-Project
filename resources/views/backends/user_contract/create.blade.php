@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Create User Contract</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">@lang('Create User Contract')</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -34,10 +34,6 @@
                             <label for="end_date">@lang('End Date')</label>
                             <input type="date" name="end_date" class="form-control" required>
                         </div>
-                        {{-- <div class="col-sm-6">
-                            <label for="monthly_rent">@lang('Monthly Rent')</label>
-                            <input type="number" name="monthly_rent" class="form-control" min="0" step="0.01" required>
-                        </div> --}}
                         <div class="col-sm-6">
                             <label for="contract_pdf">@lang('Contract PDF')</label>
                             <input type="file" name="contract_pdf" class="form-control" required>

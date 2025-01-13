@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div>
-                    <a href="{{ route('reports.room') }}" class="btn btn-outline-danger float-left text-capitalize mb-3 mt-3">Reset Filter</a>
+                    <a href="{{ route('reports.room') }}" class="btn btn-outline-danger float-left text-capitalize mb-3 mt-3">@lang('Reset Filter')</a>
                 </div>
             </div>
         </div>

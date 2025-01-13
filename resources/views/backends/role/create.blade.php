@@ -69,7 +69,7 @@
     <div class="back-btn">
         <a href="{{ route('roles.index') }}" class="float-left" data-value="veiw">
             <i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;
-            Back
+            @lang('Back')
         </a><br>
     </div><br>
     <div class="show-item">
@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="description"><b>Description</b></label>
+                                        <label for="description"><b>@lang('Description')</b></label>
                                         <textarea class="form-control" name="description" rows="3"></textarea>
                                     </div>
                                 </div>
@@ -144,7 +144,7 @@
                                 class="btn btn-outline btn-primary btn-sm mb-2 text-uppercase float-right ml-2">
                                 <i class="fas fa-save"></i> {{ __('Submit') }}
                             </button>
-                            <a href="{{ route('roles.index') }}" class="btn btn-dark btn-sm mb-2 float-right">Back</a>
+                            <a href="{{ route('roles.index') }}" class="btn btn-dark btn-sm mb-2 float-right">@lang('Back')</a>
                         </div>
                     </form>
                 </div>

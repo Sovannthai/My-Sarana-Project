@@ -43,8 +43,8 @@
                         @if(auth()->user()->can('update amenity'))
                         <a href="" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" title="@lang('Edit')"
                             data-bs-toggle="modal" data-bs-target="#edit_amenity-{{ $amenity->id }}"><i
-                                class="fa fa-edit ambitious-padding-btn text-uppercase">
-                                @lang('Edit')</i></a>&nbsp;&nbsp;
+                                class="fa fa-edit ambitious-padding-btn text-uppercase"></i>
+                                @lang('Edit')</a>&nbsp;&nbsp;
                         @endif
                         @if(auth()->user()->can('delete amenity'))
                         <form id="deleteForm" action="{{ route('amenities.destroy', ['amenity' => $amenity->id]) }}"
@@ -53,8 +53,8 @@
                             @method('DELETE')
                             <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
                                 title="@lang('Delete')">
-                                <i class="fa fa-trash ambitious-padding-btn text-uppercase">
-                                    @lang('Delete')</i>
+                                <i class="fa fa-trash ambitious-padding-btn text-uppercase"></i>
+                                @lang('Delete')
                             </button>
                         </form>
                         @endif

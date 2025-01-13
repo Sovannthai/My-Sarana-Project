@@ -11,7 +11,7 @@
     <div class="back-btn">
         <a href="{{ route('permission.index') }}" class="float-left" data-value="veiw">
             <i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;
-            Back
+            @lang('Back')
         </a><br>
     </div><br>
     <div class="show-item">
@@ -50,7 +50,7 @@
                                     class="fas fa-save"></i> {{ __('Submit') }}</button>
                             <a href="{{ route('permission.index') }}" class="float-right btn btn-dark btn-sm "
                                 data-value="veiw">
-                                Back
+                                @lang('Back')
                             </a>
                         </div>
                     </form>

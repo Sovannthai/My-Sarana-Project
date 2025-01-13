@@ -4,7 +4,7 @@
       <div class="modal-dialog modal-lg">
           <div class="modal-content">
               <div class="modal-header">
-                  <h5 class="modal-title" id="staticBackdropLabel">Create Room</h5>
+                  <h5 class="modal-title" id="staticBackdropLabel">@lang('Create Room')</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -44,15 +44,6 @@
                             @enderror
                         </div>
 
-                          {{-- <div class="col-sm-6">
-                              <label for="status">@lang('Status')</label>
-                              <select name="status" id="" class="form-control select2">
-                                  <option value="" selected>Select</option>
-                                  <option value="available">Available</option>
-                                  <option value="occupied">Occupied</option>
-                                  <option value="">Maintenance</option>
-                              </select>
-                          </div> --}}
                           <div class="col-sm-12">
                               <label for="description">@lang('Description')</label>
                               <textarea name="description" rows="5" id="description" class="form-control" placeholder="@lang('Enter room description')"></textarea>

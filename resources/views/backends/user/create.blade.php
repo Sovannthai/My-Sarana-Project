@@ -4,7 +4,7 @@
     <div class="back-btn">
         <a href="{{ route('users.index') }}" class="float-left" data-value="veiw">
             <i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;
-            Back
+            @lang('Back')
         </a><br>
     </div><br>
     <div class="card">
@@ -15,12 +15,12 @@
                 <div class="form-group row">
                     <div class="col-sm-4">
                         <label for="">@lang('Full Name')</label>
-                        <input type="text" class="form-control" name="name" placeholder="Enter name"
+                        <input type="text" class="form-control" name="name" placeholder="@lang('Enter name')"
                             value="{{ old('name') }}">
                     </div>
                     <div class="col-sm-4">
                         <label for="">@lang('Email')</label>
-                        <input type="email" class="form-control" name="email" placeholder="Enter email"
+                        <input type="email" class="form-control" name="email" placeholder="@lang('Enter email')"
                             value="{{ old('email') }}">
                         @error('email')
                             <span class="text-danger">{{ $message }}</span>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="col-sm-4">
                         <label for="">@lang('Password')</label>
-                        <input type="password" class="form-control" name="password" placeholder="Enter password"
+                        <input type="password" class="form-control" name="password" placeholder="@lang('Enter password')"
                             value="{{ old('password') }}">
                         @error('password')
                             <span class="text-danger">{{ $message }}</span>
@@ -36,7 +36,7 @@
                     </div>
                     <div class="col-sm-4">
                         <label for="password_confirmation">@lang('Confirm Password')</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
+                        <input type="password" placeholder="@lang('Enter confirm password')" name="password_confirmation" id="password_confirmation" class="form-control">
                     </div>
                     <div class="col-lg-4">
                         <label for="">@lang('Role')</label>

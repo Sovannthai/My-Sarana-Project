@@ -1,4 +1,4 @@
-<div class="title">Settings</div>
+<div class="title">@lang('Settings')</div>
             <div class="custom-content">
                 <div class="switcher">
                     <div class="switch-block">
