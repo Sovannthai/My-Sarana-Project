@@ -18,7 +18,7 @@
                             </select>
                         </div>
                         <div class="col-sm-4">
-                            <label for="discount_type">Discount Type</label>
+                            <label for="discount_type">@lang('Discount Type')</label>
                             <select name="discount_type" id="discount_type" class="form-control select2">
                                 <option value="amount">Amount</option>
                                 <option value="percentage">Percentage</option>
