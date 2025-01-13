@@ -7,7 +7,7 @@
             @if(auth()->user()->can('create utilitytype'))
             <a href="" class="float-right btn btn-primary btn-sm" data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop">
-                <i class="fas fa-plus"> @lang('Add Utility Type')</i>
+                <i class="fas fa-plus"></i> @lang('Add Utility Type')
             </a>
             @include('backends.utilitie_type.create')
             @endif

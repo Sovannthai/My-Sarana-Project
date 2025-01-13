@@ -7,7 +7,7 @@
         @can('create expense category')
         <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-value="view" data-bs-toggle="modal"
             data-bs-target="#addExpenseCategoryModal">
-            <i class="fas fa-plus"> @lang('Add')</i>
+            <i class="fas fa-plus"></i> @lang('Add')
         </a>
         @include('backends.expense_category.create')
         @endcan
@@ -40,7 +40,7 @@
                         @can('update expense category')
                         <a href="" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" title="@lang('Edit')"
                             data-bs-toggle="modal" data-bs-target="#editExpenseCategory-{{ $category->id }}">
-                            <i class="fa fa-edit ambitious-padding-btn text-uppercase">@lang('Edit')</i>
+                            <i class="fa fa-edit ambitious-padding-btn text-uppercase"></i> @lang('Edit')
                         </a>&nbsp;&nbsp;
                         @endcan
                         @can('delete expense category')
@@ -51,7 +51,7 @@
                             @method('DELETE')
                             <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
                                 title="@lang('Delete')">
-                                <i class="fa fa-trash ambitious-padding-btn text-uppercase">@lang('Delete')</i>
+                                <i class="fa fa-trash ambitious-padding-btn text-uppercase"></i> @lang('Delete')
                             </button>
                         </form>
                         @endcan

@@ -6,8 +6,7 @@
             <label class="card-title font-weight-bold mb-1 text-uppercase">@lang('Roles')</label>
             @if (auth()->user()->can('create role'))
                 <a href="{{ route('roles.create') }}" class="btn btn-primary float-right text-uppercase btn-sm"
-                    data-value="veiw">+
-                    @lang('Add')</a>
+                    data-value="veiw">+ @lang('Add')</a>
             @endif
         </div>
         <div class="card-body">

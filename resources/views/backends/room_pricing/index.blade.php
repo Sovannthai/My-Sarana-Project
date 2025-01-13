@@ -33,7 +33,7 @@
             @if(auth()->user()->can('create roomprice'))
             <a href="" class="btn btn-primary float-right text-uppercase" data-bs-toggle="modal"
                 data-bs-target="#create-pricing">
-                <i class="fas fa-plus"> @lang('Add')</i></a>
+                <i class="fas fa-plus"></i> @lang('Add')</a>
             @include('backends.room_pricing.create')
             @endif
             <div class="search-row col-sm-4 float-lg-right">

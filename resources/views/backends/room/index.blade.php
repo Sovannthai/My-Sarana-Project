@@ -7,7 +7,7 @@
             @if(auth()->user()->can('create room'))
             <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-value="view" data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop">
-                <i class="fas fa-plus"> @lang('Add')</i></a>
+                <i class="fas fa-plus"></i> @lang('Add')</a>
             @include('backends.room.create')
             @endif
         </div>

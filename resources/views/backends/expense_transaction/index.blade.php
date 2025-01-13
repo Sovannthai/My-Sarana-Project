@@ -55,7 +55,7 @@
         @can('create expense')
         <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-value="view" data-bs-toggle="modal"
             data-bs-target="#addExpenseTransactionModal">
-            <i class="fas fa-plus"> @lang('Add')</i>
+            <i class="fas fa-plus"></i> @lang('Add')
         </a>
         @include('backends.expense_transaction.create')
         @endcan
@@ -147,12 +147,12 @@
                     return `
                     @can('update expense')
                         <a href="#" class="btn btn-outline-primary btn-sm text-uppercase btn-modal btn-add" data-href="${route('expense_transactions.edit', data)}" data-toggle="modal" data-container=".edit_expense_modal">
-                            <i class="fa fa-edit">@lang("Edit")</i>
+                            <i class="fa fa-edit"></i> @lang("Edit")
                         </a>
                     @endcan
                     @can('delete expense')
                         <button type="button" class="btn btn-outline-danger btn-sm text-uppercase delete-button" data-id="${data}">
-                            <i class="fa fa-trash">@lang("Delete")</i>
+                            <i class="fa fa-trash"></i> @lang("Delete")
                         </button>
                     @endcan`;
                 },
