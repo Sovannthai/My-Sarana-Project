@@ -27,7 +27,9 @@
                             <td>
                                 @if(auth()->user()->can('update utilitytype'))
                                 <a href="" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                    data-bs-target="#edit_utilities-{{ $utility_type->id }}">@lang('Edit')</a>
+                                    data-bs-target="#edit_utilities-{{ $utility_type->id }}">
+                                    <i class="fa fa-edit ambitious-padding-btn text-uppercase"></i> @lang('Edit')
+                                </a>
                                 &nbsp;&nbsp;
                                 @endif
                                 @if(auth()->user()->can('delete utilitytype'))

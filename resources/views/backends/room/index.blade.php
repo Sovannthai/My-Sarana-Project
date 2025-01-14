@@ -70,7 +70,7 @@
                                         <button type="button" class="btn btn-outline-danger btn-sm delete-btn"
                                             title="@lang('Delete')">
                                             <i class="fa fa-trash ambitious-padding-btn text-uppercase">
-                                                @lang('Delete')</i>
+                                            </i> @lang('Delete')
                                         </button>
                                     </form>
                                     @endif

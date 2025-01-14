@@ -57,7 +57,7 @@
 
                                 @if (strtolower($fileExtension) === 'pdf')
                                     <small class="form-text text-muted">
-                                        @lang('Current File:')
+                                        @lang('Current File'):
                                         <a href="{{ asset($contract->contract_pdf) }}" target="_blank">
                                             {{ basename($contract->contract_pdf) }}
                                         </a>

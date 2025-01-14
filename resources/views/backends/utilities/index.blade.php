@@ -169,7 +169,7 @@
                                     data-rate="${convertedRate.toFixed(2)}"
                                     data-bs-toggle="modal"
                                     data-bs-target="#editUtilityModal">
-                                    Edit
+                                    <i class="fa fa-edit ambitious-padding-btn text-uppercase"></i> @lang('Edit')
                                 </button>
                                 &nbsp;&nbsp;
                                 @endcan
