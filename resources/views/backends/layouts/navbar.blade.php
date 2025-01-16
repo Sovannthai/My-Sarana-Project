@@ -132,9 +132,9 @@
                                     <div class="notif-content">
 
                                         <span class="block">
-                                            Go to view messaages <span class=" badge badge-danger">{{ $unreadMessagesCount }}</span>
+                                            @lang('Go to view messaages') <span class=" badge badge-danger">{{ $unreadMessagesCount }}</span>
                                         </span>
-                                        <span class="time">12 minutes ago</span>
+                                        <span class="time">1 minutes ago</span>
                                     </div>
                                 </a>
                             </div>
@@ -153,14 +153,14 @@
                         <a href="{{ route('change_language', 'kh') }}"
                             class="dropdown-item @if (Session::get('locale') == 'kh') active @endif">
                             <img src="{{ asset('backends/assets/img/flags/kh.png') }}" alt=""
-                                style="width: 20px;" class="me-2"> Khmer
+                                style="width: 20px;" class="me-2"> @lang('Khmer')
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('change_language', 'en') }}"
                             class="dropdown-item @if (Session::get('locale', 'en') == 'en') active @endif">
                             <img src="{{ asset('backends/assets/img/flags/gb.png') }}" alt=""
-                                style="width: 20px;" class="me-2"> English
+                                style="width: 20px;" class="me-2"> @lang('English')
                         </a>
                     </li>
                 </ul>
@@ -239,7 +239,7 @@
                             class="avatar-img rounded-circle" />
                     </div>
                     <span class="profile-username">
-                        <span class="op-7">Hi,</span>
+                        <span class="op-7">@lang('Hello'),</span>
                         <span class="fw-bold">{{ auth()->user()->name }}</span>
                     </span>
                 </a>
@@ -254,7 +254,8 @@
                                 <div class="u-text text-white">
                                     <h4>{{ auth()->user()->name }}</h4>
                                     <p class="text-muted">{{ auth()->user()->email }}</p>
-                                    <a href="{{ route('user.view_profile',['id'=>auth()->user()->id]) }}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                    <a href="{{ route('user.view_profile',['id'=>auth()->user()->id]) }}" class="btn btn-xs btn-secondary btn-sm">
+                                        @lang('View Profile') <i class="fas fa-chevron-right fa-sm"></i></a>
                                 </div>
                             </div>
                         </li>
@@ -262,7 +263,8 @@
                             <div class="dropdown-divider"></div>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="dropdown-item logout">Logout</button>
+                                <button type="submit" class="dropdown-item logout">
+                                    <i class="fas fa-sign-out-alt"></i> @lang('Logout')</button>
                             </form>
                         </li>
                     </div>

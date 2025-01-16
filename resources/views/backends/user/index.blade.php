@@ -41,7 +41,7 @@
                                     <a href="{{ route('users.edit', ['user' => $user->id]) }}"
                                         class="btn btn-outline-primary btn-sm text-uppercase" data-toggle="tooltip"
                                         title="@lang('Edit')"><i class="fa fa-edit ambitious-padding-btn">
-                                    </i>@lang('Edit')</a>&nbsp;&nbsp;
+                                    </i> @lang('Edit')</a>&nbsp;&nbsp;
                                 @endif
                                 @if (@$user->roles->first()->name != 'Admin')
                                     @if (auth()->user()->can('delete user'))
@@ -52,7 +52,7 @@
                                             <button type="button"
                                                 class="btn btn-outline-danger btn-sm delete-btn text-uppercase"
                                                 title="@lang('Delete')">
-                                                <i class="fa fa-trash ambitious-padding-btn"></i>@lang('Delete')
+                                                <i class="fa fa-trash ambitious-padding-btn"></i> @lang('Delete')
                                             </button>
                                         </form>
                                     @endif

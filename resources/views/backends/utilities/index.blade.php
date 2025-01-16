@@ -13,7 +13,7 @@
             @can('create utility')
             <a href="#" class="btn btn-primary float-right text-uppercase btn-sm" data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop">
-                <i class="fas fa-plus"> @lang('Add Utility Rate')</i>
+                <i class="fas fa-plus"></i> @lang('Add Utility Rate')
             </a>
             @endcan
         </div>
@@ -169,7 +169,7 @@
                                     data-rate="${convertedRate.toFixed(2)}"
                                     data-bs-toggle="modal"
                                     data-bs-target="#editUtilityModal">
-                                    Edit
+                                    <i class="fa fa-edit ambitious-padding-btn text-uppercase"></i> @lang('Edit')
                                 </button>
                                 &nbsp;&nbsp;
                                 @endcan

@@ -64,7 +64,7 @@
         @can('create payment')
         <a class="btn btn-primary float-right text-uppercase btn-sm btn-modal btn-add"
             data-href="{{ route('payments.create') }}" data-toggle="modal" data-container=".createPaymentModal">
-            {{ __('Add New') }}
+            <i class="fas fa-plus"></i> {{ __('Add New') }}
         </a>
         @endcan
     </div>
@@ -188,7 +188,7 @@
                             </button>
                             <ul class="dropdown-menu" style="font-size: 16px">
                                 <li class="mb-1">
-                                    <a class="dropdown-item btn-modal btn-add" href="#"
+                                    <a class="btn float-right btn-sm dropdown-item btn-modal btn-add" href="#"
                                         data-href="${viewInvoiceUrl}"
                                         data-toggle="modal" data-container=".createPaymentModal">
                                         <i class="fas fa-eye"></i> @lang('View Invoice')
@@ -196,19 +196,19 @@
                                 </li>
                                 ${payment.type === 'advance' ? `
                                 <li class="mb-1">
-                                    <a class="dropdown-item btn-modal btn-add" data-bs-toggle="modal"
+                                    <a class="btn float-right btn-sm dropdown-item btn-modal btn-add" data-bs-toggle="modal"
                                         data-bs-target="#utility_list_modal-${payment.id}">
                                         <i class="fas fa-file-alt"></i> @lang('Utilities Payment')
                                     </a>
                                 </li>` : ''}
                                 <li class="mb-1">
-                                    <a class="dropdown-item" href="#"
+                                    <a class="btn float-right btn-sm dropdown-item" href="#"
                                         onclick="printInvoice(${userId})">
                                         <i class="fas fa-file-alt"></i> @lang('Print Invoice')
                                     </a>
                                 </li>
                                 <li class="mb-1">
-                                    <a class="dropdown-item" href="${downloadInvoiceUrl}">
+                                    <a class="btn float-right btn-sm dropdown-item" href="${downloadInvoiceUrl}">
                                         <i class="fas fa-download"></i> @lang('Download Invoice')
                                     </a>
                                 </li>

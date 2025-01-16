@@ -53,7 +53,7 @@
         @can('create discount')
         <a href="" class="btn btn-primary float-right text-uppercase btn-sm" data-bs-toggle="modal"
             data-bs-target="#create_price">
-            <i class="fas fa-plus"> @lang('Add')</i></a>
+            <i class="fas fa-plus"></i> @lang('Add')</a>
         @include('backends.price_adjustment.create')
         @endcan
     </div>
@@ -160,12 +160,12 @@
                     return `
                     @can('update discount')
                         <a href="" class="btn btn-outline-primary btn-sm text-uppercase btn-modal btn-add" data-href="${route('price_adjustments.edit', data)}" data-toggle="modal" data-container=".edit_duscount_modal">
-                            <i class="fa fa-edit">@lang("Edit")</i>
+                            <i class="fa fa-edit"></i> @lang("Edit")
                         </a>
                     @endcan
                     @can('delete discount')
                         <button type="button" class="btn btn-outline-danger btn-sm text-uppercase delete-button" data-id="${data}">
-                            <i class="fa fa-trash">@lang("Delete")</i>
+                            <i class="fa fa-trash"></i> @lang("Delete")
                         </button>
                     @endcan`;
 
@@ -203,7 +203,7 @@
 
             Swal.fire({
                 title: "@lang('Are you sure?')",
-                text: "@lang('You won\'t be able to revert this!')",
+                text: "@lang('You will not be able to revert this!')",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",

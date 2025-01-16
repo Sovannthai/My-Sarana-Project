@@ -16,18 +16,18 @@
             <div class="form-group row">
                 <div class="col-sm-4">
                     <label for="">@lang('Full Name')</label>
-                    <input type="text" class="form-control" name="name" placeholder="Enter full name" value="{{ $user->name }}">
+                    <input type="text" class="form-control" name="name" placeholder="@lang('Enter full name')" value="{{ $user->name }}">
                 </div>
                 <div class="col-sm-4">
                     <label for="">@lang('Email')</label>
-                    <input type="email" class="form-control" name="email" placeholder="Enter email" value="{{ $user->email }}">
+                    <input type="email" class="form-control" name="email" placeholder="@lang('Enter email')" value="{{ $user->email }}">
                     @error('email')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="col-sm-4">
                     <label for="">@lang('Password')</label>
-                    <input type="password" class="form-control" name="password" placeholder="Enter password">
+                    <input type="password" class="form-control" name="password" placeholder="@lang('Enter password')">
                 </div>
                 <div class="col-sm-4">
                     <label for="">@lang('Role')</label>

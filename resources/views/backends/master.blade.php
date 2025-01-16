@@ -135,13 +135,14 @@
                 e.preventDefault();
                 var form = $(this).closest('form');
                 Swal.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
+                    title: "@lang('Are you sure?')",
+                    text: "@lang('You will not be able to revert this!')",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!"
+                    cancelButtonText: "@lang('Cancel')",
+                    confirmButtonText: "@lang('Yes, delete it!')"
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();
@@ -156,13 +157,14 @@
                 e.preventDefault();
                 var form = $(this).closest('form');
                 Swal.fire({
-                    title: "Are you sure?",
-                    text: "You want to logout?",
+                    title: "@lang('Are you sure?')",
+                    text: "@lang('You want to logout?')",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Logout"
+                    cancelButtonText: "@lang('Cancel')",
+                    confirmButtonText: "@lang('Logout')"
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();
